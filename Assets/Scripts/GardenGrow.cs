@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,88 +5,150 @@ using UnityEngine.UI;
 public class GardenGrow : MonoBehaviour
 {
     public ResourcesChange scriptResourcesChange;
-    public GameObject progressBarObj;
-    //public Slider progressBar;
-    public GameObject textGrowObj;
-    public Button button;
-    public TMP_Text buttonText;
+    [SerializeField] private Sprite plantFirstStage;
+    [SerializeField] private Sprite plantSecondStage;
+    private float growTime = 8f;
+    private int bedPrice = 15;
+    private int harvestAmount = 2;
 
-    private int growTime = 8;
-    private TMP_Text timerText;
-    private bool isPlanted;
-    private float timeElapsed = 0f;
-    private bool isRunning = false;
-    private Slider progressBar;
+    private enum BedState { Locked, Empty, Growing, Ready }
 
-    // Start is called before the first frame update
-    void Start()
+    private class Bed
     {
-        timerText = textGrowObj.GetComponent<TMP_Text>();
-        progressBar = progressBarObj.GetComponent<Slider>();
+        public Button button;
+        public TMP_Text buttonText;
+        public TMP_Text timerText;
+        public Slider slider;
+        public Image plant;
+        public GameObject lockObject;
+        public BedState state;
+        public float elapsed;
     }
 
-    void Update()
+    private readonly Bed[] beds = new Bed[6];
+
+    private void Start()
     {
-        if (isRunning)
+        WindowsChange windows = GetComponent<WindowsChange>();
+        if (windows == null)
         {
-            timeElapsed += Time.deltaTime;
-            UpdateTimerDisplay(timeElapsed);
+            enabled = false;
+            return;
+        }
+
+        if (scriptResourcesChange == null)
+            scriptResourcesChange = GetComponent<ResourcesChange>();
+
+        Transform garden = windows.gardenPlace.transform;
+        Transform template = garden.Find("Bed 1/Plant 1");
+
+        for (int i = 0; i < beds.Length; i++)
+        {
+            Transform root = garden.Find("Bed " + (i + 1));
+            Transform plant = root.Find("Plant 1");
+            if (plant == null)
+            {
+                plant = Instantiate(template.gameObject, root, false).transform;
+                plant.name = "Plant 1";
+            }
+            plant.SetAsFirstSibling();
+            Transform lockTransform = root.Find("Lock");
+            Bed bed = new Bed
+            {
+                button = root.Find("Button").GetComponent<Button>(),
+                timerText = root.Find("TextGrow").GetComponent<TMP_Text>(),
+                slider = root.Find("Slider").GetComponent<Slider>(),
+                plant = plant.GetComponent<Image>(),
+                lockObject = lockTransform != null ? lockTransform.gameObject : null,
+                state = i == 0 ? BedState.Empty : BedState.Locked
+            };
+            bed.buttonText = bed.button.GetComponentInChildren<TMP_Text>(true);
+            bed.plant.raycastTarget = false;
+            bed.slider.minValue = 0f;
+            bed.slider.maxValue = 1f;
+            bed.slider.wholeNumbers = false;
+            bed.slider.interactable = false;
+            if (bed.slider.handleRect != null)
+                bed.slider.handleRect.gameObject.SetActive(false);
+
+            int index = i;
+            bed.button.onClick = new Button.ButtonClickedEvent();
+            bed.button.onClick.AddListener(() => PressButton(index));
+            beds[i] = bed;
+            Refresh(bed);
         }
     }
 
-    public void SetProgress(float currentValue, float maxValue)
+    private void Update()
     {
-        progressBar.value = currentValue / maxValue;
+        foreach (Bed bed in beds)
+        {
+            if (bed == null) continue;
+            if (bed.state == BedState.Locked)
+            {
+                bed.button.interactable = scriptResourcesChange.GetMoney() >= bedPrice;
+            }
+            else if (bed.state == BedState.Growing)
+            {
+                bed.elapsed = Mathf.Min(bed.elapsed + Time.deltaTime, growTime);
+                UpdateProgress(bed);
+                if (bed.elapsed >= growTime)
+                {
+                    bed.state = BedState.Ready;
+                    Refresh(bed);
+                }
+            }
+        }
     }
 
-
-    public void PressButton()
+    private void PressButton(int index)
     {
-        if (!isPlanted)
+        Bed bed = beds[index];
+        switch (bed.state)
         {
-            button.interactable = false;
-            textGrowObj.SetActive(true);
-            progressBarObj.SetActive(true);
-            isRunning = true;
-            isPlanted = true;
+            case BedState.Locked:
+                if (scriptResourcesChange.GetMoney() < bedPrice) return;
+                scriptResourcesChange.ChangeMoney(-bedPrice);
+                bed.state = BedState.Empty;
+                break;
+            case BedState.Empty:
+                bed.elapsed = 0f;
+                bed.state = BedState.Growing;
+                break;
+            case BedState.Growing:
+                return;
+            case BedState.Ready:
+                scriptResourcesChange.ChangeGrass(harvestAmount);
+                bed.elapsed = 0f;
+                bed.state = BedState.Empty;
+                break;
         }
-        else
-        {
-            scriptResourcesChange.ChangeGrass(2);
-            buttonText.text = "Посадить";
-            isPlanted = false;
-        }
-        
+        Refresh(bed);
     }
 
-
-    
-
-    private void UpdateTimerDisplay(float timeToDisplay)
+    private void Refresh(Bed bed)
     {
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-        if (seconds < growTime)
-        {
-            timerText.text = string.Format("Растёт {0:0} сек.", seconds);
-            SetProgress(seconds, growTime);
-        }
-        else
-        {
-            ResetTimer();
-            progressBarObj.SetActive(false);
-            textGrowObj.SetActive(false);
-            buttonText.text = "Собрать";
-            button.interactable = true;
-        }
-        
+        bool locked = bed.state == BedState.Locked;
+        bool growing = bed.state == BedState.Growing;
+        bool ready = bed.state == BedState.Ready;
+
+        if (bed.lockObject != null) bed.lockObject.SetActive(locked);
+        bed.plant.sprite = ready ? plantSecondStage : plantFirstStage;
+        bed.plant.gameObject.SetActive(growing || ready);
+        bed.button.gameObject.SetActive(!growing);
+        bed.button.interactable = !locked || scriptResourcesChange.GetMoney() >= bedPrice;
+        bed.slider.gameObject.SetActive(growing);
+        bed.timerText.gameObject.SetActive(locked || growing);
+        bed.buttonText.text = locked ? "Купить" : ready ? "Собрать" : "Посадить";
+        if (locked) bed.timerText.text = $"За {bedPrice} монет";
+        if (growing) UpdateProgress(bed);
+        else bed.slider.value = 0f;
     }
 
-    public void StartTimer() => isRunning = true;
-    public void PauseTimer() => isRunning = false;
-    public void ResetTimer()
+    private void UpdateProgress(Bed bed)
     {
-        isRunning = false;
-        timeElapsed = 0f;
-        UpdateTimerDisplay(timeElapsed);
+        bed.slider.value = Mathf.Clamp01(bed.elapsed / Mathf.Max(0.01f, growTime));
+        int remaining = Mathf.CeilToInt(Mathf.Max(0f, growTime - bed.elapsed));
+        bed.timerText.text = $"Растёт {remaining} сек.";
     }
 }

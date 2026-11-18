@@ -16,9 +16,9 @@ public class ResourcesChange : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        textMoney.text = "Монеты\n0";
-        textGrass.text = "Мятолист\n0";
-        textTea.text = "Чай\n0";
+        textMoney.text = money.ToString();
+        textGrass.text = $"Мятолист\n{Grass}";
+        textTea.text = $"Чай\n{tea}";
     }
 
     // Update is called once per frame
@@ -35,7 +35,7 @@ public class ResourcesChange : MonoBehaviour
     public void ChangeMoney(int a)
     {
         money += a;
-        textMoney.text = $"Монеты\n{money}";
+        textMoney.text = $"{money}";
     }
 
     public int GetGrass()

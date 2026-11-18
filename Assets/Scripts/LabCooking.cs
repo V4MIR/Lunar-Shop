@@ -20,14 +20,12 @@ public class LabCooking : MonoBehaviour
     private Slider progressBar;
     private bool isCooked;
 
-    // Start is called before the first frame update
     void Start()
     {
         timerText = textCookingObj.GetComponent<TMP_Text>();
         progressBar = progressBarObj.GetComponent<Slider>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isRunning)
@@ -68,22 +66,19 @@ public class LabCooking : MonoBehaviour
 
     }
 
-
-
-
     private void UpdateTimerDisplay(float timeToDisplay)
     {
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
         if (seconds < cookingTime)
         {
-            timerText.text = string.Format("Варится {0:0} сек.", seconds);
-            SetProgress(seconds, cookingTime);
+            timerText.text = string.Format("Варится {0:0} сек.", cookingTime - seconds);
+            SetProgress(timeToDisplay % 60, cookingTime);
         }
         else
         {
             ResetTimer();
-            textCookingObj.SetActive(false);
-            progressBarObj.SetActive(false);
+            //textCookingObj.SetActive(false);
+            //progressBarObj.SetActive(false);
             buttonText.text = "Собрать";
             button.interactable = true;
         }

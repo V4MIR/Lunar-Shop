@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class ResourcesChange : MonoBehaviour
 {
-    private int money = 0;
-    private int Grass = 0;
-    private int tea = 0;
+    public int money = 0;
+    public int Grass = 0;
+    public int tea = 0;
 
     public TMP_Text textMoney;
     public TMP_Text textGrass;

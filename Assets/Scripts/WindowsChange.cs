@@ -7,6 +7,7 @@ public class WindowsChange : MonoBehaviour
     public GameObject mainWindows;
     public GameObject gardenPlace;
     public GameObject labPlace;
+    public GameObject ordersPlace;
 
     public void ToGarden()
     {
@@ -30,5 +31,17 @@ public class WindowsChange : MonoBehaviour
     {
         mainWindows.SetActive(true);
         labPlace.SetActive(false);
+    }
+
+    public void ToOrders()
+    {
+        mainWindows.SetActive(false);
+        ordersPlace.SetActive(true);
+    }
+
+    public void FromOrdersToMainWindows()
+    {
+        mainWindows.SetActive(true);
+        ordersPlace.SetActive(false);
     }
 }

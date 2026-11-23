@@ -77,8 +77,6 @@ public class LabCooking : MonoBehaviour
         else
         {
             ResetTimer();
-            //textCookingObj.SetActive(false);
-            //progressBarObj.SetActive(false);
             buttonText.text = "Собрать";
             button.interactable = true;
         }

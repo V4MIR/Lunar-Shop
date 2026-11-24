@@ -5,6 +5,9 @@ using TMPro;
 
 public class OrderManager : MonoBehaviour
 {
+    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private ItemData itemTea;
+
     public ResourcesChange scriptResourcesChange;
 
     [Header("Список заказов (Справа)")]
@@ -69,10 +72,10 @@ public class OrderManager : MonoBehaviour
 
     private void CompleteSelectedOrder()
     {
-        if (selectedOrder != null && scriptResourcesChange.GetTea() >= selectedOrder.amount)
+        if (selectedOrder != null && inventoryUI.GetItemAmount(itemTea) >= selectedOrder.amount)
         {
             scriptResourcesChange.ChangeMoney(selectedOrder.rewardMoney);
-            scriptResourcesChange.ChangeTea(-selectedOrder.amount);
+            inventoryUI.AddItem(itemTea, -selectedOrder.amount);
             orders.Remove(selectedOrder);
 
             detailNameText.text = "";

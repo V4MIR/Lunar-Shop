@@ -1,47 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WindowsChange : MonoBehaviour
 {
-    public GameObject mainWindows;
+    [Header("Windows")]
+    [SerializeField] private GameObject mainWindows;
     public GameObject gardenPlace;
-    public GameObject labPlace;
-    public GameObject ordersPlace;
+    [SerializeField] private GameObject labPlace;
+    [SerializeField] private GameObject ordersPlace;
+    [SerializeField] private GameObject inventory;
 
-    public void ToGarden()
+    private GameObject[] windows;
+
+    private void Awake()
     {
-        mainWindows.SetActive(false);
-        gardenPlace.SetActive(true);
+        windows = new GameObject[]
+        {
+            mainWindows,
+            gardenPlace,
+            labPlace,
+            ordersPlace,
+            inventory
+        };
     }
 
-    public void FromGardenToMainWindows()
+    private void ShowWindow(GameObject targetWindow)
     {
-        mainWindows.SetActive(true);
-        gardenPlace.SetActive(false);
+        foreach (GameObject window in windows)
+        {
+            window.SetActive(window == targetWindow);
+        }
     }
 
-    public void ToLab()
-    {
-        mainWindows.SetActive(false);
-        labPlace.SetActive(true);
-    }
-
-    public void FromLabToMainWindows()
-    {
-        mainWindows.SetActive(true);
-        labPlace.SetActive(false);
-    }
-
-    public void ToOrders()
-    {
-        mainWindows.SetActive(false);
-        ordersPlace.SetActive(true);
-    }
-
-    public void FromOrdersToMainWindows()
-    {
-        mainWindows.SetActive(true);
-        ordersPlace.SetActive(false);
-    }
+    public void ToMainWindows() => ShowWindow(mainWindows);
+    public void ToGarden() => ShowWindow(gardenPlace);
+    public void ToLab() => ShowWindow(labPlace);
+    public void ToOrders() => ShowWindow(ordersPlace);
+    public void ToInventory() => ShowWindow(inventory);
 }

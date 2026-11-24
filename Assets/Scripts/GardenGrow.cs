@@ -1,10 +1,15 @@
 using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GardenGrow : MonoBehaviour
 {
     public ResourcesChange scriptResourcesChange;
+
+    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private ItemData itemMint;
+
     [SerializeField] private Sprite plantFirstStage;
     [SerializeField] private Sprite plantSecondStage;
     private float growTime = 8f;
@@ -118,7 +123,7 @@ public class GardenGrow : MonoBehaviour
             case BedState.Growing:
                 return;
             case BedState.Ready:
-                scriptResourcesChange.ChangeGrass(harvestAmount);
+                inventoryUI.AddItem(itemMint, harvestAmount);
                 bed.elapsed = 0f;
                 bed.state = BedState.Empty;
                 break;

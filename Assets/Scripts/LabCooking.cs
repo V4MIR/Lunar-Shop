@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class LabCooking : MonoBehaviour
 {
+    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private ItemData itemMint;
+    [SerializeField] private ItemData itemTea;
+
     public ResourcesChange scriptResourcesChange;
     public GameObject progressBarObj;
     public float timeElapsed = 0f;
@@ -45,11 +49,11 @@ public class LabCooking : MonoBehaviour
     {
         if (!isCooked)
         {
-            if (scriptResourcesChange.GetGrass() >= 2)
+            if (inventoryUI.GetItemAmount(itemMint) >= 2)
             {
                 needTextObj.SetActive(false);
                 progressBarObj.SetActive(true);
-                scriptResourcesChange.ChangeGrass(-2);
+                inventoryUI.AddItem(itemMint, -2);
                 button.interactable = false;
                 textCookingObj.SetActive(true);
                 isRunning = true;
@@ -59,7 +63,7 @@ public class LabCooking : MonoBehaviour
         else
         {
             needTextObj.SetActive(true);
-            scriptResourcesChange.ChangeTea(1);
+            inventoryUI.AddItem(itemTea, 1);
             buttonText.text = "Варить";
             isCooked = false;
         }

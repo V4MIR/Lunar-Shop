@@ -6,25 +6,13 @@ using UnityEngine;
 public class ResourcesChange : MonoBehaviour
 {
     public int money = 0;
-    public int Grass = 0;
-    public int tea = 0;
 
     public TMP_Text textMoney;
-    public TMP_Text textGrass;
-    public TMP_Text textTea;
 
     // Start is called before the first frame update
     void Start()
     {
         textMoney.text = money.ToString();
-        textGrass.text = $"Мятолист\n{Grass}";
-        textTea.text = $"Чай\n{tea}";
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public int GetMoney()
@@ -36,27 +24,5 @@ public class ResourcesChange : MonoBehaviour
     {
         money += a;
         textMoney.text = $"{money}";
-    }
-
-    public int GetGrass()
-    {
-        return Grass;
-    }
-
-    public void ChangeGrass(int a)
-    {
-        Grass += a;
-        textGrass.text = $"Мятолист\n{Grass}";
-    }
-
-    public int GetTea()
-    {
-        return tea;
-    }
-
-    public void ChangeTea(int a)
-    {
-        tea += a;
-        textTea.text = $"Чай\n{tea}";
     }
 }

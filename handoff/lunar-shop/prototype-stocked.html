@@ -1,0 +1,2206 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Лунная лавка — нулевой прогресс</title>
+<link rel="stylesheet" href="Шрифты/Lora/lora.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#291c17;font-family:"Lora",Georgia,serif;color:#452b1b;overflow:hidden}.viewport{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:top left;overflow:hidden;background:#302019}.el{position:absolute}.sprite{width:100%;height:100%;object-fit:fill;display:block;pointer-events:none}.crop{overflow:hidden}.crop img{position:absolute;max-width:none}.txt{position:absolute;display:flex;align-items:center;justify-content:center;font-weight:bold;text-align:center;pointer-events:none;white-space:pre-line}.hot{position:absolute;border:0;background:transparent;cursor:pointer;color:transparent}.hot:focus-visible{outline:4px solid #fff4af;outline-offset:2px}.cover{position:absolute;inset:0;background:#1b120dcc;display:flex;align-items:center;justify-content:center;z-index:200}.dialog{text-align:center;font-size:28px}
+.dialog button{font:inherit;color:#422b1c;cursor:pointer}.effect{position:absolute;background-repeat:no-repeat;background-size:600% 600%;pointer-events:none}
+@keyframes notice-enter{from{transform:translateX(calc(100% + 40px));opacity:0}to{transform:translateX(0);opacity:1}}
+.edge-notice{animation:notice-enter 450ms ease-out both;position:absolute;bottom:20px;right:24px;z-index:250;box-sizing:border-box;width:540px;max-height:calc(100% - 40px);padding:26px 36px;border:0;background:none;color:#452b1b;font:bold 22px/1.35 "Lora",Georgia,serif;text-align:center;white-space:pre-line;overflow-wrap:anywhere;overflow:auto;cursor:pointer}
+.recipe-scroll{position:absolute;scrollbar-width:none}.recipe-scroll::-webkit-scrollbar{display:none}.recipe-scroll-thumb{cursor:grab;touch-action:none}.recipe-scroll-thumb:active{cursor:grabbing}
+.dialog.plant-menu{width:1100px;height:733px;max-width:none;box-sizing:border-box;padding:100px 75px 55px;border:0;border-radius:0;background:transparent url('Спрайты/Сад/Интерфейс/plant_selection_panel.png') center/contain no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.dialog.plant-menu.recipe-picker{padding-top:65px;padding-bottom:35px}.recipe-picker p{margin:0 0 12px}.recipe-picker-row{width:950px;height:430px;display:flex;gap:12px;align-items:stretch}.recipe-picker-list{flex:1;min-width:0;height:430px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}.recipe-picker-list::-webkit-scrollbar{display:none}.recipe-picker .plant-grid{width:100%;gap:12px}.recipe-picker-group-title{font-size:25px;font-weight:bold;text-align:center;margin:8px 0 12px}.recipe-picker-divider{position:relative;width:100%;height:50px;overflow:hidden;margin:12px 0}.recipe-picker-divider img{position:absolute;width:103.18%;height:544.36%;left:-1.66%;top:-222.56%;max-width:none}.recipe-picker-rail{position:relative;width:26px;height:430px;flex:none}.recipe-picker .plant-cancel{margin-top:12px!important}.plant-menu p{font-size:36px;margin:0 0 34px}.plant-grid{width:950px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.dialog button.plant-option{width:100%;height:150px;display:flex;align-items:center;gap:8px;text-align:left;padding:15px 20px;margin:0;border:0;background:transparent url('Спрайты/Сад/Интерфейс/plant_selection_card.png') center/contain no-repeat;cursor:pointer}.plant-option img{width:95px;height:95px;object-fit:contain;flex:none}.plant-option span{font-size:20px;line-height:1.2}.dialog button.plant-option:disabled{opacity:.55;cursor:not-allowed}.dialog button.plant-option:not(:disabled):hover{filter:brightness(1.08)}.dialog button.plant-option:focus-visible{outline:4px solid #fff4af;outline-offset:-4px}.dialog button.plant-cancel{width:200px;height:76px;margin:28px 0 0;padding:0;border:0;background:transparent url('Спрайты/Улучшения/upgrade_buy_button.png') center/contain no-repeat;color:#fff9e9;font-size:24px;cursor:pointer}
+.dialog.plant-menu.recipe-picker{position:relative;transform:translateY(-55px);padding:100px 90px 98px;background-image:url('Спрайты/Общие/Интерфейс/recipe_picker_panel_transparent.png')}.recipe-picker-row,.recipe-picker-list,.recipe-picker-rail{height:535px}.recipe-picker-row{width:920px}.recipe-picker-rail{transform:translateX(8px)}.recipe-picker-list p{font-size:36px;margin:0 0 18px}.dialog.recipe-picker button.plant-cancel{position:absolute;top:735px;left:50%;transform:translateX(-50%);width:300px;height:114px;margin:0!important;font-size:30px}
+.home-card{position:absolute;inset:0;pointer-events:none}
+.home-card .hot{pointer-events:auto}
+.home-card:has(.hot:is(:hover,:focus-visible)) .home-card-frame{filter:brightness(1.13) drop-shadow(0 0 7px #ffdd8b)}
+.ui-tab:has(.hot:is(:hover,:focus-visible)) .ui-tab-face,
+.primary-action:has(.hot:not(:disabled):is(:hover,:focus-visible)) .primary-action-face{filter:brightness(1.12)}
+.primary-action .hot:disabled{cursor:default}
+.dialog.confirm-dialog{position:relative;width:720px;padding:54px 62px 45px}
+.dialog.confirm-dialog>p:first-of-type{font-size:28px;line-height:1.35;margin:0 0 26px}
+.confirm-actions{display:flex;align-items:center;justify-content:center;gap:18px}
+.dialog.confirm-dialog .confirm-actions .queue-action{width:205px;height:62px;margin:0}
+.dialog.plant-menu:has(.lab-option-grid){justify-content:center;padding-block:75px}
+.lab-option-grid:has(> :nth-child(2):last-child){grid-template-columns:repeat(2,300px);justify-content:center}
+.txt.item-label{line-height:1.05;overflow-wrap:anywhere}
+.growth-fill{border-radius:12px;background:linear-gradient(#a9bc64,#7b983b);pointer-events:none}
+.sprite-frame{isolation:isolate}
+.sprite-frame>canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;display:block}
+.automation-dialog{width:700px;max-width:calc(100% - 100px);max-height:820px;overflow:auto;padding:24px 38px}
+.automation-dialog p{margin:10px 0 16px}
+.automation-dialog label{display:flex;align-items:center;justify-content:space-between;gap:18px;font-size:24px;margin:12px 0;text-align:left}
+.automation-dialog input[type=number]{width:120px;font:inherit;color:#452b1b;background:#fff0d4;border:2px solid #92603e;border-radius:7px;padding:5px 8px}
+.automation-dialog input[type=checkbox]{width:24px;height:24px;accent-color:#728634}
+.automation-dialog .automation-row{display:flex;align-items:center;justify-content:space-between;text-align:left;gap:16px;font-size:24px}
+.automation-dialog .automation-row button{padding:6px 14px;margin:6px 0;font-size:21px}
+ .dialog.automation-dialog.framed-dialog{position:relative;width:850px;max-height:875px;padding:58px 73px 62px;background:transparent;border:0;border-radius:0;overflow:auto}
+.framed-dialog>p:first-of-type{font-size:32px;font-weight:bold;margin:1px 0 12px}
+.queue-dialog .queue-batch{position:relative;display:flex;align-items:center;text-align:left;gap:12px;min-height:64px;margin:4px 0;padding:13px 23px}
+.queue-batch-label{flex:1;font-size:22px}
+.queue-batch-icon{width:50px;height:50px;flex:none;padding:5px;background:url('Спрайты/Лаборатория/Очереди/slot_waiting.png') center/contain no-repeat}
+.queue-batch-active .queue-batch-icon{background-image:url('Спрайты/Лаборатория/Очереди/slot_active.png')}
+.queue-batch-icon img{width:100%;height:100%;object-fit:contain;display:block}
+.queue-dialog label.queue-autostart{display:grid;grid-template-columns:74px minmax(0,1fr) 74px;gap:8px;align-items:center}
+.queue-autostart>span:first-child{grid-column:2;text-align:center}
+.queue-switch{display:block;position:relative;flex:none;width:74px;height:34px}
+.queue-switch input[type=checkbox]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+.queue-switch-rail{position:absolute;inset:0;background:url('Спрайты/Лаборатория/Очереди/toggle_off.png') center/contain no-repeat;border-radius:999px;pointer-events:none}
+.queue-switch input:checked+.queue-switch-rail{background-image:url('Спрайты/Лаборатория/Очереди/toggle_on.png')}
+.queue-switch input:focus-visible+.queue-switch-rail{outline:2px solid #658032;outline-offset:3px}
+.framed-dialog .queue-action:focus-visible{outline:3px solid #658032;outline-offset:2px}
+.dialog.framed-dialog button.queue-action{width:160px;height:56px;flex:none;margin:0;padding:0 9px;font-size:20px;border:0;border-radius:0;background:transparent url('Спрайты/Лаборатория/Очереди/button_cancel.png') center/contain no-repeat}
+.dialog.framed-dialog button.queue-confirm{position:relative;width:182px;height:62px;margin-top:14px;color:#fff8e3;background-image:none}
+.dialog.queue-dialog button.queue-start{width:256px;height:72px;margin-top:6px;margin-bottom:5px}
+.framed-dialog .queue-action:hover,.framed-dialog label:hover .queue-switch-rail{filter:brightness(1.08)}
+.dialog.automation-dialog.garden-automation-dialog{width:680px;padding:48px 64px 42px}
+.dialog.automation-dialog.supplier-dialog{max-width:calc(100% - 100px);padding:46px 64px 42px}
+.supplier-dialog label{min-height:38px;margin:6px 0;font-size:23px}
+.supplier-dialog input[type=number]{flex:none;width:115px;height:50px;font:inherit;font-weight:bold;text-align:center;color:inherit;padding:0 12px;border:0;border-radius:0;background:transparent url('Спрайты/Инвентарь/quantity_plaque.png') center/contain no-repeat;appearance:textfield}
+.supplier-dialog input[type=number]::-webkit-inner-spin-button,.supplier-dialog input[type=number]::-webkit-outer-spin-button{appearance:none;margin:0}
+.supplier-dialog input[type=number]:focus-visible{outline:2px solid #658032;outline-offset:2px}
+.supplier-dialog .supplier-note{margin:9px 0 13px;font-size:20px}
+.supplier-actions{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:18px}
+.dialog.supplier-dialog .supplier-actions .queue-action{margin:0}
+.dialog.supplier-dialog .supplier-actions .supplier-reset{width:236px}
+.dialog.garden-plant-menu button.plant-option{width:246px;height:124px;justify-self:center;padding:12px 15px}
+.viewport[data-page="lab"] .edge-notice{left:24px;right:auto;bottom:205px}
+.viewport[data-page="orders"] .edge-notice{left:24px;right:auto;width:414px}
+.viewport .edge-notice{pointer-events:none;cursor:default}
+.garden-plant-menu .plant-option img{width:66px;height:76px}
+.garden-plant-menu .plant-option span{min-width:0;overflow-wrap:break-word}
+.dialog.garden-plant-menu button.plant-cancel{margin-top:20px;flex-shrink:0}
+.start-menu{position:absolute;inset:0;color:#f8e6c8;text-shadow:0 2px 8px #120e19}
+.start-menu-options{position:absolute;left:148px;top:205px;width:720px}
+.start-menu .start-exit{position:absolute;top:38px;right:50px;margin:0}
+.start-menu h1{margin:0 0 32px;font-size:76px;line-height:1.1;color:#ffe8b9}
+.start-menu h2{font-size:38px;margin:0 0 15px}
+.start-menu p{font-size:28px;line-height:1.4;margin:0 0 20px;color:#e8d2b6}
+.start-menu button{display:block;text-align:left;font-family:inherit;font-size:36px;line-height:1.2;color:#f8e6c8;text-shadow:inherit;background:none;border:0;border-radius:5px;padding:12px 14px;margin-left:-14px;cursor:pointer}
+.start-menu button:not(:disabled):is(:hover,:focus-visible){color:#ffdb8c;background:#f8d8a117}
+.start-menu button:focus-visible{outline:2px solid #f3cd86}
+.start-menu button:disabled{opacity:.48;cursor:default}
+.start-menu .save-slot{margin-bottom:8px;width:100%}
+.essence-slot{display:grid;grid-template:100% / 100%;place-items:center;pointer-events:none}
+.plant-option .essence-slot{width:95px;height:95px;flex:none}
+.essence-art{position:relative;display:block;height:54%;aspect-ratio:860/1828}
+.inventory-essence-cell .essence-art{height:100%}
+.inventory-essence-detail .essence-art{height:82%}
+.essence-slot .essence-art img{display:block;width:100%;height:100%}
+.essence-art::after{content:"";position:absolute;inset:0;pointer-events:none;clip-path:polygon(28% 33%,42% 34%,58% 35%,76% 34%,82% 33%,79% 40%,66% 62%,55% 86%,51% 91%,45% 94%,37% 96%,29% 96%,20% 95%,13% 93%,9% 89%,8% 85%,10% 78%);background:radial-gradient(ellipse at 46% 56%,rgba(255,248,220,.55),transparent 72%);mix-blend-mode:screen;animation:essence-sheen 5.4s ease-in-out infinite}
+@keyframes essence-sheen{0%,100%{opacity:.08}50%{opacity:.3}}
+@media(prefers-reduced-motion:reduce){.essence-art::after{animation:none;opacity:0}}
+.save-slot span{display:block;font-size:22px;color:#dfc6a8;margin-top:5px}
+.fair-dialog>p{font-size:22px;line-height:1.35}
+.reputation-dialog>p:not(:first-of-type),.reputation-dialog li{font-size:22px;line-height:1.35}
+.reputation-dialog ul{margin:12px 0 22px;padding-left:30px;text-align:left}
+.reputation-dialog li+li{margin-top:6px}
+.fair-dialog .fair-route{text-align:left;margin:14px 0;padding:12px 18px;background:#ab783616;border-radius:8px}
+.fair-dialog .fair-route h3{font-size:23px;margin:0 0 6px}
+.fair-dialog .fair-reward{display:flex;align-items:center;gap:9px;font-weight:bold}
+.fair-reward img{width:29px;height:29px;object-fit:contain}
+.orchard-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;text-align:center}
+.orchard-choices p{font-size:18px;margin:5px 0}
+.fair-dialog .fair-route p{font-size:19px;line-height:1.3;margin:4px 0}
+.dialog.fair-dialog .fair-route .queue-confirm{margin-top:7px}
+.fair-dialog button:disabled{opacity:.55;cursor:default}
+</style></head><body><div id="view" class="viewport"></div>
+<script>
+const root='Спрайты/', home=root+'Главный экран/', garden=root+'Сад/', inv=root+'Инвентарь/', common=root+'Общие/', lab=root+'Лаборатория/', upgrades=root+'Улучшения/';
+const view=document.getElementById('view');let drawTarget=view,recipeScroll=0;let page='start',previous='home',coins=999,stock=99,tea=99,tab='crops',selected=false,boiling=false,brewReady=false,brewEnd=0;
+const orderSprites=root+'Заказы/';let orders=[],orderSelected=0,labOrder=null;
+let recipesPrevious='home',labRecipe='tea',brewingRecipe='tea',brewDuration=15000,potionStock={},labMode='cauldron',grindIngredient=null;
+let brewQuantity=1,activeBrewQuantity=1;
+const brewQueue=[],finishedBrews=[],grindQueue=[],finishedGrinds=[];
+let activeGrind=null, inventoryPage=0;
+const queueSprites=lab+'Очереди/';
+let refreshOpenQueue=null;
+let brewAutomation=true,grindAutomation=true;
+const shopItems=[{id:'wind_feather',name:'Перо ветра',price:4,orders:6,description:'Лёгкое перо, которое колышется даже в неподвижном воздухе. Используется в зельях движения.'},{id:'moon_dew',name:'Лунная роса',price:3,orders:8,description:'Серебристые капли собирают в ясную лунную ночь. Они долго сохраняют прохладу.'},{id:'prismatic_crystal',name:'Призматический кристалл',price:6,orders:12,description:'Многогранный кристалл переливается разными цветами, если повернуть его к свету.'},{id:'memory_sand',name:'Песок воспоминаний',price:8,orders:16,description:'Золотистые песчинки мерцают, когда рядом вспоминают что-то важное.'},
+ {"id":"frost_salt","name":"Морозная соль","price":4,"orders":22,"description":"Белые кристаллы находят в горных пещерах. В отваре они помогают удерживать тепло."},
+ {"id":"deep_pearl","name":"Жемчужина глубин","price":7,"orders":24,"description":"Растёт в раковинах на большой глубине и мерцает даже в полумраке. Несмотря на кажущуюся твердость, она легко растворяется в кипящей воде."},
+ {"id":"amber_resin","name":"Янтарная живица","price":6,"orders":30,"description":"Затвердевшая смола древних сосен. Цельный кусок почти не растворяется в отваре. Порошок можно равномерно смешать с зельем."}
+];
+let shopSelected=null,shopQuantity=1,purchasedIngredients=Object.fromEntries(shopItems.map(item=>[item.id,99]));
+let supplier={enabled:false,budget:0,spent:0,targets:{}};
+function supplierBudgetLeft(){return Math.max(0,supplier.budget-supplier.spent)}
+const ingredientIcon=id=>common+'Предметы/Ингредиенты/'+id+'.png';
+const inventoryPotionBounds={
+ 'animal_tongue.png':[932,1688,58,148,803,1460],
+ 'cat_step.png':[1024,1536,224,102,572,1313],
+ 'dream_catcher.png':[1088,1446,154,146,758,1041],
+ 'drop_of_sun.png':[1088,1446,154,146,758,1041],
+ 'echo_of_feelings.png':[1088,1446,154,146,758,1041],
+ 'fire_ward.png':[285,311,9,5,267,297],
+ 'forest_whisper.png':[932,1688,58,148,803,1460],
+ 'healing_draught.png':[285,311,9,5,267,297],
+ 'letter_from_the_past.png':[1088,1446,154,146,758,1041],
+ 'mighty_elixir.png':[1024,1536,224,102,572,1313],
+ 'mintleaf_tea.png':[1536,1024,204,150,1135,726],
+ 'moon_bloom.png':[932,1688,58,148,803,1460],
+ 'night_sight.png':[932,1688,58,148,803,1460],
+ 'precise_movement.png':[1024,1536,224,102,572,1313],
+ 'rainbow_bubble.png':[1088,1446,154,146,758,1041],
+ 'spring_elixir.png':[1024,1536,224,102,572,1313],
+ 'stone_skin.png':[285,311,9,5,267,297],
+ 'underwater_breath.png':[285,311,9,5,267,297],
+ 'weather_breath.png':[932,1688,58,148,803,1460],
+ 'wind_elixir.png':[1024,1536,224,102,572,1313],
+ 'winter_warmth.png':[285,311,9,5,267,297]
+};
+const inventoryIngredientBounds={"memory_sand":[1402,1122,428,176,537,777],"mist_berry":[1402,1122,264,132,837,845],"moon_dew":[1402,1122,460,216,473,677],"moon_lavender":[1402,1122,308,76,801,961],"prismatic_crystal":[1402,1122,464,136,457,849],"rainbow_powder":[1536,1024,352,292,841,449],"spring_root":[1402,1122,336,40,717,1021],"sunflower":[1402,1122,312,148,733,813],"whispering_fern":[1402,1122,272,136,853,849],"wind_feather":[1402,1122,364,144,733,837]};
+const ingredientDescriptions={stoneflower:"Горный цветок с твёрдыми серыми лепестками. Его каменная чашечка удерживает жар даже в кипящем отваре. Чтобы высвободить жар, чашечку нужно раздробить в ступке.",mintleaf:'Листья с прохладным ароматом и нежными мятными цветками. Из них готовят мятный чай.',sunflower:'Золотой цветок поворачивается к свету и словно хранит тепло солнечного дня.',moon_lavender:'Серебристые листья и лиловые цветки особенно благоухают в лунные ночи.',mist_berry:'Синеватые ягоды покрываются лёгкой дымкой прохладным утром.',spring_root:'Закрученный корень упруго распрямляется, если осторожно потянуть за него.',whispering_fern:'Тонкие вайи тихо шелестят, даже когда вокруг нет ветра.',rainbow_powder:'Мелкий переливчатый порошок из измельчённого призматического кристалла.'};
+const plants=[{id:'mintleaf',name:'Мятнолист',orders:0,seconds:20,icon:common+'Предметы/harvested_mintleaf.png'},{id:'sunflower',name:'Солнцецвет',orders:2,seconds:45},{id:'moon_lavender',name:'Лунная лаванда',orders:2,seconds:60},{id:'mist_berry',name:'Туманная ягода',orders:2,seconds:90},{id:'spring_root',name:'Пружинный корень',orders:6,seconds:75},{id:'whispering_fern',name:'Шепчущий папоротник',orders:12,seconds:90},{"id":"stoneflower","name":"Камнецвет","orders":28,"seconds":90}];
+const plantFoot={stoneflower:{seedling:[300,384,379,170.7],mature:[597,796,791,216.4]},"mintleaf":{"seedling":[536,393,392,287.6],"mature":[1226,1283,1252,611.7]},"sunflower":{"seedling":[1312,1199,942,639.9],"mature":[1132,1390,1307,482.9]},"moon_lavender":{"seedling":[1312,1199,1022,661.4],"mature":[1079,1458,1345,516.1]},"mist_berry":{"seedling":[1312,1199,1004,620.4],"mature":[1325,1187,1024,625.9]},"spring_root":{"seedling":[1312,1199,780,632],"mature":[1312,1199,1090,602.4]},"whispering_fern":{"seedling":[1341,1173,1042,601.1],"mature":[1444,1089,1052,623.3]}};
+const seedlingBounds={stoneflower:[300,384,4,4,292,376],sunflower:[1312,1199,342,172,627,771],moon_lavender:[1312,1199,348,122,605,901],mist_berry:[1312,1199,370,220,565,785],spring_root:[1312,1199,376,328,475,453],whispering_fern:[1341,1173,266,112,781,931]};
+let cropStock=Object.fromEntries(plants.slice(1).map(item=>[item.id,99])),plantMenuOpen=false;
+let grindingEnd=0,grindQuantity=1,recipePickerOpen=false;
+const grindRecipes={
+ prismatic_crystal:{id:'rainbow_powder',name:'Радужный порошок',orders:12},
+ stoneflower:{id:'stoneflower_powder',name:'Порошок камнецвета',orders:28,description:'Серый порошок с золотистыми крупинками из раздробленной чашечки камнецвета. В отваре отдают накопленный жар и придают зелью силу огненной защиты.'},
+ amber_resin:{id:'amber_resin_powder',name:'Порошок живицы',orders:30,description:'Мелкий янтарный порошок с хвойным запахом. В горячем отваре растворяется и образует основу живительного настоя.'}
+};
+const groundStock=Object.fromEntries(Object.values(grindRecipes).map(({id})=>[id,99]));
+function plantGrowthSeconds(plant){
+ return plant.seconds*(100-15*(upgradeLevels.watering||0))/100;
+}
+const gardenAutomation={replant:true,harvest:true};
+function startPlanting(bed,plant,now=Date.now()){
+ bed.duration=plantGrowthSeconds(plant)*1000;
+ bed.plant=plant.id;bed.state='growing';bed.end=now+bed.duration;
+}
+function harvestBed(bed,now=Date.now(),replant=false){
+ if(bed.state!=='ready')return;
+ const plant=plants.find(item=>item.id===bed.plant);
+ if(!plant)return;
+ const boost=afterFair.boost;
+ const doubled=boost&&beds[boost.bed]===bed;
+ changeIngredient(plant.id,(3+(upgradeLevels.soil||0))*(doubled?2:1));
+ if(doubled&&--boost.remaining===0){
+  afterFair.boost=null;
+  afterFair.practiced.add('orchard');
+ }
+ if(replant||(upgradeLevels.planter&&gardenAutomation.replant))startPlanting(bed,plant,now);
+ else bed.state='empty';
+}
+function gardenOptions(){
+ const {pane,close}=framedAutomationDialog('Автоматизация сада','garden-automation-dialog');
+ if(upgradeLevels.planter)automationSwitch(pane,'Повторная посадка',gardenAutomation.replant).onchange=e=>{gardenAutomation.replant=e.target.checked};
+ if(upgradeLevels.gardener)automationSwitch(pane,'Автоматический сбор',gardenAutomation.harvest).onchange=e=>{gardenAutomation.harvest=e.target.checked};
+ framedConfirmAction(pane,'Готово',close);
+}
+function plantMenu(bed){
+ plantMenuOpen=true;
+ const pane=document.createElement('div');pane.className='dialog plant-menu garden-plant-menu';
+ const title=document.createElement('p');title.textContent='Что посадить?';pane.append(title);
+ const grid=document.createElement('div');grid.className='plant-grid';
+ plants.forEach(plant=>{
+  const open=orderProgress()>=plant.orders, seconds=plantGrowthSeconds(plant);
+  const btn=document.createElement('button');btn.className='plant-option';btn.disabled=!open;
+  const img=document.createElement('img');img.src=plant.icon||ingredientIcon(plant.id);img.alt='';
+  const label=document.createElement('span');
+  label.textContent=open?plant.name+' · '+Math.ceil(seconds)+' сек.':'???';
+  if(!open){img.style.filter='brightness(0)';img.style.opacity='.75'}
+  btn.append(img,label);
+  btn.onclick=()=>{
+   if(!open)return;
+   startPlanting(bed,plant);
+   close();
+  };
+  grid.append(btn);
+ });
+ pane.append(grid);
+ const cancel=document.createElement('button');cancel.className='plant-cancel';cancel.textContent='Отмена';
+ pane.append(cancel);
+ const close=presentDialog(pane,title.textContent,()=>{plantMenuOpen=false;render()});
+ cancel.onclick=close;
+}
+
+let completedOrders=0,selectedPotion='tea';
+const completedPotionOrders=new Set();
+const potionData={sun:{name:'Капля солнца',group:'mind',icon:'mind_and_feelings/drop_of_sun.png',description:'Поднимает настроение\nв хмурый день.',orders:2,price:0},dream:{name:'Ловец снов',group:'mind',icon:'mind_and_feelings/dream_catcher.png',description:'Позволяет управлять сном,\nесли принять перед сном.',orders:2,price:0},rainbow:{name:'Радужный пузырёк',group:'mind',icon:'mind_and_feelings/rainbow_bubble.png',description:'Позволяет ненадолго увидеть мир\nглазами другого человека.',orders:12,price:120},wind:{name:'Ветреный эликсир',group:'motion',icon:'movement/wind_elixir.png',description:'Ускоряет и делает\nдвижения легче.',orders:6,price:60},forest:{name:'Лесной шёпот',group:'nature',icon:'nature/forest_whisper.png',description:'Позволяет понимать,\nчто говорят растения.',orders:6,price:60}};
+Object.assign(potionData,{echo:{name:'Эхо чувств',group:'mind',icon:'mind_and_feelings/echo_of_feelings.png',description:'Помогает понять эмоции\nдругого человека.',orders:10,price:100},letter:{name:'Письмо из прошлого',group:'mind',icon:'mind_and_feelings/letter_from_the_past.png',description:'Позволяет вновь пережить\nсобственное воспоминание.',orders:16,price:160},cat:{name:'Кошачий шаг',group:'motion',icon:'movement/cat_step.png',description:'Помогает передвигаться\nпочти бесшумно.',orders:8,price:80},spring:{name:'Пружинный эликсир',group:'motion',icon:'movement/spring_elixir.png',description:'Позволяет прыгать выше.',orders:10,price:100},mighty:{name:'Могучий эликсир',group:'motion',icon:'movement/mighty_elixir.png',description:'Повышает физическую силу.',orders:14,price:140},precise:{name:'Верное движение',group:'motion',icon:'movement/precise_movement.png',description:'Делает движения\nочень точными.',orders:18,price:180},animal:{name:'Звериный язык',group:'nature',icon:'nature/animal_tongue.png',description:'Позволяет понимать\nвсех животных.',orders:8,price:80},bloom:{name:'Лунное цветение',group:'nature',icon:'nature/moon_bloom.png',description:'Заставляет растение\nзацвести ночью.',orders:14,price:140},weather:{name:'Дыхание погоды',group:'nature',icon:'nature/weather_breath.png',description:'Позволяет предсказать погоду.',orders:12,price:120},night:{name:'Ночной взгляд',group:'nature',icon:'nature/night_sight.png',description:'Позволяет некоторое время\nвидеть в темноте.',orders:16,price:160}});
+// Составы и условия открытия из документа v0.2.
+potionData.tea={name:'Мятный чай',group:'basic',description:'Тёплый чай из свежего мятнолиста.',orders:0,asset:common+'Предметы/mintleaf_tea.png'};
+const recipeCosts={tea:{mintleaf:2},sun:{sunflower:2,mintleaf:1},dream:{moon_lavender:2,mist_berry:1},wind:{mintleaf:2,spring_root:1,wind_feather:1},forest:{whispering_fern:2,mintleaf:2},cat:{spring_root:2,moon_lavender:2},animal:{whispering_fern:2,mist_berry:2,moon_dew:1},echo:{mist_berry:2,sunflower:2,moon_dew:1},spring:{spring_root:3,sunflower:2,wind_feather:1},rainbow:{mist_berry:3,moon_lavender:2,rainbow_powder:1},weather:{whispering_fern:2,moon_lavender:2,mintleaf:1,wind_feather:1},mighty:{spring_root:3,sunflower:2,whispering_fern:1,moon_dew:1},bloom:{whispering_fern:3,moon_lavender:2,sunflower:1,moon_dew:1},letter:{moon_lavender:3,mist_berry:2,sunflower:1,memory_sand:1},night:{mist_berry:3,moon_lavender:2,whispering_fern:1,rainbow_powder:1},precise:{spring_root:3,mist_berry:2,mintleaf:2,wind_feather:1,rainbow_powder:1}};
+const potionGroups=[['basic','Базовая алхимия'],['mind','Разум и чувства'],['motion','Движение'],['nature','Природа'],['protection','Защита и восстановление']];
+const progressionGoals=[
+ {orders:6,offerAt:2,recipes:['sun','dream'],title:'Утро пекаря',customer:'Пекарь Тихон',instruction:'Сдать «Каплю солнца» или «Ловца снов»',unlockTitle:'Открыть категорию «Движение»',bonus:25},
+ {orders:12,offerAt:6,recipes:['wind','cat','spring'],title:'Поручение садовницы',customer:'Садовница Лея',instruction:'Сдать любое открытое зелье из категории «Движение»',unlockTitle:'Открыть ступку и категорию «Природа»',bonus:35},
+ {orders:20,offerAt:12,recipes:['rainbow','precise'],title:'Заказ с радужным порошком',customer:'Торговец Савва',instruction:'Сдать «Радужный пузырёк» или «Верное движение»',unlockTitle:'Открыть рецепт «Ночной взгляд»',bonus:55}
+];
+const fairRoutes={
+ warm:{
+  title:'Тёплый прилавок',
+  request:'На площади подморозило, и жаровни одна за другой гаснут. Если торговцы уйдут греться по домам, ярмарка закроется до рассвета. Савва просит лавку помочь им продержаться.',
+  deliveries:[['sun','winter_warmth'],['healing_draught','winter_warmth']]
+ },
+ caravan:{
+  title:'Защита для ночного каравана',
+  request:'Повозки с ярмарочным товаром застряли у Каменного перевала. После обвала возницам предстоит идти по узкой тропе в лунном свете. Савва хочет отправить им зелья до наступления темноты.',
+  deliveries:[['rainbow','stone_skin'],['healing_draught','stone_skin']]
+ }
+};
+const fairProject={route:null,delivered:0};
+const fairBonuses=[45,100];
+const essenceRecipes={
+ lunar_essence:{
+  name:'Эссенция лунного света',asset:common+'Предметы/Эссенции/lunar_essence.png',
+  description:'Собирает лунный свет в капле, которая светится сквозь густой туман.',
+  inputs:['night','dream']
+ },
+ solar_essence:{
+  name:'Эссенция ясного неба',asset:common+'Предметы/Эссенции/solar_essence.png',
+  description:'Сохраняет тепло ясного утра. Его хватает, чтобы отогреть заиндевевшие побеги.',
+  inputs:['weather','sun']
+ }
+};
+const afterFairEvents={
+ crossing:{
+  title:'Огни на переправе',customer:'Торговец Савва',
+  story:'Ночью река вышла из берегов и сорвала огни с причала. Савва просит осветить переправу, пока ныряльщики достают крепления со дна.',
+  ending:'Огни снова видны сквозь туман. Первая лодка уже подошла к причалу.',
+  items:['lunar_essence','underwater_breath'],reward:170
+ },
+ orchard:{
+  title:'Сад после заморозка',customer:'Садовница Лея',
+  story:'Заморозок побелил сад Леи. Она хочет отогреть уцелевшие побеги и услышать, какие деревья ещё можно спасти.',
+  ending:'Лея нашла среди обледеневших веток живые почки. К утру лёд сошёл с молодых деревьев.',
+  items:['solar_essence','forest'],reward:150
+ }
+};
+const afterFair={route:null,done:false,completed:new Set(),used:new Set(),practiced:new Set(),offers:[],boost:null};
+
+function potionRecipeOpen(id){const potion=potionData[id];return Boolean(potion&&potion.orders<=orderProgress())}
+const dockOrderBonus=90;
+const afterFairPerks={
+ crossing:{title:'Переправа Саввы',benefit:'Выберите один из двух заказов и получите +'+dockOrderBonus+' монет за сдачу.'},
+ orchard:{title:'Грядки Леи',benefit:'Удвойте два урожая на выбранной грядке.'}
+};
+const distillDuration=25000;
+let distillBatch=null,distillReady=null,distillRecipe='lunar_essence';
+const labReturnSteps=[];
+function rememberLabRecipe(){
+ const state={mode:labMode,recipe:labRecipe,brewQuantity,distillRecipe};
+ labReturnSteps.push(()=>{
+  labMode=state.mode;labRecipe=state.recipe;brewQuantity=state.brewQuantity;distillRecipe=state.distillRecipe;
+ });
+}
+
+function alchemicalItem(id){return potionData[id]||essenceRecipes[id]}
+function startDistillation(id,now=Date.now()){
+ const recipe=essenceRecipes[id];
+ if(fairProject.delivered!==2||distillBatch||distillReady||!recipe?.inputs||recipe.inputs.some(input=>potionCount(input)<1))return false;
+ recipe.inputs.forEach(input=>potionStock[input]--);
+ distillBatch={id,end:now+distillDuration};
+ return true;
+}
+function collectDistillation(){
+ if(!distillReady)return;
+ potionStock[distillReady]=potionCount(distillReady)+1;
+ distillReady=null;
+}
+function afterFairObjective(){
+ const event=afterFairEvents[afterFair.route];
+ if(!event)return {title:'Перегонный куб открыт',steps:[['Выберите, кому помочь после ярмарки',false]]};
+ if(afterFair.done){
+  const route=afterFair.route;
+  if(afterFair.practiced.has(route))return {title:afterFairPerks[route].title+' · работает',steps:[]};
+  if(route==='crossing')return {title:'Первый заказ Саввы',steps:[
+   ['Выбрать заказ в окне «После ярмарки»',afterFair.used.has(route)],
+   ['Сдать выбранный заказ',false]
+  ]};
+  return {title:'Двойной урожай Леи',steps:[
+   ['Выбрать грядку в саду',afterFair.used.has(route)],
+   ['Собрать два урожая · '+(afterFair.boost?2-afterFair.boost.remaining:0)+' / 2',false]
+  ]};
+ }
+ return {title:event.title,steps:[['Приготовить «'+essenceRecipes[event.items[0]].name+'»',potionCount(event.items[0])>0],
+  ['Сдать заказ для '+(afterFair.route==='crossing'?'Саввы':'Леи'),false]]};
+}
+function syncAfterFairOrder(){
+ const event=afterFairEvents[afterFair.route];
+ if(!event||afterFair.done){
+  if(orders[1]?.goal&&orders[1].goal!=='dock')orders[1]=nextOrder(1);
+  return;
+ }
+ if(orders[1]?.event===afterFair.route)return;
+ const [id]=event.items;
+ orders[1]={id,quantity:1,type:'mixed',goal:'afterfair',event:afterFair.route,customer:event.customer,
+  items:event.items.map(id=>({id,quantity:1}))};
+}
+function chooseAfterFairRoute(route){
+ afterFair.route=route;
+ afterFair.done=afterFair.completed.has(route);
+ syncAfterFairOrder();
+ if(orders[1]?.goal==='afterfair')orderSelected=1;
+ saveGame();
+}
+function afterFairPerkCost(route){
+ return afterFair.used.has(route)?afterFairEvents[route].items[0]:null;
+}
+function activateAfterFairPerk(route){
+ if(!afterFair.done||afterFair.route!==route)return false;
+ const cost=afterFairPerkCost(route);
+ if(cost&&potionCount(cost)<1)return false;
+ if(cost)potionStock[cost]--;
+ afterFair.used.add(route);
+ return true;
+}
+function afterFairCostLine(pane,route,close){
+ const cost=afterFairPerkCost(route);
+ const line=document.createElement('p');
+ line.textContent=cost?'Стоимость запуска: 1 × «'+essenceRecipes[cost].name+'».':'Первый запуск — бесплатно.';
+ pane.append(line);
+ if(!cost||potionCount(cost)>0)return true;
+ framedConfirmAction(pane,'К кубу',()=>{
+  const origin=page;
+  labOrder=null;labReturnSteps.length=0;
+  labReturnSteps.push(()=>{page=origin});
+  labMode='distillery';distillRecipe=cost;page='lab';close();
+ });
+ return false;
+}
+function appendDockOrders(pane,close){
+ if(orders[1]?.goal==='dock'){
+  const line=document.createElement('p');line.textContent='Выбранный заказ ждёт на доске.';pane.append(line);
+  return;
+ }
+ if(!afterFair.offers.length){
+  const pool=Object.keys(potionData).filter(id=>id!=='tea'&&potionRecipeOpen(id));
+  const stocked=pool.filter(id=>potionCount(id)>0);
+  const first=pickOrderOption(stocked.length?stocked:pool);
+  if(!first)return;
+  const others=pool.filter(id=>id!==first);
+  const similar=others.filter(id=>potionRewards[id]===potionRewards[first]);
+  afterFair.offers=[first,pickOrderOption(similar.length?similar:others)].filter(Boolean);
+  saveGame();
+ }
+ const affordable=afterFairCostLine(pane,'crossing',close);
+ afterFair.offers.forEach(id=>{
+  const order={id,quantity:1,customer:'Торговец Савва',goal:'dock'};
+  const section=document.createElement('section');section.className='fair-route';
+  const heading=document.createElement('h3');heading.textContent=potionData[id].name+' × 1';
+  const status=document.createElement('p');status.textContent=orderReady(order)?'Можно сдать':'Нужно сварить';
+  section.append(heading,status);appendEventReward(section,orderReward(order));
+  const control=framedConfirmAction(section,'Взять заказ',()=>{
+   if(orders[1]?.goal==='dock'||!afterFair.offers.includes(id)||!activateAfterFairPerk('crossing'))return;
+   orders[1]=order;orderSelected=1;afterFair.offers=[];saveGame();close();
+  });
+  control.disabled=!affordable;
+  control.setAttribute('aria-label','Взять заказ: '+potionData[id].name);
+  pane.append(section);
+ });
+}
+function appendEventReward(section,coins){
+ const line=document.createElement('p');line.className='fair-reward';
+ line.append('Награда: '+coins);
+ const icon=document.createElement('img');icon.src=common+'Предметы/coin_large.png';icon.alt=' монет';
+ line.append(icon);section.append(line);
+}
+function showOrchardBoost(){
+ const {pane,close}=framedAutomationDialog('Двойной урожай','fair-dialog');
+ const line=document.createElement('p');
+ if(afterFair.boost){
+  const {bed,remaining}=afterFair.boost;
+  line.textContent='Грядка '+(bed+1)+' · двойных сборов осталось: '+remaining;
+  pane.append(line);
+ }else{
+  const base=3+(upgradeLevels.soil||0);
+  line.textContent='Выберите грядку. Два следующих сбора принесут '+(base*2)+' вместо '+base+'.';
+  pane.append(line);
+  const affordable=afterFairCostLine(pane,'orchard',close);
+  const grid=document.createElement('div');grid.className='orchard-choices';pane.append(grid);
+  beds.forEach((bed,index)=>{
+   if(bed.state==='locked')return;
+   const option=document.createElement('div');grid.append(option);
+   const control=framedConfirmAction(option,'Грядка '+(index+1),()=>{
+    if(afterFair.boost||beds[index].state==='locked'||!activateAfterFairPerk('orchard'))return;
+    afterFair.boost={bed:index,remaining:2};saveGame();close();
+   });
+   control.disabled=!affordable;
+   const crop=document.createElement('p');
+   crop.textContent=bed.state==='empty'?'Свободна':plants.find(plant=>plant.id===bed.plant)?.name||'';
+   option.append(crop);
+  });
+ }
+ framedConfirmAction(pane,'Закрыть',close);
+}
+function showAfterFairEvents(){
+ const {pane,close}=framedAutomationDialog('После ярмарки','fair-dialog');
+ if(afterFair.done){
+  const route=afterFair.route,perk=afterFairPerks[route];
+  const heading=document.createElement('p');heading.textContent=perk.title+' · '+perk.benefit;pane.append(heading);
+  if(route==='crossing')appendDockOrders(pane,close);
+  else framedConfirmAction(pane,'К грядкам',()=>{gardenPrevious='orders';page='garden';close()});
+  if(afterFair.practiced.has(route)&&!afterFair.boost&&orders[1]?.goal!=='dock'){
+   const other=route==='crossing'?'orchard':'crossing';
+   framedConfirmAction(pane,other==='orchard'?'Помочь Лее':'К Савве',()=>{chooseAfterFairRoute(other);close()});
+  }
+  framedConfirmAction(pane,'Закрыть',close);
+  return;
+ }
+ const intro=document.createElement('p');
+ intro.textContent='Савва оставил в лаборатории перегонный куб. В нём два готовых зелья превращаются в эссенцию. Лавку уже просят о помощи.';
+ pane.append(intro);
+ for(const [key,event] of Object.entries(afterFairEvents)){
+  const section=document.createElement('section');section.className='fair-route';
+  const heading=document.createElement('h3');heading.textContent=event.title;
+  const story=document.createElement('p');story.textContent=event.story;
+  const benefit=document.createElement('strong');benefit.textContent=afterFairPerks[key].benefit;
+  section.append(heading,story,benefit);
+  if(!afterFair.completed.has(key))appendEventReward(section,event.reward);
+  if(!afterFair.completed.has(key)||afterFair.practiced.size){
+   const control=framedConfirmAction(section,afterFair.route===key?'Выбрано':'Выбрать',()=>{
+    if(afterFair.done){close();return}
+    chooseAfterFairRoute(key);close();
+   });
+   control.disabled=afterFair.route===key;
+   control.setAttribute('aria-label','Выбрать событие «'+event.title+'»');
+  }
+  pane.append(section);
+ }
+ framedConfirmAction(pane,'Закрыть',close).focus();
+}
+
+function drawDistillationControls(){
+ const displayed=distillReady||distillBatch?.id||distillRecipe;
+ const recipe=essenceRecipes[displayed];
+ labRecipeButton(recipe.name,'выбрать эссенцию',Boolean(distillBatch||distillReady),()=>{
+  const options=Object.entries(essenceRecipes).map(([id,item])=>({id,name:item.name,asset:item.asset}));
+  chooseLabOption('Что перегнать?',options,id=>{distillRecipe=id});
+ });
+ drawPotionIcon(displayed,1330,365,240,144);
+ drawLabIngredients(recipe.inputs.map(id=>[id,1]),id=>potionData[id].name,potionCount,drawPotionIcon,(id,y,rowHeight)=>{
+  const control=smallAction('К рецепту',1554,y+4,202,()=>{
+   rememberLabRecipe();labMode='cauldron';labRecipe=id;brewQuantity=1;render();
+  },true,rowHeight-8);
+  control.setAttribute('aria-label','К рецепту: '+potionData[id].name);
+ });
+ if(distillReady){
+  labPrimaryAction('Собрать','Собрать эссенцию',false,()=>{collectDistillation();saveGame();render()});
+  return;
+ }
+ const ready=!distillBatch&&recipe.inputs.every(id=>potionCount(id)>0);
+ const label=distillBatch?'Идёт перегонка':'Перегнать';
+ labPrimaryAction(label,label,!ready,()=>{if(startDistillation(distillRecipe)){saveGame();render()}});
+}
+
+
+function fairPotionNames(ids){
+ return ids.map(id=>'«'+potionData[id].name+'»').join(' и ');
+}
+function fairObjective(){
+ if(fairProject.delivered===2)return afterFairObjective();
+ const route=fairRoutes[fairProject.route];
+ if(!route)return {title:'Выберите маршрут',steps:[]};
+ const ids=route.deliveries[fairProject.delivered];
+ const required=Math.max(...ids.map(id=>potionData[id].orders));
+ const steps=[];
+ if(orderProgress()<required)steps.push(differentPotionsStep(required));
+ steps.push(['Сдать набор '+fairPotionNames(ids),false]);
+ return {title:route.title+(fairProject.delivered?' · финал':' · первая поставка'),steps};
+}
+
+function syncFairOrder(){
+ if(fairProject.delivered===2){syncAfterFairOrder();return}
+ const route=fairRoutes[fairProject.route];
+ const stage=fairProject.delivered;
+ const ids=route?.deliveries[stage];
+ if(!ids||orderProgress()<20||ids.some(id=>potionData[id].orders>orderProgress())){
+  if(orders[1]?.goal)orders[1]=nextOrder(1);
+  return;
+ }
+ if(orders[1]?.fairRoute===fairProject.route&&orders[1].fairStage===stage)return;
+ orders[1]={
+  id:ids[0],quantity:1,type:'mixed',customer:'Торговец Савва',goal:'fair',
+  fairRoute:fairProject.route,fairStage:stage,
+  items:ids.map(id=>({id,quantity:1}))
+ };
+}
+
+function showFairProject(){
+ const {pane,close}=framedAutomationDialog('Лунная ярмарка','fair-dialog');
+ const intro=document.createElement('p');
+ intro.textContent=fairProject.delivered===2
+  ? 'Последние покупатели разошлись только на рассвете. Савва благодарит тебя за помощь и отдаёт лавке долю выручки.'
+  : 'Раз в году, в ночь полнолуния, Савва открывает ярмарку. Сегодня мороз крепчает, а караван с товаром всё ещё в пути. Кому поможет лавка?';
+ pane.append(intro);
+ const routes=fairProject.delivered
+  ? Object.entries(fairRoutes).filter(([key])=>key===fairProject.route)
+  : Object.entries(fairRoutes);
+ for(const [key,route] of routes){
+  const section=document.createElement('section');section.className='fair-route';
+  const heading=document.createElement('h3');
+  heading.textContent=route.title;
+  section.append(heading);
+  const description=document.createElement('p');
+  description.textContent=route.request;
+  section.append(description);
+  if(!fairProject.delivered){
+   const control=framedConfirmAction(section,fairProject.route===key?'Выбран':'Выбрать',()=>{
+    if(fairProject.delivered){close();return}
+    fairProject.route=key;
+    syncProgressOrder();
+    saveGame();
+    close();
+   });
+   control.disabled=fairProject.route===key;
+   control.setAttribute('aria-label','Выбрать маршрут «'+route.title+'»');
+  }
+  pane.append(section);
+ }
+ framedConfirmAction(pane,'Закрыть',close).focus();
+}
+let legacyProgress=completedOrders===30?30:0;
+function goalMet(goal){return goal.recipes.some(id=>completedPotionOrders.has(id))}
+function differentPotionCount(){
+ return completedPotionOrders.size-Number(completedPotionOrders.has('tea'));
+}
+function reputation(){
+ return Math.max(legacyProgress,Math.min(completedOrders,2)+3*differentPotionCount());
+}
+function nextReputationUnlock(){
+ const points=reputation(),progress=orderProgress();
+ const potions=Object.values(potionData);
+ const threshold=Math.min(...potions.filter(potion=>potion.orders>progress).map(potion=>potion.orders));
+ if(!Number.isFinite(threshold))return {points,threshold:null,remaining:0,goal:null,recipes:[]};
+ const goal=progressionGoals.find(item=>item.orders<=threshold&&!goalMet(item));
+ const recipes=potions.filter(potion=>potion.orders===threshold).map(potion=>potion.name);
+ return {points,threshold,remaining:Math.max(0,threshold-points),goal,recipes};
+}
+function orderProgress(){
+ const pending=progressionGoals.find(goal=>goal.orders&&!goalMet(goal));
+ return pending?Math.min(reputation(),pending.orders-1):reputation();
+}
+function differentPotionsStep(required){
+ const target=Math.ceil((required-2)/3);
+ return ['Сдать разные зелья, кроме мятного чая · '+Math.min(differentPotionCount(),target)+' / '+target, reputation()>=required];
+}
+function starterOrdersStep(){
+ return ['Сдать два заказа на мятный чай · '+Math.min(completedOrders,2)+' / 2',completedOrders>=2];
+}
+function unlockHint(required){
+ if(completedOrders<2)return starterOrdersStep()[0];
+ const pending=progressionGoals.find(goal=>goal.orders&&goal.orders<=required&&!goalMet(goal));
+ const steps=[];
+ if(reputation()<required)steps.push(differentPotionsStep(required)[0]);
+ if(pending)steps.push(pending.instruction);
+ return steps.join('\n');
+}
+function nextUnlock(){
+ if(completedOrders<2)return {title:'Открыть первые рецепты',steps:[starterOrdersStep()]};
+ const goal=progressionGoals.find(item=>orderProgress()<item.orders);
+ if(!goal)return fairObjective();
+
+ const steps=[];
+ if(legacyProgress<goal.orders)steps.push(differentPotionsStep(goal.orders));
+ steps.push([goal.instruction,goalMet(goal)]);
+ return {title:goal.unlockTitle,steps};
+}
+const brewSeconds={tea:15,sun:20,dream:20,wind:20,forest:20,cat:20,animal:30,echo:30,spring:30,rainbow:30,weather:30,mighty:45,bloom:45,letter:45,night:45,precise:60};
+Object.assign(potionData,{
+ winter_warmth:{"name":"Зимнее тепло","group":"protection","icon":"protection/winter_warmth.png","description":"На час сохраняет тепло тела на морозе.","orders":22},
+ underwater_breath:{"name":"Подводный вдох","group":"protection","icon":"protection/underwater_breath.png","description":"Позволяет пять минут дышать под водой.","orders":24},
+ stone_skin:{"name":"Каменная кожа","group":"protection","icon":"protection/stone_skin.png","description":"На минуту защищает кожу от порезов и ударов.","orders":26},
+ fire_ward:{"name":"Огненный покров","group":"protection","icon":"protection/fire_ward.png","description":"На несколько мгновений защищает тело от пламени.","orders":28},
+ healing_draught:{"name":"Живительный настой","group":"protection","icon":"protection/healing_draught.png","description":"Останавливает кровотечение и ускоряет заживление свежих ран.","orders":30}
+});
+Object.assign(recipeCosts,{
+ winter_warmth:{"mintleaf":2,"sunflower":2,"frost_salt":1},
+ underwater_breath:{"moon_lavender":2,"moon_dew":2,"deep_pearl":1},
+ stone_skin:{"spring_root":2,"frost_salt":1,"rainbow_powder":1},
+ fire_ward:{"stoneflower_powder":2,"frost_salt":1,"moon_dew":1},
+ healing_draught:{"amber_resin_powder":2,"mist_berry":2,"sunflower":1,"deep_pearl":1}
+});
+Object.assign(brewSeconds,{winter_warmth:30,underwater_breath:45,stone_skin:45,fire_ward:45,healing_draught:60});
+function ingredientCount(id){
+ if(id==='mintleaf')return stock;
+ if(id in groundStock)return groundStock[id];
+ if(plants.some(plant=>plant.id===id))return cropStock[id]||0;
+ return purchasedIngredients[id]||0;
+}
+function changeIngredient(id,amount){
+ if(id==='mintleaf')stock+=amount;
+ else if(id in groundStock)groundStock[id]+=amount;
+ else if(plants.some(plant=>plant.id===id))cropStock[id]=(cropStock[id]||0)+amount;
+ else purchasedIngredients[id]=(purchasedIngredients[id]||0)+amount;
+}
+function ingredientName(id){
+ return [...plants,...shopItems,...Object.values(grindRecipes)].find(item=>item.id===id).name;
+}
+function drawIngredient(id,x,y,w,h){
+ const crop=id==='mintleaf'?[1402,1122,180,75,1050,900]:inventoryIngredientBounds[id];
+ const icon=id==='mintleaf'?plants[0].icon:ingredientIcon(id);
+ return crop?proportionalCrop(icon,x,y,w,h,crop):upgradeIcon(icon,x,y,w,h);
+}
+function chooseLabOption(title,options,onSelect){
+ const pane=document.createElement('div');pane.className='dialog plant-menu';
+ const heading=document.createElement('p');heading.textContent=title;
+ const grid=document.createElement('div');grid.className='plant-grid lab-option-grid';
+ for(const {id,name,asset} of options){
+  const option=document.createElement('button');option.className='plant-option';
+  const icon=Object.hasOwn(essenceRecipes,id)?essenceIcon(asset):document.createElement('img');
+  if(icon instanceof HTMLImageElement){icon.src=asset;icon.alt=''}
+  const label=document.createElement('span');label.textContent=name;
+  option.append(icon,label);grid.append(option);
+  option.onclick=()=>{onSelect(id);close()};
+ }
+ const cancel=document.createElement('button');cancel.className='plant-cancel';cancel.textContent='Отмена';
+ pane.append(heading,grid,cancel);
+ const close=presentDialog(pane,title,render);
+ cancel.onclick=close;
+}
+function chooseLabRecipe(){
+ if(!upgradeLevels.queue&&(boiling||brewReady)){notice('Сначала дождитесь окончания варки и соберите зелье.');return}recipePickerOpen=true;
+ let pane=document.createElement('div');pane.className='dialog plant-menu recipe-picker';let title=document.createElement('p');title.textContent='Что сварить?';
+ let row=document.createElement('div');row.className='recipe-picker-row';let list=document.createElement('div');list.className='recipe-picker-list';let rail=document.createElement('div');rail.className='recipe-picker-rail';list.append(title);
+ potionGroups.forEach(([group,label],index)=>{if(index){let divider=document.createElement('div');divider.className='recipe-picker-divider';let img=document.createElement('img');img.src=common+'Интерфейс/recipe_group_divider.png';img.alt='';divider.append(img);list.append(divider)}let heading=document.createElement('div');heading.className='recipe-picker-group-title';heading.textContent=label;list.append(heading);let grid=document.createElement('div');grid.className='plant-grid';
+ Object.entries(potionData).filter(([id,p])=>p.group===group).sort((a,b)=>a[1].orders-b[1].orders).forEach(([id,p])=>{let open=potionRecipeOpen(id),btn=document.createElement('button');btn.className='plant-option';btn.disabled=!open;let img=document.createElement('img');img.src=open?(p.asset||common+'Предметы/Зелья/'+p.icon):common+'Предметы/Зелья/mind_and_feelings/drop_of_sun.png';if(!open){img.style.filter='brightness(0)';img.style.opacity='.55'}img.alt='';let text=document.createElement('span');text.textContent=open?p.name:'???';if(!open)btn.title=unlockHint(p.orders);btn.append(img,text);btn.onclick=()=>{if(!open)return;labRecipe=id;brewQuantity=1;selectedPotion=id;close()};grid.append(btn)});list.append(grid)});
+ row.append(list,rail);pane.append(row);let cancel=document.createElement('button');cancel.className='plant-cancel';cancel.textContent='Отмена';pane.append(cancel);
+ const close=presentDialog(pane,title.textContent,()=>{recipePickerOpen=false;render()});cancel.onclick=close;
+ // Дорожка собрана из повторяющегося участка и сохраняет пропорции спрайта.
+ drawTarget=rail;
+ const railHeight=535,thumbHeight=80,travel=railHeight-thumbHeight;
+ scrollTrack(0,0,railHeight);
+ let thumb=sprite(common+'Интерфейс/scrollbar_handle.png',0,0,26,thumbHeight,[724,2172,226,662,273,849]);thumb.className+=' recipe-scroll-thumb';thumb.setAttribute('role','scrollbar');thumb.setAttribute('aria-label','Прокрутка списка зелий');thumb.setAttribute('aria-orientation','vertical');drawTarget=view;
+ function sync(){let max=list.scrollHeight-list.clientHeight,ratio=max>0?list.scrollTop/max:0;thumb.style.top=(ratio*travel)+'px';thumb.setAttribute('aria-valuenow',String(Math.round(ratio*100)))}list.onscroll=sync;sync();let offset=0;thumb.onpointerdown=e=>{e.preventDefault();let scale=rail.getBoundingClientRect().height/railHeight;offset=(e.clientY-thumb.getBoundingClientRect().top)/scale;thumb.setPointerCapture(e.pointerId)};thumb.onpointermove=e=>{if(!thumb.hasPointerCapture(e.pointerId))return;let rect=rail.getBoundingClientRect(),scale=rect.height/railHeight,pos=(e.clientY-rect.top)/scale-offset;list.scrollTop=Math.max(0,Math.min(1,pos/travel))*(list.scrollHeight-list.clientHeight);sync()};
+}
+
+Object.assign(potionData.forest,{orders:12});Object.assign(potionData.animal,{orders:14});Object.assign(potionData.weather,{orders:16});Object.assign(potionData.bloom,{orders:18});Object.assign(potionData.night,{orders:20});
+potionStock=Object.fromEntries([...Object.keys(potionData).filter(id=>id!=='tea'),...Object.keys(essenceRecipes)].map(id=>[id,99]));
+const beds=[{state:'empty'},{state:'empty'},{state:'empty'},{state:'locked'},{state:'locked'},{state:'locked'}];
+const bedPrices=[0,0,0,60,140,280];let gardenPrevious='ingredients',shopPrevious='ingredients',upgradesPrevious='home';
+// Данные экрана улучшений: значения и цены из геймдизайна v0.2.
+const upgradeCatalog={
+ garden:{label:'Сад',icon:upgrades+'icons/garden/tab_garden.png',items:[
+ {id:'soil',name:'Плодородная почва',icon:upgrades+'icons/garden/fertile_soil.png',description:'Увеличивает урожай со всех грядок.',prices:[75,220],effects:['Урожай: 3 → 4','Урожай: 4 → 5']},
+ {id:'watering',name:'Волшебная лейка',icon:upgrades+'icons/garden/magic_watering_can.png',description:'Ускоряет рост растений на всех грядках.',prices:[70,180],effects:['Время роста −15%','Время роста −30%']},
+ {id:'planter',name:'Самосажалка',icon:upgrades+'icons/garden/auto_planter.png',description:'Повторно сажает выбранное растение после сбора.',prices:[180],effects:['Автоматическая посадка']},
+ {id:'gardener',name:'Садовый помощник',icon:upgrades+'icons/garden/garden_helper.png',description:'Автоматически собирает созревший урожай.',prices:[300],effects:['Автоматический сбор']}]},
+ cauldron:{label:'Котёл',icon:upgrades+'icons/cauldron/tab_cauldron.png',items:[
+ {id:'capacity',name:'Вместительный котёл',icon:upgrades+'icons/cauldron/larger_batch.png',description:'Увеличивает количество одинаковых зелий в одной партии.',prices:[100,240],effects:['До 2 зелий за партию','До 3 зелий за партию']},
+ {id:'speed',name:'Ускорение котла',icon:upgrades+'icons/cauldron/faster_brew.png',description:'Уменьшает время приготовления зелий.',prices:[90,200],effects:['Время варки −15%','Время варки −30%']},
+ {id:'queue',name:'Очередь котла',icon:upgrades+'icons/cauldron/brewing_queue.png',description:'Позволяет заранее назначить ожидающие партии.',prices:[150,300],effects:['2 ожидающие партии','4 ожидающие партии']},
+ {id:'brew_collect',name:'Автосбор котла',icon:upgrades+'icons/cauldron/auto_collect.png',description:'Готовые зелья сразу поступают в инвентарь.',prices:[220],effects:['Автоматический сбор зелий']}]},
+ mortar:{label:'Ступка',icon:upgrades+'icons/mortar/tab_mortar.png',lockedAt:12,items:[
+ {id:'mortar_capacity',name:'Прочная ступка',icon:upgrades+'icons/mortar/sturdy_mortar.png',description:'Увеличивает размер партии ингредиентов.',prices:[120],effects:['До 6 ингредиентов за партию']},
+ {id:'grinding',name:'Самоизмельчение',icon:upgrades+'icons/mortar/auto_grind.png',description:'Автоматически выполняет очередь измельчения.',prices:[260],effects:['Автоматическая очередь']},
+ {id:'grind_collect',name:'Автосбор ступки',icon:upgrades+'icons/mortar/auto_collect.png',description:'Готовые порошки сразу поступают в инвентарь.',prices:[180],effects:['Автоматический сбор порошков']}]},
+ distillery:{label:'Куб',icon:lab+'distillery_ready_simple.png',items:[
+ {id:'distill_collect',name:'Автосбор куба',icon:upgrades+'icons/distillery/auto_collect.png',description:'Готовые эссенции сразу поступают в инвентарь.',prices:[160],effects:['Автоматический сбор эссенций']}]},
+ trade:{label:'Торговля',icon:upgrades+'icons/trade/tab_trade.png',items:[
+ {id:'deals',name:'Выгодные сделки',icon:upgrades+'icons/trade/better_deals.png',description:'Увеличивает награду за заказы.',prices:[100,240],effects:['Награда +10%','Награда +20%']},
+ {id:'slot',name:'Место заказа',icon:upgrades+'icons/trade/order_slot.png',description:'Добавляет четвёртое место на доске заказов.',prices:[180],effects:['На доске +1 заказ']},
+ {id:'bulk',name:'Оптовая закупка',icon:upgrades+'icons/trade/bulk_purchase.png',description:'Даёт скидку при покупке от трёх единиц одного ингредиента.',prices:[100],effects:['Скидка 10% от 3 шт.']},
+ {id:'supplier',name:'Постоянный поставщик',icon:upgrades+'icons/trade/regular_supplier.png',description:'Автоматически закупает выбранные ингредиенты в пределах бюджета.',prices:[350],effects:['Автоматическая закупка']}]}
+};
+let upgradeLevels={},upgradeTab='garden',selectedUpgrade='soil';
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);view.style.transform=`scale(${s}) translate(-50%,-50%)`}addEventListener('resize',fit);fit();
+let layoutMap=null;
+function box(x,y,w,h){if(layoutMap){x=layoutMap.to+(x-layoutMap.from)*layoutMap.scale;w*=layoutMap.scale}return `left:${x}px;top:${y}px;width:${w}px;height:${h}px`}
+function sprite(src,x,y,w,h,crop){let d=document.createElement('div');d.className='el'+(crop?' crop':'');d.style.cssText=box(x,y,w,h);let im=document.createElement('img');im.src=src;im.alt='';if(crop){let [iw,ih,cx,cy,cw,ch]=crop;im.style.cssText=`width:${iw/cw*100}%;height:${ih/ch*100}%;left:${-cx/cw*100}%;top:${-cy/ch*100}%`}else im.className='sprite';d.append(im);drawTarget.append(d);return d}
+const frameImages=new Map(), panelFrames=new Map();
+const frameResize=new ResizeObserver(entries=>{
+ for(const {target} of entries)paintPanelFrame(target);
+});
+function paintPanelFrame(target){
+ const frame=panelFrames.get(target);
+ if(!frame||!frame.image.naturalWidth)return;
+ const {canvas,image,slices,corners,crop}=frame;
+ const width=target.offsetWidth*2, height=target.offsetHeight*2;
+ if(!width||!height||(canvas.width===width&&canvas.height===height&&frame.painted))return;
+ canvas.width=width;canvas.height=height;frame.painted=true;
+ const ctx=canvas.getContext('2d');
+ const [left,top,sourceWidth,sourceHeight]=crop||[0,0,image.naturalWidth,image.naturalHeight];
+ const [sx,sy]=slices;
+ const dx=Math.min(corners[0]*2,Math.floor(width/2)), dy=Math.min(corners[1]*2,Math.floor(height/2));
+ const sourceX=[left,left+sx,left+sourceWidth-sx,left+sourceWidth];
+ const sourceY=[top,top+sy,top+sourceHeight-sy,top+sourceHeight];
+ const targetX=[0,dx,width-dx,width], targetY=[0,dy,height-dy,height];
+ // Compose adjoining pieces at integer pixels, then let the viewport scale the whole canvas.
+ for(let row=0;row<3;row++)for(let col=0;col<3;col++){
+  const sw=sourceX[col+1]-sourceX[col],sh=sourceY[row+1]-sourceY[row];
+  const dw=targetX[col+1]-targetX[col],dh=targetY[row+1]-targetY[row];
+  if(sw&&sh&&dw&&dh)ctx.drawImage(image,sourceX[col],sourceY[row],sw,sh,targetX[col],targetY[row],dw,dh);
+ }
+}
+function addPanelFrame(target,src,slices,corners,crop){
+ let image=frameImages.get(src);
+ if(!image){
+  image=new Image();
+  image.onload=()=>{for(const [element,frame] of panelFrames)if(frame.image===image)paintPanelFrame(element)};
+  frameImages.set(src,image);image.src=src;
+ }
+ target.classList.add('sprite-frame');
+ const canvas=document.createElement('canvas');canvas.setAttribute('aria-hidden','true');target.append(canvas);
+ panelFrames.set(target,{canvas,image,slices,corners,crop});
+ frameResize.observe(target);paintPanelFrame(target);
+}
+function scrollTrack(x,y,height){
+ const track=document.createElement('div');track.className='el';
+ track.style.cssText=box(x,y,26,height);drawTarget.append(track);
+ addPanelFrame(track,common+'Интерфейс/scrollbar_track.png',[0,145],[0,26],[366,103,155,1590]);
+}
+function proportionalCrop(src,x,y,w,h,crop){let sx=layoutMap?layoutMap.scale:1,scale=Math.min(w*sx/crop[4],h/crop[5]),dw=crop[4]*scale/sx,dh=crop[5]*scale;return sprite(src,x+(w-dw)/2,y+(h-dh)/2,dw,dh,crop)}
+function upgradeIcon(src,x,y,w,h){let d=sprite(src,x,y,w,h);d.querySelector('img').style.objectFit='contain';return d}
+function txt(t,x,y,w,h,size=30,color='#492f20'){let e=document.createElement('div');e.className='txt';e.style.cssText=box(x,y,w,h)+`;font-size:${size}px;color:${color}`;e.textContent=t;drawTarget.append(e);return e}
+function click(x,y,w,h,label,fn){let e=document.createElement('button');e.className='hot';e.style.cssText=box(x,y,w,h);e.setAttribute('aria-label',label);e.onclick=fn;drawTarget.append(e);return e}
+function rememberButtonFocus(){
+ const current=document.activeElement;
+ if(!current?.matches('button')||!view.contains(current))return;
+ const label=button=>button.getAttribute('aria-label')||button.textContent;
+ const name=label(current);
+ const matching=()=>[...view.querySelectorAll('button')].filter(button=>label(button)===name);
+ const index=matching().indexOf(current);
+ return ()=>{
+  const target=current.isConnected?current:(current.id&&document.getElementById(current.id))||matching()[index];
+  if(target&&!target.disabled){target.focus({preventScroll:true});return true}
+  return false;
+ };
+}
+function presentDialog(pane,title,onClose){
+ const restoreFocus=rememberButtonFocus();
+ const overlay=document.createElement('div');
+ overlay.className='cover';
+ pane.setAttribute('role','dialog');
+ pane.setAttribute('aria-modal','true');
+ pane.setAttribute('aria-label',title);
+ const close=()=>{
+  for(const target of panelFrames.keys()){
+   if(!overlay.contains(target))continue;
+   frameResize.unobserve(target);panelFrames.delete(target);
+  }
+  overlay.remove();
+  onClose?.();
+  restoreFocus?.();
+ };
+ const controls=()=>[...pane.querySelectorAll('button:not(:disabled),input:not(:disabled)')];
+ pane.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){event.preventDefault();close();return}
+  if(event.key!=='Tab')return;
+  const items=controls();
+  const edge=event.shiftKey?items[0]:items.at(-1);
+  if(document.activeElement!==edge)return;
+  event.preventDefault();
+  (event.shiftKey?items.at(-1):items[0])?.focus();
+ });
+ overlay.append(pane);view.append(overlay);
+ queueMicrotask(()=>{
+  if(overlay.isConnected&&!pane.contains(document.activeElement))controls()[0]?.focus({preventScroll:true});
+ });
+ return close;
+}
+function dialog(title,buttons){
+ const {pane,close}=framedDialog(title,'confirm-dialog');
+ const actions=document.createElement('div');
+ actions.className='confirm-actions';pane.append(actions);
+ for(const [label,action] of buttons){
+  const select=()=>{
+   close();
+   action?.();
+   if(action&&document.activeElement===document.body){
+    view.querySelector('.ui-tab .hot[aria-pressed="true"], .hot[aria-label="Назад"]')?.focus({preventScroll:true});
+   }
+  };
+  if(action)framedConfirmAction(actions,label,select);
+  else dialogAction(actions,label,select).className='queue-action';
+ }
+}
+function pageTitle(title){
+ sprite(common+'Интерфейс/upgrade_title_plaque.png',610,16,700,103);
+ txt(title,640,27,640,72,46);
+}
+function showReputation(){
+ const {points,threshold,remaining,goal,recipes}=nextReputationUnlock();
+ const {pane,close}=framedAutomationDialog('Репутация лавки','reputation-dialog');
+ function addText(value,tag='p',parent=pane){
+  const line=document.createElement(tag);line.textContent=value;parent.append(line);
+ }
+ addText('Репутация — доверие жителей к вашей лавке. Она открывает новые рецепты.');
+ const rules=document.createElement('ul');pane.append(rules);
+ addText('+1 за каждый из первых двух заказов на мятный чай.', 'li',rules);
+ addText('+3 за первую поставку каждого другого зелья.', 'li',rules);
+ addText('Повторные поставки приносят монеты.', 'li',rules);
+ if(threshold===null)addText('Все рецепты зелий открыты.');
+ else{
+  addText('Следующие рецепты: '+recipes.join(', ')+'.');
+  addText(remaining?'Очки репутации: '+points+' / '+threshold+'. Осталось: '+remaining+'.':'Очков репутации достаточно.');
+  if(goal)addText('Ключевая поставка: '+goal.instruction+'.');
+ }
+ framedConfirmAction(pane,'Понятно',close);
+}
+function drawReputationPlaque(){
+ const {points,threshold,remaining}=nextReputationUnlock();
+ const label='Репутация: '+points;
+ const status=threshold===null?'Все рецепты зелий открыты':remaining?'До рецептов: '+remaining+' очк.':'Нужна ключевая поставка';
+ const x=159,y=29,width=412,height=width*368/2172;
+ sprite(orderSprites+'order_objective_panel.png',x,y,width,height);
+ txt(label,x+12,y+6,width-24,32,25);
+ txt(status,x+12,y+37,width-24,23,18,'#604126');
+ const control=click(x,y,width,height,label,showReputation);
+ control.id='reputation-plaque';
+ control.setAttribute('aria-description',status+'. Как работает репутация');
+ control.setAttribute('aria-haspopup','dialog');
+}
+function detailHeading(title,x,y,width){
+ sprite(common+'Интерфейс/plant_name_plaque.png',x,y,width,60);
+ txt(title,x+20,y+3,width-40,53,27).classList.add('item-label');
+}
+function sectionTab(label,icon,x,width,active,onClick){
+ const tab=document.createElement('div');tab.className='ui-tab';view.append(tab);drawTarget=tab;
+ const y=118,height=88;
+ sprite(common+'Интерфейс/'+(active?'upgrade_tab_selected.png':'upgrade_tab.png'),x,y,width,height).classList.add('ui-tab-face');
+ upgradeIcon(icon,x+22,y+21,42,42);
+ txt(label,x+69,y+9,width-87,64,width<225?23:26,active?'#fff9e9':'#5a321d');
+ click(x,y,width,height,label,onClick).setAttribute('aria-pressed',String(active));
+ drawTarget=view;
+}
+function hud(showInventory=true,offsetX=0){
+ const inventoryX=1703+offsetX;
+ const w=240,x=showInventory?inventoryX-269:inventoryX+82-w;
+ sprite(common+'Интерфейс/coins_plaque.png',x,37,w,72);
+ sprite(common+'Предметы/coin_large.png',x+16,44,56,56);
+ txt(String(coins),x+95,45,w-100,55,27);
+ if(showInventory){
+  sprite(common+'Интерфейс/inventory_button_base.png',inventoryX,32,82,82);
+  sprite(common+'Интерфейс/inventory_icon.png',inventoryX+7,39,68,68);
+  click(inventoryX,32,82,82,'Открыть инвентарь',()=>{previous=page;page='inventory';inventoryPage=0;selected=false;render()});
+ }
+}
+function back(){
+ sprite(common+'Интерфейс/back_button.png',42,31,100,66);
+ click(42,31,100,66,'Назад',()=>{
+  if(page==='lab'&&labReturnSteps.length){
+   labReturnSteps.pop()();
+  }else if(page==='lab'&&labOrder){
+   const index=orders.indexOf(labOrder);
+   if(index>=0)orderSelected=index;
+   else orderSelected=Math.min(orderSelected,Math.max(0,orders.length-1));
+   labOrder=null;
+   page='orders';
+  }else{
+   page=page==='inventory'?previous:page==='recipes'?recipesPrevious:page==='garden'?gardenPrevious:page==='shop'?shopPrevious:page==='upgrades'?upgradesPrevious:'home';
+  }
+  render();
+ });
+}
+function button(path,title,x,y,w,h,fn){sprite(path,x,y,w,h);txt(title,x,y,w,h,25,'#fff9e9');return click(x,y,w,h,title,fn)}
+let currentNotice=null, noticeTimer=null;
+function closeNotice(){
+ if(!currentNotice)return;
+ frameResize.unobserve(currentNotice);panelFrames.delete(currentNotice);
+ currentNotice.remove();currentNotice=null;clearTimeout(noticeTimer);
+}
+function notice(message){
+ closeNotice();
+ const toast=document.createElement('div');
+ toast.className='edge-notice'; toast.setAttribute('role','status');
+ toast.addEventListener('animationend',()=>{toast.style.animation='none'},{once:true});
+ currentNotice=toast; view.append(toast);
+ toast.textContent=message;
+ addPanelFrame(toast,common+'Интерфейс/notification_panel.png',[245,230],[43,40],[85,114,2004,494]);
+ noticeTimer=setTimeout(closeNotice,7000);
+}
+function brewButtonFrame(target,height){
+ addPanelFrame(target,common+'Интерфейс/brew_button.png',[250,0],[Math.round(250*height/470),0],[110,130,1950,470]);
+}
+function smallAction(label,x,y,width,action,useBrewFrame=false,height=width*85/300,fontSize=20){
+ if(useBrewFrame){
+  const face=document.createElement('div');face.className='el';face.style.cssText=box(x,y,width,height);
+  drawTarget.append(face);brewButtonFrame(face,height);
+ }else sprite(common+'Интерфейс/go_button.png',x,y,width,height);
+ txt(label,x,y,width,height,fontSize,'#fff9e9');
+ return click(x,y,width,height,label,action);
+}
+function framedDialog(title,className,onClose){
+ const pane=document.createElement('div');
+ pane.className='dialog framed-dialog '+className;
+ const heading=document.createElement('p');heading.textContent=title;pane.append(heading);
+ const close=presentDialog(pane,title,onClose);
+ addPanelFrame(pane,queueSprites+'dialog_frame.png',[55,55],[45,45]);
+ return {pane,close};
+}
+function framedAutomationDialog(title,className){
+ return framedDialog(title,'automation-dialog '+className,render);
+}
+function optionField(pane,label,type,value){
+ const row=document.createElement('label');
+ const caption=document.createElement('span');caption.textContent=label;
+ const input=document.createElement('input');input.type=type;
+ if(type==='checkbox')input.checked=value;else{input.min='0';input.step='1';input.value=String(value)}
+ row.append(caption,input);pane.append(row);return input;
+}
+function dialogAction(container,label,action){
+ const node=document.createElement('button');node.textContent=label;node.onclick=action;container.append(node);return node;
+}
+function framedConfirmAction(container,label,action,start=false){
+ const button=dialogAction(container,label,action);
+ button.className='queue-action queue-confirm'+(start?' queue-start':'');
+ brewButtonFrame(button,start?72:62);
+ return button;
+}
+function main(){sprite(common+'Интерфейс/main_background.png',0,0,1920,1080);
+ let cards=[['ИНГРЕДИЕНТЫ','ingredients_icon.png',()=>{page='ingredients';render()},[1536,1024,284,173,967,672],320,222],['ЛАБОРАТОРИЯ','laboratory_icon.png',()=>{labOrder=null;labReturnSteps.length=0;page='lab';render()},[1536,1024,322,139,932,762],310,253],['ЗАКАЗЫ','orders_icon.png',()=>{page='orders';render()},[1345,1169,164,128,1028,930],280,253]];
+ cards.forEach(([name,p,fn,crop,w,h],i)=>{let x=185+i*561-21.5,y=254;const card=document.createElement('div');card.className='home-card';view.append(card);drawTarget=card;sprite(common+'Интерфейс/main_card.png',x,y,473,572).classList.add('home-card-frame');sprite(common+'Интерфейс/title_plaque.png',x+8.8,y-28.6,451,66);txt(name,x,y-27.5,473,60.5,35);sprite(home+p,x+(473-w*1.1)/2,y+45+(85+(255-h)/2)*1.1,w*1.1,h*1.1,crop);if(i===1){let ready=[];if(brewReady)ready.push('cauldron_ready_simple.png');if(finishedGrinds.length)ready.push('mortar_ready_simple.png');if(distillReady)ready.push('distillery_ready_simple.png');let first=x+(473-(ready.length*108+Math.max(0,ready.length-1)*20))/2;ready.forEach((icon,index)=>{let px=first+index*128;upgradeIcon(lab+icon,px,687,70,70);sprite(common+'Интерфейс/ready_check_light.png',px+68,707,40,29.87,[1536,1024,400,250,750,560])})}click(x,y-29,473,601,'Открыть '+name,fn);drawTarget=view});
+ sprite(home+'upgrades_panel.png',460,915,1000,130,[2172,724,0,210,2172,275]);
+ button(common+'Интерфейс/go_button.png','Улучшения',580,938,270,76.5,()=>{upgradesPrevious='home';page='upgrades';render()});
+ button(common+'Интерфейс/go_button.png','Рецепты',1070,938,270,76.5,()=>{recipesPrevious='home';page='recipes';render()});
+ hud(true,0);
+ sprite(common+'Интерфейс/inventory_button_base.png',42,32,82,82);
+ upgradeIcon(common+'Интерфейс/main_menu_icon.png',49,39,68,68);
+ click(42,32,82,82,'В главное меню',leaveForStartMenu).title='В главное меню';
+}
+function ingredientsPage(){sprite(common+'Интерфейс/main_background.png',0,0,1920,1080);pageTitle('Ингредиенты');const sources=[['Сад','garden_icon.png',()=>{gardenPrevious='ingredients';page='garden';render()}],['Магазин','shop_icon.png',()=>{shopPrevious='ingredients';page='shop';render()}]];sources.forEach(([label,icon,action],i)=>{let x=390+i*610,y=230;const card=document.createElement('div');card.className='home-card';view.append(card);drawTarget=card;sprite(common+'Интерфейс/main_card.png',x,y,500,640).classList.add('home-card-frame');sprite(common+'Интерфейс/title_plaque.png',x+10,y-30,480,70);txt(label,x,y-29,500,64,35);sprite(root+'Ингредиенты/'+icon,x+55,y+162.5,390,315,[1536,1024,240,120,1056,800]);click(x,y-30,500,670,'Открыть '+label,action);drawTarget=view});back();hud()}
+function ingredientCost(item,quantity){
+ const cost=item.price*quantity;
+ return upgradeLevels.bulk&&quantity>=3?Math.ceil(cost*9/10):cost;
+}
+function buyIngredient(item,quantity){
+ const cost=ingredientCost(item,quantity);
+ if(!Number.isSafeInteger(quantity)||quantity<1||orderProgress()<item.orders||cost>coins)return false;
+ coins-=cost;changeIngredient(item.id,quantity);return true;
+}
+function supplierOptions(){
+ const {pane,close}=framedAutomationDialog('Постоянный поставщик','supplier-dialog');
+ const enabled=automationSwitch(pane,'Автозакупка включена',supplier.enabled);
+ const budget=optionField(pane,'Бюджет на закупки','number',supplier.budget);
+ const note=document.createElement('p');note.className='supplier-note';note.textContent='Остаток бюджета: '+supplierBudgetLeft()+'. Ноль в строке товара — не закупать.';pane.append(note);
+ const targets=shopItems.map(item=>[item.id,optionField(pane,item.name+' · целевой запас','number',supplier.targets[item.id]||0)]);
+ const integer=input=>Math.max(0,Math.min(99999,Math.floor(Number(input.value)||0)));
+ function save(resetBudget){
+  const limit=integer(budget);
+  supplier={enabled:enabled.checked,budget:limit,spent:resetBudget?0:supplier.spent,targets:Object.fromEntries(targets.map(([id,input])=>[id,Math.min(999,integer(input))]))};
+  close();
+ }
+ const actions=document.createElement('div');actions.className='supplier-actions';pane.append(actions);
+ framedConfirmAction(actions,'Сохранить',()=>save(false));
+ framedConfirmAction(actions,'Обновить бюджет',()=>save(true)).classList.add('supplier-reset');
+ dialogAction(actions,'Отмена',close).className='queue-action';
+}
+function runSupplier(){
+ if(!upgradeLevels.supplier||!supplier.enabled)return false;
+ let changed=false;
+ for(const item of shopItems){
+  const missing=(supplier.targets[item.id]||0)-ingredientCount(item.id);
+  const budget=Math.min(coins,supplierBudgetLeft());
+  let amount=Math.min(missing,Math.floor(budget*10/(item.price*9)));
+  while(amount>0&&ingredientCost(item,amount)>budget)amount--;
+  if(amount>0&&buyIngredient(item,amount)){supplier.spent+=ingredientCost(item,amount);changed=true}
+ }
+ return changed;
+}
+function shopPage(){
+ sprite(root+'Магазин/shop_background.png',0,0,1920,1080);pageTitle('Магазин');
+ sprite(common+'Интерфейс/inventory_grid_panel.png',145,180,1050,785);sprite(common+'Интерфейс/description_panel.png',1240,180,540,785);
+ txt('Покупные ингредиенты',200,205,940,65,30);
+ shopItems.forEach((item,i)=>{
+  const x=210+(i%2)*465,y=273+Math.floor(i/2)*167,open=orderProgress()>=item.orders;
+  sprite(common+'Интерфейс/'+(shopSelected===item.id?'slot_selected.png':'slot.png'),x,y,155,155);
+  const image=drawIngredient(item.id,x+14,y+12,127,122);
+  if(!open){image.style.filter='grayscale(1)';image.style.opacity='.4'}
+  txt(item.name,x+172,y+10,242,63,23).classList.add('item-label');
+  if(open){upgradeIcon(common+'Предметы/coin_large.png',x+241,y+88,39,39);txt(String(item.price),x+286,y+82,65,51,23)}
+  else txt('Закрыто',x+172,y+81,242,55,22);
+  click(x,y,425,155,'Товар: '+item.name,()=>{if(shopSelected!==item.id)shopQuantity=1;shopSelected=item.id;render()});
+ });
+ let item=shopItems.find(x=>x.id===shopSelected);
+ if(!item)txt('Выберите ингредиент',1280,400,460,75,28);
+ else{let open=orderProgress()>=item.orders;detailHeading(item.name,1280,204,460);let icon=upgradeIcon(ingredientIcon(item.id),1360,310,300,265);if(!open){icon.style.filter='grayscale(1)';icon.style.opacity='.4'}
+ sprite(common+'Интерфейс/description_divider.png',1300,590,420,36);
+ if(!open)txt(unlockHint(item.orders),1280,645,460,110,21);
+ else{
+  const quantity=shopQuantity,total=ingredientCost(item,quantity);
+  txt('Количество',1290,685,440,38,23);
+  upgradeIcon(common+'Интерфейс/quantity_minus.png',1330,727,70,70);
+  click(1330,727,70,70,'−',()=>{shopQuantity=Math.max(1,shopQuantity-1);render()});
+  txt(String(quantity),1410,735,190,50,26);
+  upgradeIcon(common+'Интерфейс/quantity_plus.png',1605,727,70,70);
+  click(1605,727,70,70,'+',()=>{shopQuantity=Math.min(999,shopQuantity+1);render()});
+  sprite(upgrades+'upgrade_buy_button.png',1340,810,340,129);
+  txt('Купить за',1370,840,150,65,24,'#fff9e9');txt(String(total),1520,840,65,65,24,'#fff9e9');
+  upgradeIcon(common+'Предметы/coin_large.png',1590,850,45,45);
+  click(1340,810,340,129,'Купить за '+total,()=>{if(buyIngredient(item,quantity))render();else notice('Не хватает монет для покупки.')});
+ }}
+ if(upgradeLevels.supplier)smallAction('Поставщик',535,977,270,supplierOptions);
+ back();hud();
+}
+function gardenPage(){sprite(garden+'Фоны/garden_background_earth.png',0,0,1920,1080);pageTitle('Сад');let xs=[235,700,1165],ys=[158,510];beds.forEach((b,i)=>{let x=xs[i%3],y=ys[Math.floor(i/3)];let bed=sprite(garden+'Грядки/garden_bed.png',x,y,440,300);bed.style.filter='drop-shadow(6px 12px 8px rgba(48,27,18,.45))';
+ if(b.state==='growing'||b.state==='ready'){let mature=b.state==='ready',plant=plants.find(p=>p.id===b.plant)||plants[0];let plantPath=garden+'Растения/'+(plant.id==='mintleaf'?(mature?'mature_mintleaf.png':'mintleaf_seedling.png'):(mature?'mature_':'seedling_')+plant.id+'.png');
+ let px=x+(plant.id==='mintleaf'?(mature?103:160):(mature?100:155)),py=y+(plant.id==='mintleaf'?(mature?23:62):(mature?10:45)),pw=plant.id==='mintleaf'?(mature?230:120):(mature?240:130),ph=plant.id==='mintleaf'?(mature?177:95):(mature?190:115);
+ let [iw,ih,footY,footX]=plantFoot[plant.id][mature?'mature':'seedling'],crop=!mature&&plant.id!=='mintleaf'?seedlingBounds[plant.id]:null,scale,baseX,baseY;if(crop){let [cw,ch,cx,cy,bw,bh]=crop;scale=Math.min(120/bw,95/bh);pw=bw*scale;ph=bh*scale;px=x+220-pw/2;py=y+157-ph;baseX=px+(footX-cx)*scale;baseY=py+(footY-cy)*scale}else{scale=Math.min(pw/iw,ph/ih);baseX=px+(pw-iw*scale)/2+footX*scale;baseY=py+(ph-ih*scale)/2+footY*scale}let sw=mature?110:70,sh=sw*724/2172;let shadow=upgradeIcon(garden+'Растения/plant_soft_shadow.png',baseX-sw/2,baseY-sh/2+1,sw,sh);shadow.style.opacity='.65';
+ if(crop)sprite(plantPath,px,py,pw,ph,crop);else upgradeIcon(plantPath,px,py,pw,ph);
+ sprite(common+'Интерфейс/plant_name_plaque.png',x+91,y-13,258,40);txt(plant.name,x+91,y-13,258,40,19);if(mature){
+  const autoReplant=upgradeLevels.planter&&gardenAutomation.replant;
+  const collectX=x+(autoReplant?133:24);
+  sprite(garden+'Интерфейс/garden_action_button.png',collectX,y+228,174,50).style.filter='drop-shadow(0 0 3px #fff1ae)';
+  sprite(common+'Интерфейс/ready_check_light.png',collectX+18,y+240,30,22.4,[1536,1024,400,250,750,560]);
+  txt('Собрать',collectX+50,y+228,110,50,24,'#fff9e9');
+  click(collectX,y+228,174,50,'Собрать '+plant.name,()=>{harvestBed(b);render()}).id='garden-bed-action-'+i;
+  if(!autoReplant){
+   const replant=smallAction('Собрать и\nпосадить снова',x+211,y+225,205,()=>{
+    harvestBed(b,Date.now(),true);render();
+   },true,56);
+   replant.setAttribute('aria-label','Собрать и посадить снова: '+plant.name);
+  }
+ }else{
+  sprite(garden+'Интерфейс/growth_status.png',x+89,y+207,260,70.16);
+  const remaining=Math.max(0,b.end-Date.now());
+  const progress=Math.max(0,Math.min(1,1-remaining/b.duration));
+  txt('Растёт: '+Math.ceil(remaining/1000)+' сек.',x+89,y+211,260,35,20);
+  const cancel=smallAction('Отмена',x+148,y+282,144,()=>{
+   dialog('Освободить грядку? Текущая посадка будет потеряна.',[['Отмена'],['Освободить',()=>{b.state='empty';render()}]]);
+  });
+  cancel.setAttribute('aria-label','Отмена посадки: '+plant.name);
+  cancel.id='garden-bed-action-'+i;
+  if(progress>0){
+   const fill=document.createElement('div');
+   fill.className='el growth-fill';
+   fill.style.cssText=box(x+113,y+252,212*progress,14);
+   view.append(fill);
+  }
+ }}
+ else if(b.state==='empty')button(garden+'Интерфейс/garden_action_button.png','Посадить',x+133,y+228,174,50,()=>plantMenu(b)).id='garden-bed-action-'+i;
+ else{
+  const price=bedPrices[i];
+  sprite(garden+'Грядки/lock.png',x+186,y+72,68,80);
+  sprite(common+'Интерфейс/price_plaque.png',x+112,y+214,216,77.11);
+  txt('Купить',x+129,y+225,94,54,22);
+  upgradeIcon(common+'Предметы/coin_large.png',x+225,y+237,31,31);
+  txt(String(price),x+257,y+225,54,54,22);
+  click(x+106,y+220,228,63,'Купить грядку за '+price,()=>{if(beds.slice(0,i).some(bed=>bed.state==='locked')){notice('Сначала открой предыдущую грядку.');return}if(coins<price){notice('Недостаточно монет. Нужно ещё '+(price-coins)+'.');return}coins-=price;b.state='empty';render()});
+ }});
+ upgradeIcon(garden+'Интерфейс/garden_bottom_panel_plain.png',322,923,1276,122);
+ const gardenActions=[];
+ if(beds.filter(bed=>bed.state==='ready').length>=2){
+  gardenActions.push(['Собрать всё',()=>{
+   const now=Date.now();
+   for(const bed of beds)harvestBed(bed,now);
+   render();
+  }]);
+ }
+ if(upgradeLevels.planter||upgradeLevels.gardener)gardenActions.push(['Автоматизация',gardenOptions]);
+ if(afterFair.done&&afterFair.route==='orchard'){
+  gardenActions.push([afterFair.boost?'Урожай ×2 · '+afterFair.boost.remaining:'Двойной урожай',showOrchardBoost]);
+  if(afterFair.boost){
+   const {bed,remaining}=afterFair.boost;
+   sprite(orderSprites+'order_objective_panel.png',159,29,412,70);
+   txt('Грядка '+(bed+1)+' · урожай ×2 · осталось '+remaining,169,38,392,49,21);
+  }
+ }
+ gardenActions.push(['Улучшения',()=>{
+  if(gardenPrevious!=='upgrades')upgradesPrevious='garden';
+  upgradeTab='garden';selectedUpgrade=upgradeCatalog.garden.items[0].id;
+  page='upgrades';render();
+ }]);
+ const buttonWidth=265,gap=56;
+ const startX=960-(gardenActions.length*buttonWidth+(gardenActions.length-1)*gap)/2;
+ gardenActions.forEach(([label,action],index)=>smallAction(label,startX+index*(buttonWidth+gap),946,buttonWidth,action));
+ back();hud();
+}
+function upgradesPage(){
+ sprite(common+'Интерфейс/main_background.png',0,0,1920,1080);pageTitle('Улучшения');
+ layoutMap={from:105,to:1280,scale:1};sprite(upgrades+'upgrade_detail_panel.png',105,132,405,865);layoutMap={from:530,to:115,scale:0.87};sprite(upgrades+'upgrade_tree_panel.png',530,212,1260,755);
+ layoutMap=null;
+ const groups=Object.entries(upgradeCatalog).filter(([key])=>key!=='distillery'||fairProject.delivered===2);
+ const tabWidth=groups.length===5?209:257;
+ groups.forEach(([key,group],index)=>{
+  sectionTab(group.label,group.icon,119+index*(tabWidth+13),tabWidth,key===upgradeTab,()=>{
+   upgradeTab=key;selectedUpgrade=group.items[0].id;render();
+  });
+ });
+ layoutMap={from:530,to:115,scale:0.87};
+ const group=upgradeCatalog[upgradeTab], locked=group.lockedAt&&orderProgress()<group.lockedAt;
+ group.items.forEach((item,index)=>{
+  const x=615+(index%2)*555, y=255+Math.floor(index/2)*220;
+  const level=upgradeLevels[item.id]||0, max=item.prices.length, chosen=item.id===selectedUpgrade;
+  const color=chosen?'#fff9e9':'#5a321d';
+  sprite(common+'Интерфейс/'+(chosen?'upgrade_tab_selected.png':'upgrade_tab.png'),x,y,505,185);
+  upgradeIcon(item.icon,x+54,y+40,102,102);
+  txt(item.name,x+170,y+29,282,62,24,color).classList.add('item-label');
+  txt(max===1?(level?'Куплено':'Не куплено'):'Уровень '+level+' / '+max,x+170,y+92,282,44,21,color);
+  if(locked)upgradeIcon(common+'Интерфейс/lock_icon.png',x+437,y+115,25,30);
+  click(x,y,505,185,item.name,()=>{selectedUpgrade=item.id;render()});
+ });
+ layoutMap={from:105,to:1280,scale:1};let item=group.items.find(x=>x.id===selectedUpgrade)||group.items[0],level=upgradeLevels[item.id]||0,max=item.prices.length;
+ detailHeading(item.name,135,153,345);upgradeIcon(item.icon,200,245,210,190);txt(item.description,145,445,325,110,21);txt(level>=max?'Все уровни куплены':item.effects[level],145,570,325,75,23);
+ if(locked){txt(unlockHint(6),145,675,325,130,21)}
+ else if(level>=max){txt('Куплено',145,750,325,65,26)}
+ else {let price=item.prices[level];sprite(upgrades+'upgrade_cost_plaque.png',157,690,300,80);upgradeIcon(common+'Предметы/coin_large.png',177,704,52,52);txt(String(price),260,701,150,58,25);button(upgrades+'upgrade_buy_button.png','Купить',157,775,300,114,()=>{if(coins<price){notice('Не хватает монет: '+(price-coins)+'.');return}coins-=price;upgradeLevels[item.id]=level+1;render()})}
+ layoutMap={from:530,to:115,scale:0.87};
+ if(upgradeTab==='garden')button(upgrades+'upgrade_buy_button.png','Перейти в сад',1390,830,300,114,()=>{
+  if(upgradesPrevious!=='garden')gardenPrevious='upgrades';
+  page='garden';render();
+ });
+ layoutMap=null;back();hud();
+}
+function recipesPage(){sprite(common+'Интерфейс/main_background.png',0,0,1920,1080);pageTitle('Рецепты');drawReputationPlaque();renderPotionCatalog();back();hud()}
+function drawCatalogPotion(potion,open,x,y,width,height){
+ const icons=common+'Предметы/Зелья/';
+ const asset=open?(potion.asset||icons+potion.icon):icons+'mind_and_feelings/drop_of_sun.png';
+ const bounds=inventoryPotionBounds[asset.split('/').at(-1)];
+ const scale=.78;
+ const art=proportionalCrop(asset,x+width*(1-scale)/2,y+height*(1-scale)/2,width*scale,height*scale,bounds);
+ if(!open){art.style.filter='brightness(0)';art.style.opacity='.65'}
+}
+function renderPotionCatalog(){
+ sprite(common+'Интерфейс/inventory_grid_panel.png',115,140,1110,855);sprite(common+'Интерфейс/description_panel.png',1240,140,565,855);
+ let scroll=document.createElement('div');scroll.className='recipe-scroll';scroll.style.cssText=box(185,168,1015,795)+';overflow-y:auto;overflow-x:hidden;';let content=document.createElement('div');content.style.cssText='position:relative;width:100%;height:'+(potionGroups.length*330+30)+'px';scroll.append(content);view.append(scroll);scroll.scrollTop=recipeScroll;drawTarget=content;
+ potionGroups.forEach(([group,label],row)=>{let y=18+row*330;txt(label,25,y,955,48,28);if(row>0)sprite(common+'Интерфейс/recipe_group_divider.png',70,y-55,840,53,[2172,724,35,296,2105,133]);
+ let keys=Object.keys(potionData).filter(key=>potionData[key].group===group).sort((a,b)=>potionData[a].orders-potionData[b].orders);
+ keys.forEach((key,i)=>{let p=potionData[key],open=potionRecipeOpen(key),x=20+i*199,cy=y+58;
+ sprite(common+'Интерфейс/'+(key===selectedPotion?'slot_selected.png':'slot.png'),x,cy,176,200);
+ drawCatalogPotion(p,open,x+20,cy+8,136,132);
+ txt(open?p.name:'???',x+4,cy+146,168,49,21).classList.add('item-label');click(x,cy,176,200,open?p.name:'Неизвестное зелье',()=>{selectedPotion=key;render()});
+ });});
+ drawTarget=view;
+ const trackY=170,trackHeight=790,thumbHeight=80,travel=trackHeight-thumbHeight;
+ scrollTrack(145,trackY,trackHeight);
+ let thumb=sprite(common+'Интерфейс/scrollbar_handle.png',145,trackY,26,thumbHeight,[724,2172,226,662,273,849]);thumb.className+=' recipe-scroll-thumb';thumb.setAttribute('role','scrollbar');thumb.setAttribute('aria-label','Прокрутка рецептов');thumb.setAttribute('aria-orientation','vertical');
+ function syncScrollbar(){let max=scroll.scrollHeight-scroll.clientHeight,ratio=max>0?scroll.scrollTop/max:0;thumb.style.top=(trackY+ratio*travel)+'px';thumb.setAttribute('aria-valuenow',String(Math.round(ratio*100)));recipeScroll=scroll.scrollTop}
+ scroll.onscroll=syncScrollbar;syncScrollbar();let dragOffset=0;
+ thumb.onpointerdown=e=>{e.preventDefault();let scale=view.getBoundingClientRect().width/1920;dragOffset=(e.clientY-thumb.getBoundingClientRect().top)/scale;thumb.setPointerCapture(e.pointerId)};
+ thumb.onpointermove=e=>{if(!thumb.hasPointerCapture(e.pointerId))return;let rect=view.getBoundingClientRect(),scale=rect.width/1920,pos=(e.clientY-rect.top)/scale-dragOffset-trackY;scroll.scrollTop=Math.max(0,Math.min(1,pos/travel))*(scroll.scrollHeight-scroll.clientHeight);syncScrollbar()};
+ let p=potionData[selectedPotion],open=potionRecipeOpen(selectedPotion);
+ detailHeading(open?p.name:'Неизвестное зелье',1290,164,465);
+ drawCatalogPotion(p,open,1390,260,265,245);
+ sprite(common+'Интерфейс/description_divider.png',1320,510,405,35);
+ if(open){txt(p.description,1305,550,435,70,23);txt('Рецепт',1305,632,435,42,27);let ingredients=Object.entries(recipeCosts[selectedPotion]),slot=82,start=1522.5-ingredients.length*slot/2;ingredients.forEach(([id,amount],i)=>{let x=start+i*slot;drawIngredient(id,x+5,700,72,80);txt('× '+amount,x,784,slot,34,26);click(x,700,slot,114,ingredientName(id),()=>notice(ingredientName(id)))})}
+ else{txt('Рецепт неизвестен',1300,580,445,65,26);txt(unlockHint(p.orders),1300,665,445,115,22)}
+}
+function brewCapacity(){return 1+(upgradeLevels.capacity||0)}
+function brewQueueLimit(){return 2*(upgradeLevels.queue||0)}
+function brewCosts(recipe,quantity){return Object.entries(recipeCosts[recipe]).map(([id,amount])=>[id,amount*quantity])}
+function startBrew(batch,now=Date.now()){
+ brewingRecipe=batch.recipe;activeBrewQuantity=batch.quantity;
+ brewDuration=brewSeconds[batch.recipe]*10*(100-15*(upgradeLevels.speed||0));
+ boiling=true;brewEnd=now+brewDuration;
+}
+function scheduleBrew(recipe,quantity){
+ const pending=boiling||brewQueue.length>0;
+ if(!potionRecipeOpen(recipe)||!Number.isInteger(quantity)||quantity<1||quantity>brewCapacity())return false;
+ if((pending&&brewQueue.length>=brewQueueLimit())||(!upgradeLevels.queue&&brewReady))return false;
+ const costs=brewCosts(recipe,quantity);
+ if(costs.some(([id,amount])=>ingredientCount(id)<amount))return false;
+ costs.forEach(([id,amount])=>changeIngredient(id,-amount));
+ const batch={recipe,quantity,costs};
+ if(pending)brewQueue.push(batch);else startBrew(batch);
+ return true;
+}
+function collectBrews(){
+ for(const {recipe,quantity} of finishedBrews){
+  if(recipe==='tea')tea+=quantity;else potionStock[recipe]=(potionStock[recipe]||0)+quantity;
+ }
+ finishedBrews.length=0;brewReady=false;
+}
+function mortarBatchLimit(ingredient){
+ const recipe=grindRecipes[ingredient];
+ if(!recipe||orderProgress()<recipe.orders)return 0;
+ return Math.min(upgradeLevels.mortar_capacity?6:3,ingredientCount(ingredient));
+}
+function startGrinding(batch,now=Date.now()){
+ activeGrind=batch;
+ grindingEnd=now+20000;
+}
+function scheduleGrind(ingredient,quantity){
+ const waiting=activeGrind!==null||grindQueue.length>0;
+ if(!Number.isInteger(quantity)||quantity<1||quantity>mortarBatchLimit(ingredient))return false;
+ if((finishedGrinds.length&&!upgradeLevels.grinding)||(waiting&&(!upgradeLevels.grinding||grindQueue.length>=4)))return false;
+ changeIngredient(ingredient,-quantity);
+ const batch={ingredient,quantity,costs:[[ingredient,quantity]]};
+ if(waiting)grindQueue.push(batch);else startGrinding(batch);
+ return true;
+}
+function collectGroundIngredients(){
+ for(const {ingredient,quantity} of finishedGrinds)changeIngredient(grindRecipes[ingredient].id,quantity);
+ finishedGrinds.length=0;
+}
+function drawProductionQueue(mortarQueue,x){
+ const queue=mortarQueue?grindQueue:brewQueue;
+ const limit=mortarQueue?4:brewQueueLimit(), height=165, y=893;
+ const title=mortarQueue?'Очередь ступки':'Очередь котла';
+ const paused=mortarQueue?!grindAutomation:!brewAutomation;
+ const active=mortarQueue?activeGrind:(boiling?{recipe:brewingRecipe,quantity:activeBrewQuantity}:null);
+ const tray=document.createElement('div');tray.className='el queue-tray';
+ tray.style.cssText=box(x,y,435,height);view.append(tray);
+ addPanelFrame(tray,queueSprites+'tray.png',[24,24],[29,29]);
+ txt(title+' · '+queue.length+' / '+limit+(paused?' · Пауза':'')+'  ›',x+20,y+18,395,33,19);
+ if(!active&&!queue.length)txt('Нет партий',x+28,y+58,379,70,19);
+ const batches=[active,...queue];
+ batches.forEach((batch,index)=>{
+  if(!batch)return;
+  const cellX=x+28+index*77;
+  upgradeIcon(queueSprites+(index===0?'slot_active.png':'slot_waiting.png'),cellX+9,y+54,56,56);
+  if(mortarQueue)drawIngredient(batch.ingredient,cellX+16,y+59,42,45);
+  else drawPotionIcon(batch.recipe,cellX+16,y+59,42,45);
+  const color=index===0?'#3d571a':'#492f20';
+  if(index===0)txt('Сейчас',cellX,y+112,74,19,15,color);
+  txt('×'+batch.quantity,cellX,y+131,74,22,16,color);
+ });
+ click(x,y,435,height,'Открыть '+title.toLowerCase(),()=>productionQueueOptions(mortarQueue));
+}
+function automationSwitch(pane,caption,checked){
+ const input=optionField(pane,caption,'checkbox',checked);
+ input.setAttribute('role','switch');
+ const shell=document.createElement('span');shell.className='queue-switch';
+ const rail=document.createElement('span');rail.className='queue-switch-rail';rail.setAttribute('aria-hidden','true');
+ const label=input.parentElement;
+ label.append(shell);shell.append(input,rail);
+ return input;
+}
+function productionQueueOptions(mortarQueue){
+ const queue=mortarQueue?grindQueue:brewQueue;
+ const {pane,close}=framedAutomationDialog(mortarQueue?'Очередь ступки':'Очередь котла','queue-dialog');
+ const activeArea=document.createElement('div'), waitingArea=document.createElement('div');
+ pane.append(activeArea);
+ const auto=mortarQueue?grindAutomation:brewAutomation;
+ const autostart=automationSwitch(pane,'Запускать следующую партию автоматически',auto);
+ autostart.closest('label').classList.add('queue-autostart');
+ autostart.onchange=e=>{
+  if(mortarQueue)grindAutomation=e.target.checked;else brewAutomation=e.target.checked;
+ };
+ pane.append(waitingArea);
+ const done=()=>{refreshOpenQueue=null;close()};
+ const doneButton=framedConfirmAction(pane,'Готово',done);
+ const busy=()=>mortarQueue?grindingEnd!==0:boiling;
+ let signature='';
+ function drawBatch(container,batch,active){
+  const potion=mortarQueue?null:potionData[batch.recipe];
+  const row=document.createElement('div');row.className=active?'queue-batch queue-batch-active':'queue-batch';
+  const slot=document.createElement('div');slot.className='queue-batch-icon';
+  const icon=document.createElement('img');icon.alt='';
+  icon.src=mortarQueue?ingredientIcon(batch.ingredient):(potion.asset||common+'Предметы/Зелья/'+potion.icon);
+  slot.append(icon);
+  const label=document.createElement('span');label.className='queue-batch-label';
+  label.textContent=(active?'Сейчас: ':'')+(mortarQueue?ingredientName(batch.ingredient):potion.name)+' × '+batch.quantity;
+  row.append(slot,label);
+  if(!active)dialogAction(row,'Отменить',()=>{
+   const index=queue.indexOf(batch);
+   if(index>=0){queue.splice(index,1);batch.costs.forEach(([id,amount])=>changeIngredient(id,amount))}
+   refresh();
+  }).className='queue-action';
+  container.append(row);
+  addPanelFrame(row,queueSprites+'batch_row.png',[18,18],[10,10]);
+ }
+ function refresh(){
+  const now=(mortarQueue?grindingEnd:boiling?brewEnd:0)+'|'+queue.length;
+  if(now===signature)return;
+  const focused=document.activeElement;
+  const replacedFocus=activeArea.contains(focused)||waitingArea.contains(focused);
+  signature=now;activeArea.innerHTML='';waitingArea.innerHTML='';
+  if(replacedFocus)doneButton.focus({preventScroll:true});
+  for(const target of panelFrames.keys())if(!target.isConnected){frameResize.unobserve(target);panelFrames.delete(target)}
+  if(busy())drawBatch(activeArea,mortarQueue?activeGrind:{recipe:brewingRecipe,quantity:activeBrewQuantity},true);
+  if(!queue.length){const empty=document.createElement('p');empty.textContent='Нет ожидающих партий';waitingArea.append(empty)}
+  queue.forEach(batch=>drawBatch(waitingArea,batch,false));
+  if(queue.length&&!busy())framedConfirmAction(waitingArea,'Запустить следующую',()=>{
+   if(!busy()&&queue.length){
+    const batch=queue.shift();
+    if(mortarQueue)startGrinding(batch);else startBrew(batch);
+   }
+   refresh();
+  },true);
+ }
+ refreshOpenQueue=refresh;
+ refresh();
+}
+function labQuantity(quantity,x,y,maximum,update){
+ const minus=upgradeIcon(common+'Интерфейс/quantity_minus.png',x,y,48,48);
+ if(quantity<=1)minus.style.opacity='.48';
+ click(x,y,48,48,'Уменьшить количество',()=>update(Math.max(1,quantity-1))).disabled=quantity<=1;
+ txt('Количество: '+quantity,x+52,y,160,48,20);
+ const plus=upgradeIcon(common+'Интерфейс/quantity_plus.png',x+216,y,48,48);
+ if(quantity>=maximum)plus.style.opacity='.48';
+ click(x+216,y,48,48,'Увеличить количество',()=>update(Math.min(maximum,quantity+1))).disabled=quantity>=maximum;
+}
+function labRecipeButton(title,action,disabled,onClick){
+ const x=1265,y=302,width=370,height=58;
+ const face=document.createElement('div');face.className='el';face.style.cssText=box(x,y,width,height);
+ drawTarget.append(face);brewButtonFrame(face,height);
+ if(disabled)face.style.opacity='.55';
+ txt(title,x+14,y,width-28,height,23,'#fff9e9');
+ const control=click(x,y,width,height,action?title+' — '+action:title,onClick);
+ control.id='lab-option-picker';
+ control.disabled=disabled;
+ control.setAttribute('aria-haspopup','dialog');
+}
+function drawLabIngredients(ingredients,getName,getCount,drawIcon,onMissing){
+ txt('Ингредиенты',1175,527,550,32,23);
+ const compact=ingredients.length>4;
+ const rowHeight=compact?42:53,iconSize=compact?36:47;
+ ingredients.forEach(([id,needed],index)=>{
+  const y=562+index*(compact?42:50),have=getCount(id);
+  drawIcon(id,1165+(47-iconSize)/2,y+(rowHeight-iconSize)/2,iconSize,iconSize);
+  const label=txt(getName(id)+' · '+have+' / '+needed,1224,y,330,rowHeight,21,have>=needed?'#492f20':'#8d2f21');
+  label.style.justifyContent='flex-start';
+  label.style.textAlign='left';
+  if(have<needed)onMissing(id,y,rowHeight);
+ });
+}
+function primaryAction(title,label,x,y,width,height,disabled,onClick){
+ const group=document.createElement('div');
+ group.className='primary-action';drawTarget.append(group);
+ const parent=drawTarget;drawTarget=group;
+ const face=sprite(common+'Интерфейс/brew_button.png',x,y,width,height,[2172,724,110,130,1950,470]);
+ if(disabled)face.style.filter='grayscale(.75) brightness(.76)';
+ else face.classList.add('primary-action-face');
+ txt(title,x,y,width,height,34,disabled?'#e7dcc6':'#fff6df');
+ click(x,y,width,height,label,onClick).disabled=disabled;
+ drawTarget=parent;
+}
+function labPrimaryAction(title,label,disabled,onClick){
+ primaryAction(title,label,1225,779,450,450*470/1950,disabled,onClick);
+}
+function drawCauldron(center,bottom){
+ const height=380,scale=height/400,width=432*scale;
+ const x=center-width/2,y=bottom-height;
+ upgradeIcon(lab+'cauldron.png',x,y,width,height);
+ const [liquidX,liquidY]=[214,69];
+ const effectWidth=width*.57,effectHeight=effectWidth*.75;
+ const effectX=x+liquidX*scale-effectWidth/2;
+ const effectY=y+liquidY*scale-effectHeight*.85;
+ return [effectX,effectY,effectWidth,effectHeight];
+}
+function drawLabToolTabs(tools,now){
+ const width=337,height=118,gap=20,y=120;
+ const startX=(1920-(tools.length*width+(tools.length-1)*gap))/2;
+ tools.forEach((tool,index)=>{
+  const x=startX+index*(width+gap),selected=tool.id===labMode;
+  const tab=document.createElement('div');tab.className='ui-tab';view.append(tab);drawTarget=tab;
+  upgradeIcon(common+'Интерфейс/'+(selected?'upgrade_tab_selected.png':'upgrade_tab.png'),x,y,width,height).classList.add('ui-tab-face');
+  const icon=upgradeIcon(tool.icon,x+36,y+28,61,62);
+  if(tool.locked)icon.style.opacity='.65';
+  const time=tool.end?Math.max(0,Math.ceil((tool.end-now)/1000))+' сек.':'';
+  const ready=tool.ready?tool.ready+' к сбору':'';
+  const status=[time,ready].filter(Boolean).join(' · ')||(tool.locked?'Закрыта':tool.queued?'В очереди: '+tool.queued:tool.id==='mortar'?'Свободна':'Свободен');
+  const label=txt(tool.name,x+102,y+26,203,34,tool.id==='distillery'?22:25,selected?'#fff9e9':'#492f20');
+  label.style.justifyContent='flex-start';
+  label.style.whiteSpace='nowrap';
+  const statusColor=selected?'#fff6dc':tool.ready?'#39571e':'#624227';
+  if(tool.ready){
+   const check=sprite(common+'Интерфейс/ready_check_light.png',x+102,y+65,20,20*560/750,[1536,1024,400,250,750,560]);
+   if(selected)check.style.filter='brightness(1.65) saturate(.85)';
+  }
+  txt(status,x+(tool.ready?129:102),y+59,tool.ready?176:203,27,18,statusColor).style.justifyContent='flex-start';
+  const control=click(x+9,y+5,width-18,height-10,tool.name,()=>{
+   if(tool.locked){notice('Как открыть ступку\n'+unlockHint(12));return}
+   if(selected)return;
+   labMode=tool.id;render();
+  });
+  control.setAttribute('aria-pressed',String(selected));
+  control.setAttribute('aria-description',status);
+  control.dataset.labTool=tool.id;
+  drawTarget=view;
+ });
+}
+function drawLabProgress(tool,center,y,now){
+ if(!tool.end)return;
+ const x=center-150;
+ sprite(lab+'progress_empty.png',x,y,300,41.27,[2172,724,140,230,1890,260]);
+ const fraction=Math.min(1,Math.max(0,1-(tool.end-now)/tool.duration));
+ if(fraction>0){
+  const bar=document.createElement('div');bar.className='el';
+  bar.style.cssText=box(x+9,y+(41.27-20)/2,Math.round(282*fraction),20)+';border-radius:14px;background:#789832;border:2px solid #46501b';
+  view.append(bar);
+ }
+ txt(tool.activity+' · '+Math.max(0,Math.ceil((tool.end-now)/1000))+' сек.',x-100,y+41,500,30,22);
+}
+function laboratory(){
+ sprite(lab+'stone_lab_background.png',0,0,1920,1080);
+ pageTitle('Лаборатория');
+ const mortarPath=lab+'mortar_stone.png';
+ const cubePath=lab+'Перегонка/distiller.png',now=Date.now();
+ const tools=[
+  {id:'cauldron',name:'Котёл',icon:upgradeCatalog.cauldron.icon,activity:'Варка',end:boiling?brewEnd:0,duration:brewDuration,queued:brewQueue.length,ready:finishedBrews.reduce((sum,batch)=>sum+batch.quantity,0)},
+  {id:'mortar',name:'Ступка',icon:upgradeCatalog.mortar.icon,activity:'Измельчение',end:grindingEnd,duration:20000,queued:grindQueue.length,ready:finishedGrinds.reduce((sum,batch)=>sum+batch.quantity,0),locked:orderProgress()<12}
+ ];
+ if(fairProject.delivered===2)tools.push({id:'distillery',name:'Перегонный куб',icon:lab+'distillery_ready_simple.png',activity:'Перегонка',end:distillBatch?.end,duration:distillDuration,ready:Number(Boolean(distillReady))});
+ let tool=tools.find(item=>item.id===labMode&&!item.locked);
+ if(!tool){tool=tools[0];labMode=tool.id}
+ if(tools.some(tool=>tool.id!=='cauldron'&&!tool.locked))drawLabToolTabs(tools,now);
+
+ const center=525,bottom=781,shadowWidth=labMode==='mortar'?225:labMode==='distillery'?630:440;
+ sprite(lab+'cauldron_shadow.png',center-shadowWidth/2,bottom-37,shadowWidth,68).style.opacity='.68';
+ if(labMode==='cauldron'){
+  const effectBox=drawCauldron(center,bottom);
+  if(boiling){
+   const effect=document.createElement('div');effect.className='effect';effect.id='boil';
+   effect.style.cssText=box(...effectBox)+`;background-image:url('${lab}boiling_effect_sheet.png');filter:saturate(.55)`;
+   view.append(effect);
+  }
+ }else if(labMode==='mortar')upgradeIcon(mortarPath,center-100,bottom-220,200,220);
+ else upgradeIcon(cubePath,center-412.5,bottom-540,825,550);
+ drawLabProgress(tool,center,805,now);
+ if(upgradeLevels.queue)drawProductionQueue(false,upgradeLevels.grinding?60:307);
+ if(upgradeLevels.grinding)drawProductionQueue(true,upgradeLevels.queue?555:307);
+
+ sprite(lab+'lab_recipe_panel_wide.png',1053,241,754,754);
+ layoutMap={from:0,to:-20,scale:1};
+ if(labMode==='distillery')drawDistillationControls();
+ else if(labMode==='cauldron'){
+  const recipe=potionData[labRecipe], ingredients=brewCosts(labRecipe,brewQuantity);
+  const missing=ingredients.some(([id,needed])=>ingredientCount(id)<needed);
+  const queueEnabled=brewQueueLimit()>0, working=!queueEnabled&&(boiling||brewReady);
+  labRecipeButton(recipe.name,'выбрать зелье',working,chooseLabRecipe);
+  drawPotionIcon(labRecipe,1330,365,240,brewCapacity()>1?108:144);
+  if(brewCapacity()>1)labQuantity(brewQuantity,1318,476,brewCapacity(),quantity=>{brewQuantity=quantity;render()});
+  drawLabIngredients(ingredients,ingredientName,ingredientCount,drawIngredient,(id,y,rowHeight)=>{
+   if(working)return;
+   const plant=plants.find(plant=>plant.id===id);
+   const shopItem=shopItems.find(item=>item.id===id);
+   if(plant && orderProgress()>=plant.orders){
+    const growControl=smallAction('Вырастить в саду',1554,y+4,202,()=>{
+     gardenPrevious='lab';page='garden';render();
+    },true,rowHeight-8);
+    growControl.setAttribute('aria-label','Вырастить в саду: '+plant.name);
+   }else if(shopItem && orderProgress()>=shopItem.orders){
+    txt('Купить в магазине',1554,y,202,rowHeight,19,'#485720');
+    click(1554,y,202,rowHeight,'Купить в магазине: '+shopItem.name,()=>{shopSelected=id;shopQuantity=1;shopPrevious='lab';page='shop';render()});
+   }else if(id in groundStock){
+    const source=Object.keys(grindRecipes).find(ingredient=>grindRecipes[ingredient].id===id);
+    txt('Измельчить в ступке',1554,y,202,rowHeight,19,'#485720');
+    click(1554,y,202,rowHeight,'Измельчить в ступке',()=>{rememberLabRecipe();labMode='mortar';grindIngredient=source;grindQuantity=1;render()});
+   }
+  });
+  const pending=boiling||brewQueue.length>0;
+  const collectOnly=brewReady&&!queueEnabled;
+  const disabled=!collectOnly&&(missing||(pending&&brewQueue.length>=brewQueueLimit()));
+  const title=collectOnly?'Собрать':pending?(queueEnabled?'В очередь':'Варится'):'Варить';
+  labPrimaryAction(title,collectOnly?'Собрать зелье':title,disabled,()=>{
+   if(collectOnly){collectBrews();render()}else if(scheduleBrew(labRecipe,brewQuantity))render();
+  });
+  if(queueEnabled&&brewReady)smallAction('Собрать: '+finishedBrews.reduce((sum,batch)=>sum+batch.quantity,0),1370,906,160,()=>{collectBrews();render()},true);
+ }else{
+ const options=Object.keys(grindRecipes).filter(id=>orderProgress()>=grindRecipes[id].orders);
+ const canChoose=options.length>0&&(!activeGrind||Boolean(upgradeLevels.grinding));
+ const ingredientTitle=grindIngredient?ingredientName(grindIngredient):'Выбрать ингредиент';
+ labRecipeButton(ingredientTitle,grindIngredient?'выбрать ингредиент':null,!canChoose,()=>{
+  const ingredients=options.map(id=>({id,name:ingredientName(id),asset:ingredientIcon(id)}));
+  chooseLabOption('Что измельчить?',ingredients,id=>{grindIngredient=id;grindQuantity=1});
+ });
+ if(grindIngredient){
+  drawIngredient(grindIngredient,1300,390,300,228);
+  const limit=mortarBatchLimit(grindIngredient);
+  grindQuantity=Math.min(grindQuantity||1,limit);
+  labQuantity(grindQuantity,1318,659,limit,quantity=>{grindQuantity=quantity;render()});
+  if(limit===0){
+   const source=grindIngredient;
+   if(plants.some(plant=>plant.id===source)){
+    smallAction('Вырастить в саду',1335,721,230,()=>{gardenPrevious='lab';page='garden';render()},true,46)
+     .setAttribute('aria-label','Вырастить в саду: '+ingredientTitle);
+   }else if(shopItems.some(item=>item.id===source)){
+    smallAction('Купить в магазине',1335,721,230,()=>{shopSelected=source;shopQuantity=1;shopPrevious='lab';page='shop';render()},true,46)
+     .setAttribute('aria-label','Купить в магазине: '+ingredientTitle);
+   }
+  }
+ }else upgradeIcon(mortarPath,1300,452,300,232);
+ const pending=activeGrind!==null||grindQueue.length>0;
+ const queueEnabled=Boolean(upgradeLevels.grinding);
+ const collectOnly=finishedGrinds.length>0&&!queueEnabled;
+ const title=collectOnly?'Собрать':pending?(queueEnabled?'В очередь':'Измельчается'):'Измельчить';
+ const disabled=!collectOnly&&(!grindIngredient||grindQuantity<1||(pending&&(!queueEnabled||grindQueue.length>=4)));
+ labPrimaryAction(title,collectOnly?'Собрать измельчённые ингредиенты':title,disabled,()=>{
+  if(collectOnly){collectGroundIngredients();render()}else if(scheduleGrind(grindIngredient,grindQuantity))render();
+ });
+ if(queueEnabled&&finishedGrinds.length){
+  const total=finishedGrinds.reduce((sum,batch)=>sum+batch.quantity,0);
+  smallAction('Собрать: '+total,1370,906,160,()=>{collectGroundIngredients();render()},true);
+ }
+
+ }
+ layoutMap=null;
+ const recipesX=1554, recipesY=1000, recipesWidth=296, recipesHeight=recipesWidth*450/2040;
+ sprite(lab+'recipes_button.png',recipesX,recipesY,recipesWidth,recipesHeight,[2172,724,65,145,2040,450]);
+ txt('Все рецепты',recipesX,recipesY,recipesWidth,recipesHeight,25);
+ click(recipesX,recipesY,recipesWidth,recipesHeight,'Все рецепты',()=>{
+  if(labMode==='cauldron'){
+   selectedPotion=labRecipe;
+   recipeScroll=Math.max(0,potionGroups.findIndex(([group])=>group===potionData[labRecipe].group))*330;
+  }
+  recipesPrevious='lab';page='recipes';render();
+ });
+ back();hud();
+}
+const potionRewards={tea:15,sun:26,dream:26,wind:26,cat:26,forest:26,echo:44,spring:44,rainbow:44,animal:44,weather:44,mighty:64,bloom:64,letter:64,night:64,precise:84,winter_warmth:44,underwater_breath:64,stone_skin:64,fire_ward:64,healing_draught:96};
+function orderItems(order){return order.items||[{id:order.id,quantity:order.quantity}]}
+function orderReady(order){return orderItems(order).every(item=>potionCount(item.id)>=item.quantity)}
+function orderReward(order){
+ if(order.goal==='afterfair')return afterFairEvents[order.event].reward;
+ const value=orderItems(order).reduce((sum,item)=>sum+potionRewards[item.id]*item.quantity,0);
+ const multiplier=order.type==='large'?1.10:order.type==='mixed'?1.15:1;
+ const deliveryBonus=order.goal==='fair'?fairBonuses[order.fairStage]:order.goal==='dock'?dockOrderBonus:0;
+ const bonus=progressionGoals.reduce((sum,goal)=>!goalMet(goal)&&orderProgress()>=goal.offerAt&&
+  orderItems(order).some(item=>goal.recipes.includes(item.id))?sum+goal.bonus:sum,deliveryBonus);
+ return Math.round(value*multiplier*(100+10*(upgradeLevels.deals||0))/100)+bonus;
+}
+function essenceIcon(asset){
+ const slot=document.createElement('div');
+ slot.className='essence-slot';
+ const art=document.createElement('span');
+ art.className='essence-art';
+ const img=document.createElement('img');
+ img.src=asset;img.alt='';
+ art.append(img);slot.append(art);
+ return slot;
+}
+function drawPotionIcon(id,x,y,w,h){
+ const item=alchemicalItem(id);
+ if(Object.hasOwn(essenceRecipes,id)){
+  const slot=essenceIcon(item.asset);
+  slot.classList.add('el');
+  slot.style.cssText=box(x,y,w,h);
+  drawTarget.append(slot);
+  return slot;
+ }
+ else if(id==='tea')proportionalCrop(item.asset,x,y,w,h,[1536,1024,165,120,1210,800]);
+ else if(item.asset)proportionalCrop(item.asset,x,y,w,h,inventoryPotionBounds[item.asset.split('/').at(-1)]);
+ else upgradeIcon(common+'Предметы/Зелья/'+item.icon,x,y,w,h);
+}
+const introOrderCount=2;
+const orderReplacementCooldown=60000;
+let orderReplacementReadyAt=0;
+let refreshOrderReplacement=null;
+const orderCustomers=['Травница Мира','Пекарь Тихон','Садовница Лея','Торговец Савва'];
+const pendingRecipeUnlocks=new Set();
+function pickOrderOption(options){
+ return options[Math.floor(Math.random()*options.length)];
+}
+function nextOrder(index,excludedIds=[],recentIds=[]){
+ const order={id:'tea',quantity:1,customer:orderCustomers[index]};
+ if(index===0||completedOrders<introOrderCount)return order;
+ const progress=orderProgress();
+ const pool=Object.keys(potionData).filter(id=>id!=='tea'&&!excludedIds.includes(id)&&potionRecipeOpen(id));
+ if(!pool.length)return excludedIds.length?null:order;
+
+ const listed=new Set(orders.flatMap((entry,slot)=>slot===index?[]:orderItems(entry).map(item=>item.id)));
+ const available=pool.filter(id=>!listed.has(id));
+ const choices=available.length?available:pool;
+ const untried=choices.filter(id=>!completedPotionOrders.has(id));
+ const preferred=untried.length?untried:choices;
+ const fresh=preferred.filter(id=>!recentIds.includes(id));
+ order.id=pickOrderOption(fresh.length?fresh:preferred);
+ if(index<=1||progress<8)return order;
+
+ const capacity=brewCapacity();
+ const variants=['normal','normal'];
+ if(capacity>1)variants.push('large');
+ if(pool.length>=2)variants.push('mixed');
+ const variant=pickOrderOption(variants);
+ if(variant==='normal'&&capacity>1&&completedPotionOrders.has(order.id)&&Math.random()<0.25)order.quantity=2;
+ if(variant==='large'){
+  const maximum=Math.min(5,capacity+1+Number(progress>=20));
+  order.type='large';
+  order.quantity=3+Math.floor(Math.random()*(maximum-2));
+ }
+ if(variant==='mixed'){
+  const additional=pool.filter(id=>id!==order.id);
+  const count=progress>=20&&additional.length>=2?pickOrderOption([1,2]):1;
+  order.type='mixed';
+  order.items=[{id:order.id,quantity:1}];
+  for(let i=0;i<count;i++){
+   const fresh=additional.filter(id=>!listed.has(id)&&!recentIds.includes(id));
+   const id=pickOrderOption(fresh.length?fresh:additional);
+   additional.splice(additional.indexOf(id),1);
+   order.items.push({id,quantity:1});
+  }
+ }
+ return order;
+}
+function isOrderReplaceable(index,order){
+ return completedOrders>=introOrderCount&&index>0&&!order.goal;
+}
+function replaceOrder(index,order,now=Date.now()){
+ if(!order||orders[index]!==order||!isOrderReplaceable(index,order)||now<orderReplacementReadyAt)return false;
+ const replacement=nextOrder(index,orderItems(order).map(item=>item.id));
+ if(!replacement)return false;
+ orders[index]=replacement;
+ orderReplacementReadyAt=now+orderReplacementCooldown;
+ return true;
+}
+function orderGoalId(goal){return goal.orders}
+function syncProgressOrder(){
+ const goal=progressionGoals.find(item=>!goalMet(item)&&orderProgress()>=item.offerAt);
+ if(!goal){
+  syncFairOrder();
+  return;
+ }
+ const key=orderGoalId(goal);
+ if(orders[1]?.goal===key){orders[1].customer=goal.customer;return}
+ const recipes=goal.recipes.filter(id=>potionData[id].orders<=orderProgress());
+ if(!recipes.length)return;
+ const listed=new Set(orders.slice(2).flatMap(order=>orderItems(order).map(item=>item.id)));
+ const distinct=recipes.filter(id=>!listed.has(id));
+ const id=pickOrderOption(distinct.length?distinct:recipes);
+ orders[1]={id,quantity:1,customer:goal.customer,goal:key};
+}
+function potionCount(id){return id==='tea'?tea:(potionStock[id]||0)}
+function ensureOrders(){
+ const introducing=completedOrders<introOrderCount;
+ const slots=introducing?introOrderCount-completedOrders:upgradeLevels.slot?4:3;
+ if(!introducing){
+  if(!orders.length)orders.push(nextOrder(0));
+  syncProgressOrder();
+ }
+ while(orders.length<slots)orders.push(nextOrder(orders.length));
+}
+function fulfillOrder(index,order){
+ if(orders[index]!==order||!orderReady(order))return false;
+ const items=orderItems(order);
+ for(const {id,quantity} of items){
+  if(id==='tea')tea-=quantity;else potionStock[id]-=quantity;
+ }
+ coins+=orderReward(order);
+ if(order.goal==='fair'){
+  fairProject.delivered++;
+  if(fairProject.delivered===1)notice('Савва принял первый набор. Теперь можно готовить финальную поставку.');
+  else notice('Лунная ярмарка завершена! В лаборатории открыт перегонный куб.');
+ }
+ if(order.goal==='afterfair'){
+  afterFair.done=true;
+  afterFair.completed.add(order.event);
+  notice(afterFairEvents[order.event].ending+'\nОткрыто: '+afterFairPerks[order.event].title);
+ }
+ if(order.goal==='dock'){
+  afterFair.practiced.add('crossing');
+  notice('Заказ Саввы выполнен. На переправе можно выбрать следующий.');
+ }
+ const introducing=completedOrders<introOrderCount;
+ const before=orderProgress();
+ completedOrders++;for(const item of items)if(Object.hasOwn(potionData,item.id))completedPotionOrders.add(item.id);
+ const after=orderProgress();
+ const unlocked=Object.values(potionData).filter(potion=>potion.orders>before&&potion.orders<=after);
+ for(const potion of unlocked)pendingRecipeUnlocks.add(potion.name);
+ if(introducing){
+  orders.splice(index,1);
+  orderSelected=0;
+  ensureOrders();
+  return true;
+ }
+ orders[index]=nextOrder(index,[],items.map(item=>item.id));
+ if(unlocked.length){
+  for(let i=1;i<orders.length;i++)if(orders[i].id==='tea')orders[i]=nextOrder(i);
+ }
+ syncProgressOrder();
+ return true;
+}
+function ordersPage(){
+ ensureOrders();
+ sprite(common+'Интерфейс/main_background.png',0,0,1920,1080);
+ sprite(orderSprites+'order_detail_tall.png',1265,145,550,886);
+ const board=document.createElement('div');
+ board.className='el order-board';
+ board.style.cssText=box(115,150,1000,500+(orders.length-3)*151);
+ view.append(board);
+ addPanelFrame(board,common+'Интерфейс/inventory_grid_panel.png',[50,50],[50,50]);
+ pageTitle('Заказы');
+ drawReputationPlaque();
+ orders.forEach((order,index)=>{
+  const {id,quantity,customer}=order, y=184+index*151, enough=orderReady(order);
+  const status=enough?'Можно сдать':'Нужно сварить';
+  sprite(orderSprites+(orderSelected===index?'order_row_selected.png':'order_row.png'),145,y,940,112);
+  sprite(common+'Интерфейс/icon_plaque.png',165,y+12,100,88);
+  if(order.type==='mixed')proportionalCrop(orderSprites+'mixed_order_icon.png',176,y+21,78,68,[1312,1199,200,110,900,910]);
+  else drawPotionIcon(id,176,y+21,78,68);
+  const goal=progressionGoals.find(item=>orderGoalId(item)===order.goal);
+  const caption=order.goal==='dock'?'Заказ с переправы':order.goal==='fair'
+   ? 'Ярмарка · '+(order.fairStage?'финал':'первая поставка')
+   : afterFairEvents[order.event]?.title||goal?.title||customer;
+  txt(caption,275,y+8,380,34,22,order.goal?'#485720':'#63452a').style.justifyContent='flex-start';
+  const orderLabel=order.type==='mixed'?'Смешанный × '+orderItems(order).reduce((sum,item)=>sum+item.quantity,0):potionData[id].name+' × '+quantity;
+  txt(orderLabel,275,y+41,380,55,27).style.justifyContent='flex-start';
+  txt(status,665,y+30,200,53,23,enough?'#3d571a':'#8d2f21');
+  upgradeIcon(common+'Предметы/coin_large.png',889,y+35,42,42);
+  txt(String(orderReward(order)),938,y+27,62,56,26);
+  click(145,y,940,112,customer+' · '+orderLabel+' · '+status,()=>{orderSelected=index;render()});
+  if(orderSelected===index&&isOrderReplaceable(index,order))drawOrderReplacement(index,order,y);
+ });
+ const objective=nextUnlock();
+ const y=684+(orders.length-3)*151;
+ const panelWidth=940,panelHeight=panelWidth*368/2172;
+ const titleHeight=38,stepHeight=34,stepGap=8;
+ const contentHeight=titleHeight+(objective.steps.length?stepGap+objective.steps.length*stepHeight:0);
+ const titleY=y+(panelHeight-contentHeight)/2;
+ sprite(orderSprites+'order_objective_panel.png',145,y,panelWidth,panelHeight);
+ txt(objective.title,185,titleY,860,titleHeight,28);
+ objective.steps.forEach(([label,done],index)=>{
+  const stepY=titleY+titleHeight+stepGap+stepHeight*index;
+  const line=txt((done?'✓  ':'○  ')+label,205,stepY,820,stepHeight,23,done?'#3d571a':'#492f20');
+  line.style.justifyContent='flex-start';
+ });
+ if(completedOrders>=introOrderCount){
+  const fairDone=fairProject.delivered===2;
+  smallAction(fairDone?'После ярмарки':'Лунная ярмарка',445,y+panelHeight+9,340,fairDone?showAfterFairEvents:showFairProject,true,64,24);
+ }
+ const order=orders[orderSelected], {id,quantity,customer}=order, potion=alchemicalItem(id);
+ const items=orderItems(order), enough=orderReady(order), reward=orderReward(order);
+ const neededItem=items.find(entry=>potionCount(entry.id)<entry.quantity)||items[0];
+ const needsDistillation=Object.hasOwn(essenceRecipes,neededItem.id);
+ smallAction(needsDistillation?'К кубу':'К рецепту',1430,915,215,()=>{
+  labReturnSteps.length=0;
+  labOrder=order;
+  labMode=needsDistillation?'distillery':'cauldron';
+  if(needsDistillation)distillRecipe=neededItem.id;
+  else{labRecipe=neededItem.id;brewQuantity=1}
+  page='lab';render();
+ },true,62);
+ detailHeading(customer,1295,162,490);
+ txt(order.type==='mixed'?'Сдать набор зелий':'Сдать «'+potion.name+'»',1295,252,490,55,27).classList.add('item-label');
+ if(order.type==='mixed'){
+  const width=130, gap=20, start=1540-(items.length*width+(items.length-1)*gap)/2;
+  items.forEach((item,index)=>{
+   const x=start+index*(width+gap);
+   drawPotionIcon(item.id,x,320,width,150);
+   txt(alchemicalItem(item.id).name,x-7,475,width+14,60,19).classList.add('item-label');
+   txt(potionCount(item.id)+' / '+item.quantity,x,535,width,40,23,potionCount(item.id)>=item.quantity?'#492f20':'#8d2f21');
+  });
+  sprite(common+'Интерфейс/description_divider.png',1310,590,460,45);
+  if(order.goal!=='afterfair')txt('Бонус за смешанный заказ: +15%',1295,635,490,55,22);
+ }else{
+  drawPotionIcon(id,1355,310,360,220);
+  sprite(common+'Интерфейс/description_divider.png',1310,565,460,45);
+  txt('Нужно: '+quantity+'   ·   В наличии: '+potionCount(id),1295,615,490,45,24,enough?'#492f20':'#8d2f21');
+  if(order.type==='large')txt('Бонус за крупный заказ: +10%',1295,660,490,36,21);
+ }
+ sprite(orderSprites+'reward_plaque.png',1305,710,470,70);
+ txt('Награда:',1355,710,210,70,32);
+ upgradeIcon(common+'Предметы/coin_large.png',1575,721,48,48);
+ txt(String(reward),1625,710,70,70,29);
+ primaryAction('Выполнить','Выполнить',1300,785,480,480*470/1950,!enough,()=>{
+  if(fulfillOrder(orderSelected,order))render();
+ });
+ back();hud();
+}
+function drawOrderReplacement(index,order,rowY){
+ const x=1011,y=rowY+17,size=59;
+ const art=upgradeIcon(orderSprites+'replace_order_button.png',x,y,size,size);
+ const countdown=txt('',x-9,y+size+2,size+18,26,19);
+ const control=click(x,y,size,size,'Заменить заказ',()=>{
+  if(replaceOrder(index,order))render();
+ });
+ refreshOrderReplacement=now=>{
+  const seconds=Math.max(0,Math.ceil((orderReplacementReadyAt-now)/1000));
+  const label=seconds?'Замена через '+seconds+' сек.':'Заменить заказ';
+  control.disabled=seconds>0;
+  control.setAttribute('aria-label',label);
+  control.title=label;
+  art.style.opacity=seconds?'.55':'1';
+  countdown.textContent=seconds?seconds+' сек.':'';
+ };
+ refreshOrderReplacement(Date.now());
+}
+function inventory(){
+ sprite(common+'Интерфейс/main_background.png',0,0,1920,1080);pageTitle('Инвентарь');
+ [['crops','Ингредиенты','crops_icon.png'],['potions','Зелья','potions_icon.png']].forEach(([key,label,icon],index)=>{
+  sectionTab(label,inv+icon,175+index*315,295,tab===key,()=>{
+   tab=key;inventoryPage=0;selected=false;render();
+  });
+ });
+ sprite(common+'Интерфейс/description_panel.png',1240,212,570,800);
+ sprite(common+'Интерфейс/inventory_grid_panel.png',115,212,965,800);
+ let items=tab==='crops'?[{id:'mintleaf',name:'Мятнолист',count:stock,icon:common+'Предметы/harvested_mintleaf.png',crop:[1402,1122,180,75,1050,900]},...plants.slice(1).map(item=>({...item,count:cropStock[item.id]||0,icon:ingredientIcon(item.id)})),...shopItems.map(item=>({...item,count:purchasedIngredients[item.id]||0,icon:ingredientIcon(item.id)})),...Object.values(grindRecipes).map(item=>({...item,count:ingredientCount(item.id),icon:ingredientIcon(item.id)}))]:[{id:'tea',name:'Мятный чай',description:potionData.tea.description,count:tea,icon:common+'Предметы/mintleaf_tea.png',crop:[1536,1024,165,120,1210,800]},...Object.entries({...potionData,...essenceRecipes}).filter(([id])=>id!=='tea').map(([id,p])=>({id:'potion_'+id,name:p.name,description:p.description,count:potionCount(id),icon:p.asset||common+'Предметы/Зелья/'+p.icon}))];items=items.filter(item=>item.count>0);
+ layoutMap=null;
+ const scroll=document.createElement('div');scroll.className='recipe-scroll';
+ scroll.style.cssText=box(177,241,865,740)+';overflow-y:auto;overflow-x:hidden;';
+ const content=document.createElement('div');
+ const rows=Math.max(4,Math.ceil(items.length/5));
+ content.style.cssText='position:relative;width:100%;height:'+(rows*185)+'px';
+ scroll.append(content);view.append(scroll);scroll.scrollTop=inventoryPage;drawTarget=content;
+ for(let index=0;index<rows*5;index++){
+  const x=(index%5)*172,y=Math.floor(index/5)*185,item=items[index];
+  sprite(common+'Интерфейс/'+(item&&selected===item.id?'slot_selected.png':'slot.png'),x,y,164,165);
+  if(!item)continue;
+  const crop=item.crop||inventoryIngredientBounds[item.id];
+  const potionCrop=tab==='potions'?inventoryPotionBounds[item.icon.split('/').at(-1)]:null;
+  const iconWidth=item.id==='rainbow_powder'?140:120;
+  const potionId=item.id.startsWith('potion_')?item.id.slice(7):null;
+  if(Object.hasOwn(essenceRecipes,potionId))drawPotionIcon(potionId,x+19,y+10,126,76).classList.add('inventory-essence-cell');
+  else if(potionCrop)proportionalCrop(item.icon,x+19,y+10,126,76,potionCrop);
+  else if(crop)proportionalCrop(item.icon,x+(164-iconWidth)/2,y+8,iconWidth,87,crop);
+  else upgradeIcon(item.icon,x+22,y+8,120,87);
+  txt(item.name,x+7,y+94,150,42,item.id==='prismatic_crystal'?16:19).classList.add('item-label');
+  sprite(inv+'quantity_plaque.png',x+94,y+135,60,26.4);
+  txt(String(item.count),x+94,y+135,60,26,21);
+  click(x,y,164,165,'Выбрать: '+item.name,()=>{selected=item.id;render()});
+ }
+ drawTarget=view;
+ const trackY=241,trackHeight=740,thumbHeight=80,travel=trackHeight-thumbHeight;
+ scrollTrack(140,trackY,trackHeight);
+ const thumb=sprite(common+'Интерфейс/scrollbar_handle.png',140,trackY,26,thumbHeight,[724,2172,226,662,273,849]);
+ thumb.className+=' recipe-scroll-thumb';thumb.setAttribute('role','scrollbar');thumb.setAttribute('aria-label','Прокрутка инвентаря');thumb.setAttribute('aria-orientation','vertical');
+ function syncInventoryScrollbar(){
+  const max=scroll.scrollHeight-scroll.clientHeight,ratio=max>0?scroll.scrollTop/max:0;
+  thumb.style.top=(trackY+ratio*travel)+'px';thumb.setAttribute('aria-valuenow',String(Math.round(ratio*100)));inventoryPage=scroll.scrollTop;
+ }
+ scroll.onscroll=syncInventoryScrollbar;syncInventoryScrollbar();
+ let dragOffset=0;
+ thumb.onpointerdown=e=>{e.preventDefault();const scale=view.getBoundingClientRect().width/1920;dragOffset=(e.clientY-thumb.getBoundingClientRect().top)/scale;thumb.setPointerCapture(e.pointerId)};
+ thumb.onpointermove=e=>{if(!thumb.hasPointerCapture(e.pointerId))return;const rect=view.getBoundingClientRect(),scale=rect.width/1920,pos=(e.clientY-rect.top)/scale-dragOffset-trackY;scroll.scrollTop=Math.max(0,Math.min(1,pos/travel))*(scroll.scrollHeight-scroll.clientHeight);syncInventoryScrollbar()};
+ layoutMap={from:145,to:1240,scale:1};let item=items.find(item=>item.id===selected);if(item){detailHeading(item.name,190,246,460);if(item.id==='rainbow_powder')drawIngredient(item.id,244,368,350,285);else if(item.crop){if(item.id==='tea')proportionalCrop(item.icon,244,368,350,285,item.crop);else sprite(item.icon,244,368,350,285,item.crop)}else if(item.id.startsWith('potion_')&&Object.hasOwn(essenceRecipes,item.id.slice(7)))drawPotionIcon(item.id.slice(7),244,368,350,285).classList.add('inventory-essence-detail');else if(tab==='potions')proportionalCrop(item.icon,244,393,350,235,inventoryPotionBounds[item.icon.split('/').at(-1)]);else upgradeIcon(item.icon,244,368,350,285);sprite(common+'Интерфейс/description_divider.png',205,693,430,46);txt(item.description||ingredientDescriptions[item.id]||'',200,746,440,125,23);txt('Количество: '+item.count,205,879,365,55,24)}else txt('Выберите предмет',200,421,450,80,30);
+ if(item){sprite(inv+'delete_button.png',574,876,72,72);click(574,876,72,72,'Удалить '+item.name,()=>{dialog('Удалить одну единицу выбранного предмета?',[['Отмена'],['Удалить',()=>{if(item.id==='tea')tea--;else if(item.id.startsWith('potion_'))potionStock[item.id.slice(7)]--;else changeIngredient(item.id,-1);selected=false;render()}]])})}layoutMap=null;back();hud(false)
+}
+function render(){
+ const restoreFocus=document.activeElement?.matches(':focus-visible')?rememberButtonFocus():null;
+ const noticeFrame=panelFrames.get(currentNotice);
+ frameResize.disconnect();panelFrames.clear();view.innerHTML='';
+ view.dataset.page=page;
+ refreshOrderReplacement=null;refreshOpenQueue=null;
+ if(currentNotice){
+  view.append(currentNotice);
+  if(noticeFrame){panelFrames.set(currentNotice,noticeFrame);frameResize.observe(currentNotice)}
+ }
+ if(page==='start')startMenu();else if(page==='home')main();else if(page==='ingredients')ingredientsPage();else if(page==='garden')gardenPage();
+ else if(page==='lab')laboratory();else if(page==='shop')shopPage();else if(page==='orders')ordersPage();
+ else if(page==='upgrades')upgradesPage();else if(page==='recipes')recipesPage();else inventory();
+ restoreFocus?.();
+ if(page==='orders'&&pendingRecipeUnlocks.size){
+  const names=[...pendingRecipeUnlocks];pendingRecipeUnlocks.clear();notice('Открыты новые рецепты:\n'+names.join('\n'));
+ }
+}
+function advanceProduction(now){
+ let changed=false;
+ for(const bed of beds){
+  if(bed.state==='growing'&&now>=bed.end){bed.state='ready';changed=true}
+  if(bed.state==='ready'&&upgradeLevels.gardener&&gardenAutomation.harvest){harvestBed(bed,now);changed=true}
+ }
+ if(boiling&&now>=brewEnd){
+  finishedBrews.push({recipe:brewingRecipe,quantity:activeBrewQuantity});
+  boiling=false;brewReady=true;changed=true;
+ }
+ if(upgradeLevels.brew_collect&&brewReady){collectBrews();changed=true}
+ if(!boiling&&brewQueue.length&&brewAutomation){startBrew(brewQueue.shift(),now);changed=true}
+ if(grindingEnd&&now>=grindingEnd){
+  finishedGrinds.push(activeGrind);
+  activeGrind=null;grindingEnd=0;changed=true;
+ }
+ if(upgradeLevels.grind_collect&&finishedGrinds.length){collectGroundIngredients();changed=true}
+ if(!grindingEnd&&grindQueue.length&&grindAutomation){startGrinding(grindQueue.shift(),now);changed=true}
+ if(distillBatch&&now>=distillBatch.end){
+  distillReady=distillBatch.id;
+  distillBatch=null;
+  changed=true;
+ }
+ if(upgradeLevels.distill_collect&&distillReady){collectDistillation();changed=true}
+ return changed;
+}
+
+const offlineLimit = 2 * 60 * 60 * 1000;
+const legacySaveKey = 'lunar-shop:stocked:v1';
+let lastSave = null;
+
+const slotNumbers=[1,2,3];
+const slotDateFormat=new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short'});
+let activeSlot=null;
+let startScreen='actions';
+
+function readSlot(number){
+ const key=legacySaveKey+':slot:'+number;
+ let raw=null;
+ let saved=null;
+ try{
+  raw=localStorage.getItem(key);
+  const payload=raw ?? (number===1 ? localStorage.getItem(legacySaveKey) : null);
+  saved=JSON.parse(payload);
+ }catch(error){
+  // Allow a fresh game when storage is unavailable.
+ }
+ if(!saved || !Number.isFinite(saved.savedAt))return {number,key,raw,saved:null};
+ const arrays=[saved.beds,saved.brewQueue,saved.finishedBrews,saved.grindQueue,saved.finishedGrinds,
+  saved.orders,saved.completedPotionOrders,saved.pendingRecipeUnlocks];
+ if(!arrays.every(Array.isArray) || saved.beds.length!==beds.length ||
+    saved.beds.some(bed=>!bed || (bed.state==='growing' && !Number.isFinite(bed.end)))){
+  return {number,key,raw,saved:null};
+ }
+ return {number,key,raw,saved};
+}
+
+function launchSlot(number,newGame=false){
+ if(activeSlot)return;
+ const slot=readSlot(number);
+ if(!newGame && !slot.saved){render();return}
+ if(newGame && slot.saved){
+  const {pane,close}=framedAutomationDialog('Начать заново в слоте '+number+'?','garden-automation-dialog');
+  const warning=document.createElement('p');
+  warning.textContent='Сохранение в этом слоте будет заменено.';
+  pane.append(warning);
+  const cancel=dialogAction(pane,'Отмена',close);
+  cancel.className='queue-action';
+  cancel.style.display='inline-block';
+  cancel.focus();
+  const confirm=framedConfirmAction(pane,'Начать заново',()=>{
+   if(readSlot(number).raw!==slot.raw){close();return}
+   enterSlot(slot,null);
+  });
+  confirm.style.marginLeft='18px';
+  return;
+ }
+ enterSlot(slot,newGame?null:slot.saved);
+}
+
+function enterSlot(slot,saved){
+ activeSlot=slot;
+ lastSave=slot.raw;
+ const now=Date.now();
+ let rows=[];
+ if(saved){
+  restoreGame(saved);
+  rows=advanceOffline(saved.savedAt,now);
+ }
+ page='home';
+ saveGame(now);
+ render();
+ if(rows.length)showReturnSummary(rows);
+}
+
+function startMenu(){
+ sprite(home+'start_background.png',0,0,1920,1080);
+ const menu=document.createElement('nav');
+ menu.className='start-menu';
+ menu.setAttribute('aria-label','Главное меню');
+ const options=document.createElement('div');
+ options.className='start-menu-options';
+ menu.append(options);view.append(menu);
+ const title=document.createElement('h1');
+ title.textContent='Лунная лавка';
+ options.append(title);
+ const action=(label,fn,disabled=false)=>{
+  const button=dialogAction(options,label,fn);
+  button.type='button';
+  button.disabled=disabled;
+  return button;
+ };
+ const open=screen=>{startScreen=screen;render()};
+ if(startScreen==='settings'||startScreen==='exit'){
+  const message=document.createElement('p');
+  message.textContent=startScreen==='settings'?'Настройки пока недоступны.':'Игра завершена. Можно закрыть вкладку.';
+  options.append(message);
+  action('В главное меню',()=>open('actions'));
+  return;
+ }
+
+ const slots=slotNumbers.map(readSlot);
+ if(startScreen==='actions'){
+  const latest=slots.filter(slot=>slot.saved).sort((a,b)=>b.saved.savedAt-a.saved.savedAt)[0];
+  if(latest)action('Продолжить',()=>launchSlot(latest.number));
+  action('Новая игра',()=>open('new'));
+  action('Загрузить',()=>open('load'));
+  action('Настройки',()=>open('settings'));
+  const exit=action('Выйти',()=>open('exit'));
+  exit.className='start-exit';
+  menu.append(exit);
+  return;
+ }
+
+ const heading=document.createElement('h2');
+ const newGame=startScreen==='new';
+ heading.textContent=newGame?'Новая игра':'Загрузить игру';
+ options.append(heading);
+ for(const slot of slots){
+  const button=action('Слот '+slot.number,()=>launchSlot(slot.number,newGame),!newGame&&!slot.saved);
+  button.className='save-slot';
+  const detail=document.createElement('span');
+  detail.textContent=slot.saved
+   ? 'Заказов выполнено: '+slot.saved.completedOrders+' · '+slotDateFormat.format(slot.saved.savedAt)
+   : 'Пустой слот';
+  button.append(detail);
+ }
+ action('Назад',()=>open('actions'));
+}
+
+function leaveForStartMenu(){
+ saveGame();
+ location.reload();
+}
+
+
+function saveGame(now = Date.now()){
+ if(!activeSlot)return;
+ const saveKey=activeSlot.key;
+ try {
+  // Avoid overwriting a save that changed in another tab.
+  if(localStorage.getItem(saveKey)!==lastSave)return;
+  const snapshot=JSON.stringify({
+   savedAt:now, coins, stock, tea, potionStock, cropStock, purchasedIngredients, groundStock,
+   beds, upgradeLevels, completedOrders, legacyProgress, completedPotionOrders:[...completedPotionOrders],
+   orders, orderReplacementReadyAt, fairProject, afterFair:{
+    ...afterFair,completed:[...afterFair.completed],used:[...afterFair.used],practiced:[...afterFair.practiced]
+   }, distillBatch, distillReady, pendingRecipeUnlocks:[...pendingRecipeUnlocks],
+   gardenAutomation, brewAutomation, grindAutomation, supplier,
+   boiling, brewEnd, brewDuration, brewingRecipe, activeBrewQuantity, brewQueue, finishedBrews,
+   grindingEnd, activeGrind, grindQueue, finishedGrinds
+  });
+  localStorage.setItem(saveKey,snapshot);
+  lastSave=snapshot;
+ }catch(error){
+  // The game remains playable if the browser blocks persistent storage.
+ }
+}
+
+function restoreGame(saved){
+ ({
+  coins, stock, tea, potionStock, cropStock, purchasedIngredients, upgradeLevels,
+  completedOrders, orders, orderReplacementReadyAt,
+  brewAutomation, grindAutomation, supplier, boiling, brewEnd, brewDuration,
+  brewingRecipe, activeBrewQuantity, grindingEnd, activeGrind
+ }=saved);
+ delete upgradeLevels.shopkeeper;
+ for(const order of orders)delete order.auto;
+ for(const id of Object.keys(essenceRecipes)){
+  if(!Object.hasOwn(potionStock,id))potionStock[id]=99;
+ }
+ Object.assign(groundStock,saved.groundStock);
+ Object.assign(gardenAutomation,saved.gardenAutomation);
+ beds.splice(0,beds.length,...saved.beds);
+ brewQueue.push(...saved.brewQueue);
+ finishedBrews.push(...saved.finishedBrews);
+ grindQueue.push(...saved.grindQueue);
+ finishedGrinds.push(...saved.finishedGrinds);
+ saved.completedPotionOrders.forEach(id=>completedPotionOrders.add(id));
+ if(saved.fairProject){
+  const route=saved.fairProject.route;
+  fairProject.route=Object.hasOwn(fairRoutes,route)?route:null;
+  fairProject.delivered=[1,2].includes(saved.fairProject.delivered)?saved.fairProject.delivered:0;
+ }else{
+  fairProject.delivered=completedPotionOrders.has('healing_draught')?2:0;
+ }
+ if(Number.isFinite(saved.legacyProgress))legacyProgress=saved.legacyProgress;
+ else {
+  const previousGate=progressionGoals.find(goal=>goal.orders&&!goalMet(goal));
+  legacyProgress=previousGate?Math.min(completedOrders,previousGate.orders-1):completedOrders;
+ }
+ const event=saved.afterFair?.route;
+ afterFair.route=Object.hasOwn(afterFairEvents,event)?event:null;
+ afterFair.done=Boolean(afterFair.route&&saved.afterFair?.done);
+ for(const key of ['completed','used','practiced']){
+  const values=saved.afterFair?.[key];
+  if(Array.isArray(values))values.filter(route=>Object.hasOwn(afterFairEvents,route)).forEach(route=>afterFair[key].add(route));
+ }
+ if(afterFair.done)afterFair.completed.add(afterFair.route);
+ if(Array.isArray(saved.afterFair?.offers)){
+  afterFair.offers=[...new Set(saved.afterFair.offers.filter(id=>Object.hasOwn(potionData,id)&&id!=='tea'))].slice(0,2);
+ }
+ const boost=saved.afterFair?.boost;
+ if(afterFair.route==='orchard'&&afterFair.done&&Number.isInteger(boost?.bed)&&beds[boost.bed]&&[1,2].includes(boost.remaining)){
+  afterFair.boost={bed:boost.bed,remaining:boost.remaining};
+ }
+ const batch=saved.distillBatch;
+ distillBatch=batch&&Object.hasOwn(essenceRecipes,batch.id)&&Number.isFinite(batch.end)?batch:null;
+ distillReady=!distillBatch&&Object.hasOwn(essenceRecipes,saved.distillReady)?saved.distillReady:null;
+ // Preserve the contents of removed routes and refund obsolete production once.
+ const removedRecipes={clear_sight:{sunflower:2,mintleaf:2},steady_grip:{spring_root:2,sunflower:1,rainbow_powder:1}};
+ const removed=id=>Object.hasOwn(removedRecipes,id);
+ const refund=(id,quantity)=>{
+  if(!removed(id)||!Number.isSafeInteger(quantity)||quantity<1)return;
+  for(const [ingredient,amount] of Object.entries(removedRecipes[id]))changeIngredient(ingredient,amount*quantity);
+ };
+ if(Array.isArray(saved.mapTrip?.finds)){
+  const validNodes={north:['mintleaf'],meadow:['mintleaf'],south:['coins'],trail:['coins','wind_feather'],spring:['moon_dew'],dock:['wind_feather']},credited=new Set();
+  for(const find of saved.mapTrip.finds){
+   if(!find||credited.has(find.node)||!validNodes[find.node]?.includes(find.id)||!Number.isSafeInteger(find.amount)||find.amount<1||find.amount>5||!Number.isSafeInteger(find.coins)||find.coins<0||find.coins>8)continue;
+   credited.add(find.node);
+   if(find.id==='coins')coins+=find.amount;else changeIngredient(find.id,find.amount);
+   coins+=find.coins;
+  }
+ }
+ const initialStock=legacySaveKey==='lunar-shop:standard:v1'?0:99;
+ for(const id of Object.keys(removedRecipes)){refund(id,Math.max(0,(potionStock[id]||0)-initialStock));delete potionStock[id]}
+ if(removed(brewingRecipe)){
+  if(boiling)refund(brewingRecipe,activeBrewQuantity);
+  boiling=false;brewEnd=0;brewingRecipe='tea';activeBrewQuantity=1;
+ }
+ for(let i=brewQueue.length-1;i>=0;i--){
+  const batch=brewQueue[i];if(!removed(batch.recipe))continue;
+  if(Array.isArray(batch.costs)&&batch.costs.length){for(const [id,amount] of batch.costs)if(Number.isSafeInteger(amount)&&amount>0)changeIngredient(id,amount)}
+  else refund(batch.recipe,batch.quantity);
+  brewQueue.splice(i,1);
+ }
+ for(let i=finishedBrews.length-1;i>=0;i--){
+  if(!removed(finishedBrews[i].recipe))continue;
+  refund(finishedBrews[i].recipe,finishedBrews[i].quantity);finishedBrews.splice(i,1);
+ }
+ const oldReputation=Math.min(completedOrders,2)+3*[...completedPotionOrders].filter(id=>id!=='tea').length;
+ if([...completedPotionOrders].some(removed))legacyProgress=Math.max(legacyProgress,oldReputation);
+
+ for(let i=0;i<orders.length;i++)if(removed(orders[i].id)||(orders[i].items||[]).some(item=>removed(item.id)))orders[i]=nextOrder(i);
+ saved.pendingRecipeUnlocks.filter(name=>!['Ясный взгляд','Крепкая хватка'].includes(name)).forEach(name=>pendingRecipeUnlocks.add(name));
+ brewReady=finishedBrews.length>0;
+}
+
+function advanceOffline(savedAt,now){
+ if(now<=savedAt)return [];
+ const counts = () => ({
+  harvest:plants.reduce((sum,plant)=>sum+ingredientCount(plant.id),0),
+  brewed:finishedBrews.reduce((sum,batch)=>sum+batch.quantity,0),
+  ground:finishedGrinds.reduce((sum,batch)=>sum+batch.quantity,0),
+  distilled:Object.keys(essenceRecipes).reduce((sum,id)=>sum+potionCount(id),0),
+  distilledReady:Number(Boolean(distillReady)),
+  brewedStock:Object.keys(potionData).reduce((sum,id)=>sum+potionCount(id),0),
+  groundStock:Object.values(groundStock).reduce((sum,amount)=>sum+amount,0)
+ });
+ const before=counts();
+ const growingBeds=beds.filter(bed=>bed.state==='growing');
+ const end=Math.min(now,savedAt+offlineLimit);
+ let time=savedAt;
+ advanceProduction(time);
+ while(true){
+  const deadlines=beds.filter(bed=>bed.state==='growing').map(bed=>bed.end);
+  if(boiling)deadlines.push(brewEnd);
+  if(grindingEnd)deadlines.push(grindingEnd);
+  if(distillBatch)deadlines.push(distillBatch.end);
+  time=Math.min(...deadlines);
+  if(time>end)break;
+  advanceProduction(time);
+ }
+
+ // Keep the remaining time on jobs that were still running when the limit was reached.
+ const paused=now-end;
+ for(const bed of beds)if(bed.state==='growing')bed.end+=paused;
+ if(boiling)brewEnd+=paused;
+ if(grindingEnd)grindingEnd+=paused;
+ if(distillBatch)distillBatch.end+=paused;
+
+ const after=counts();
+ const ripe=growingBeds.filter(bed=>bed.state==='ready').length;
+ const rows=[];
+ if(ripe)rows.push('Грядок созрело: '+ripe);
+ if(after.harvest>before.harvest)rows.push('Автосбор добавил в инвентарь: '+(after.harvest-before.harvest));
+ if(after.brewed>before.brewed)rows.push('Порций в котле готово: '+(after.brewed-before.brewed));
+ if(after.ground>before.ground)rows.push('Порций в ступке готово: '+(after.ground-before.ground));
+ if(after.distilledReady>before.distilledReady)rows.push('В кубе готова эссенция');
+ if(after.brewedStock>before.brewedStock)rows.push('Зелий собрано: '+(after.brewedStock-before.brewedStock));
+ if(after.groundStock>before.groundStock)rows.push('Порошков собрано: '+(after.groundStock-before.groundStock));
+ if(after.distilled>before.distilled)rows.push('Эссенций в инвентаре: +'+(after.distilled-before.distilled));
+ return rows;
+}
+
+function showReturnSummary(rows){
+ const {pane,close}=framedAutomationDialog('С возвращением!','garden-automation-dialog');
+ for(const message of rows){
+  const line=document.createElement('p');
+  line.textContent=message;
+  pane.append(line);
+ }
+ framedConfirmAction(pane,'Продолжить',close).focus();
+}
+
+addEventListener('pagehide',()=>saveGame());
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState==='hidden')saveGame();
+});
+
+let frame=0,lastSecond=0,needsRender=false;
+setInterval(()=>{
+ if(!activeSlot)return;
+ const now=Date.now(), sec=Math.floor(now/1000);
+ if(advanceProduction(now)){needsRender=true;refreshOpenQueue?.()}
+ if(sec!==lastSecond){
+  lastSecond=sec;
+  refreshOrderReplacement?.(now);
+  if(runSupplier())needsRender=true;
+  saveGame(now);
+  if((page==='garden'&&beds.some(b=>b.state==='growing'))||(page==='lab'&&(boiling||grindingEnd||distillBatch)))needsRender=true;
+ }
+ if(needsRender&&!view.querySelector('.cover')){needsRender=false;render()}
+ let effect=document.getElementById('boil');
+ if(effect){frame=(frame+1)%36;effect.style.backgroundPosition=`${(frame%6)*20}% ${Math.floor(frame/6)*20}%`}
+},80);
+render();
+</script></body></html>

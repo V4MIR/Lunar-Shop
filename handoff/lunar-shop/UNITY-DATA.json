@@ -1,0 +1,1601 @@
+{
+  "sourceFiles": {
+    "standard": {
+      "file": "prototype.html",
+      "sha256Utf8WithLf": "164c956ff7a148213c3f8850cfc56bcbee4b7098b00e89c1c820f673fd0c3654"
+    },
+    "stocked": {
+      "file": "prototype-stocked.html",
+      "sha256Utf8WithLf": "91a9a93aafcda6e95f881a9cd9dc898e843892f2c3662756638d544b1def34ff"
+    },
+    "unlocked": {
+      "file": "prototype-unlocked.html",
+      "sha256Utf8WithLf": "da3cc9e3aaa2c2fa2bc660f77eae57b069ec323dc9ae813c632850edb639df0c"
+    }
+  },
+  "newGames": {
+    "standard": {
+      "saveNamespace": "lunar-shop:standard:v1",
+      "coins": 15,
+      "completedOrders": 0,
+      "legacyProgress": 0,
+      "reputation": 0,
+      "availableProgress": 0,
+      "firstDeliveries": [],
+      "bedStates": [
+        "empty",
+        "empty",
+        "empty",
+        "locked",
+        "locked",
+        "locked"
+      ],
+      "ingredients": {
+        "mintleaf": 0,
+        "sunflower": 0,
+        "moon_lavender": 0,
+        "mist_berry": 0,
+        "spring_root": 0,
+        "whispering_fern": 0,
+        "stoneflower": 0,
+        "wind_feather": 0,
+        "moon_dew": 0,
+        "prismatic_crystal": 0,
+        "memory_sand": 0,
+        "frost_salt": 0,
+        "deep_pearl": 0,
+        "amber_resin": 0,
+        "rainbow_powder": 0,
+        "stoneflower_powder": 0,
+        "amber_resin_powder": 0
+      },
+      "products": {
+        "sun": 0,
+        "dream": 0,
+        "rainbow": 0,
+        "wind": 0,
+        "forest": 0,
+        "echo": 0,
+        "letter": 0,
+        "cat": 0,
+        "spring": 0,
+        "mighty": 0,
+        "precise": 0,
+        "animal": 0,
+        "bloom": 0,
+        "weather": 0,
+        "night": 0,
+        "tea": 0,
+        "winter_warmth": 0,
+        "underwater_breath": 0,
+        "stone_skin": 0,
+        "fire_ward": 0,
+        "healing_draught": 0,
+        "lunar_essence": 0,
+        "solar_essence": 0
+      },
+      "upgradeLevels": {},
+      "gardenAutomation": {
+        "replant": true,
+        "harvest": true
+      },
+      "brewAutoStart": true,
+      "grindAutoStart": true,
+      "supplier": {
+        "enabled": false,
+        "budget": 0,
+        "spent": 0,
+        "targets": {}
+      },
+      "fairRoute": null,
+      "fairDeliveries": 0,
+      "visibleOrderCount": 2,
+      "startingOrders": [
+        {
+          "id": "tea",
+          "quantity": 1,
+          "customer": "Травница Мира"
+        },
+        {
+          "id": "tea",
+          "quantity": 1,
+          "customer": "Пекарь Тихон"
+        }
+      ]
+    },
+    "stocked": {
+      "saveNamespace": "lunar-shop:stocked:v1",
+      "coins": 999,
+      "completedOrders": 0,
+      "legacyProgress": 0,
+      "reputation": 0,
+      "availableProgress": 0,
+      "firstDeliveries": [],
+      "bedStates": [
+        "empty",
+        "empty",
+        "empty",
+        "locked",
+        "locked",
+        "locked"
+      ],
+      "ingredients": {
+        "mintleaf": 99,
+        "sunflower": 99,
+        "moon_lavender": 99,
+        "mist_berry": 99,
+        "spring_root": 99,
+        "whispering_fern": 99,
+        "stoneflower": 99,
+        "wind_feather": 99,
+        "moon_dew": 99,
+        "prismatic_crystal": 99,
+        "memory_sand": 99,
+        "frost_salt": 99,
+        "deep_pearl": 99,
+        "amber_resin": 99,
+        "rainbow_powder": 99,
+        "stoneflower_powder": 99,
+        "amber_resin_powder": 99
+      },
+      "products": {
+        "sun": 99,
+        "dream": 99,
+        "rainbow": 99,
+        "wind": 99,
+        "forest": 99,
+        "echo": 99,
+        "letter": 99,
+        "cat": 99,
+        "spring": 99,
+        "mighty": 99,
+        "precise": 99,
+        "animal": 99,
+        "bloom": 99,
+        "weather": 99,
+        "night": 99,
+        "tea": 99,
+        "winter_warmth": 99,
+        "underwater_breath": 99,
+        "stone_skin": 99,
+        "fire_ward": 99,
+        "healing_draught": 99,
+        "lunar_essence": 99,
+        "solar_essence": 99
+      },
+      "upgradeLevels": {},
+      "gardenAutomation": {
+        "replant": true,
+        "harvest": true
+      },
+      "brewAutoStart": true,
+      "grindAutoStart": true,
+      "supplier": {
+        "enabled": false,
+        "budget": 0,
+        "spent": 0,
+        "targets": {}
+      },
+      "fairRoute": null,
+      "fairDeliveries": 0,
+      "visibleOrderCount": 2,
+      "startingOrders": [
+        {
+          "id": "tea",
+          "quantity": 1,
+          "customer": "Травница Мира"
+        },
+        {
+          "id": "tea",
+          "quantity": 1,
+          "customer": "Пекарь Тихон"
+        }
+      ]
+    },
+    "unlocked": {
+      "saveNamespace": "lunar-shop:unlocked:v1",
+      "coins": 999,
+      "completedOrders": 30,
+      "legacyProgress": 30,
+      "reputation": 30,
+      "availableProgress": 30,
+      "firstDeliveries": [
+        "rainbow",
+        "sun",
+        "wind"
+      ],
+      "bedStates": [
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty",
+        "empty"
+      ],
+      "ingredients": {
+        "mintleaf": 99,
+        "sunflower": 99,
+        "moon_lavender": 99,
+        "mist_berry": 99,
+        "spring_root": 99,
+        "whispering_fern": 99,
+        "stoneflower": 99,
+        "wind_feather": 99,
+        "moon_dew": 99,
+        "prismatic_crystal": 99,
+        "memory_sand": 99,
+        "frost_salt": 99,
+        "deep_pearl": 99,
+        "amber_resin": 99,
+        "rainbow_powder": 99,
+        "stoneflower_powder": 99,
+        "amber_resin_powder": 99
+      },
+      "products": {
+        "sun": 99,
+        "dream": 99,
+        "rainbow": 99,
+        "wind": 99,
+        "forest": 99,
+        "echo": 99,
+        "letter": 99,
+        "cat": 99,
+        "spring": 99,
+        "mighty": 99,
+        "precise": 99,
+        "animal": 99,
+        "bloom": 99,
+        "weather": 99,
+        "night": 99,
+        "tea": 99,
+        "winter_warmth": 99,
+        "underwater_breath": 99,
+        "stone_skin": 99,
+        "fire_ward": 99,
+        "healing_draught": 99,
+        "lunar_essence": 99,
+        "solar_essence": 99
+      },
+      "upgradeLevels": {
+        "soil": 2,
+        "watering": 2,
+        "planter": 1,
+        "gardener": 1,
+        "capacity": 2,
+        "speed": 2,
+        "queue": 2,
+        "brew_collect": 1,
+        "mortar_capacity": 1,
+        "grinding": 1,
+        "grind_collect": 1,
+        "distill_collect": 1,
+        "deals": 2,
+        "slot": 1,
+        "bulk": 1,
+        "supplier": 1
+      },
+      "gardenAutomation": {
+        "replant": true,
+        "harvest": false
+      },
+      "brewAutoStart": true,
+      "grindAutoStart": true,
+      "supplier": {
+        "enabled": false,
+        "budget": 0,
+        "spent": 0,
+        "targets": {}
+      },
+      "fairRoute": null,
+      "fairDeliveries": 2,
+      "visibleOrderCount": 4,
+      "startingOrders": null
+    }
+  },
+  "groups": [
+    {
+      "id": "basic",
+      "name": "Базовая алхимия"
+    },
+    {
+      "id": "mind",
+      "name": "Разум и чувства"
+    },
+    {
+      "id": "motion",
+      "name": "Движение"
+    },
+    {
+      "id": "nature",
+      "name": "Природа"
+    },
+    {
+      "id": "protection",
+      "name": "Защита и восстановление"
+    }
+  ],
+  "crops": [
+    {
+      "id": "mintleaf",
+      "name": "Мятнолист",
+      "requiredProgress": 0,
+      "growSeconds": 20,
+      "description": "Листья с прохладным ароматом и нежными мятными цветками. Из них готовят мятный чай.",
+      "inventorySprite": "Спрайты/Общие/Предметы/harvested_mintleaf.png",
+      "sproutSprite": "Спрайты/Сад/Растения/mintleaf_seedling.png",
+      "matureSprite": "Спрайты/Сад/Растения/mature_mintleaf.png"
+    },
+    {
+      "id": "sunflower",
+      "name": "Солнцецвет",
+      "requiredProgress": 2,
+      "growSeconds": 45,
+      "description": "Золотой цветок поворачивается к свету и словно хранит тепло солнечного дня.",
+      "inventorySprite": "Спрайты/Общие/Предметы/Ингредиенты/sunflower.png",
+      "sproutSprite": "Спрайты/Сад/Растения/seedling_sunflower.png",
+      "matureSprite": "Спрайты/Сад/Растения/mature_sunflower.png"
+    },
+    {
+      "id": "moon_lavender",
+      "name": "Лунная лаванда",
+      "requiredProgress": 2,
+      "growSeconds": 60,
+      "description": "Серебристые листья и лиловые цветки особенно благоухают в лунные ночи.",
+      "inventorySprite": "Спрайты/Общие/Предметы/Ингредиенты/moon_lavender.png",
+      "sproutSprite": "Спрайты/Сад/Растения/seedling_moon_lavender.png",
+      "matureSprite": "Спрайты/Сад/Растения/mature_moon_lavender.png"
+    },
+    {
+      "id": "mist_berry",
+      "name": "Туманная ягода",
+      "requiredProgress": 2,
+      "growSeconds": 90,
+      "description": "Синеватые ягоды покрываются лёгкой дымкой прохладным утром.",
+      "inventorySprite": "Спрайты/Общие/Предметы/Ингредиенты/mist_berry.png",
+      "sproutSprite": "Спрайты/Сад/Растения/seedling_mist_berry.png",
+      "matureSprite": "Спрайты/Сад/Растения/mature_mist_berry.png"
+    },
+    {
+      "id": "spring_root",
+      "name": "Пружинный корень",
+      "requiredProgress": 6,
+      "growSeconds": 75,
+      "description": "Закрученный корень упруго распрямляется, если осторожно потянуть за него.",
+      "inventorySprite": "Спрайты/Общие/Предметы/Ингредиенты/spring_root.png",
+      "sproutSprite": "Спрайты/Сад/Растения/seedling_spring_root.png",
+      "matureSprite": "Спрайты/Сад/Растения/mature_spring_root.png"
+    },
+    {
+      "id": "whispering_fern",
+      "name": "Шепчущий папоротник",
+      "requiredProgress": 12,
+      "growSeconds": 90,
+      "description": "Тонкие вайи тихо шелестят, даже когда вокруг нет ветра.",
+      "inventorySprite": "Спрайты/Общие/Предметы/Ингредиенты/whispering_fern.png",
+      "sproutSprite": "Спрайты/Сад/Растения/seedling_whispering_fern.png",
+      "matureSprite": "Спрайты/Сад/Растения/mature_whispering_fern.png"
+    },
+    {
+      "id": "stoneflower",
+      "name": "Камнецвет",
+      "requiredProgress": 28,
+      "growSeconds": 90,
+      "description": "Горный цветок с твёрдыми серыми лепестками. Его каменная чашечка удерживает жар даже в кипящем отваре. Чтобы высвободить жар, чашечку нужно раздробить в ступке.",
+      "inventorySprite": "Спрайты/Общие/Предметы/Ингредиенты/stoneflower.png",
+      "sproutSprite": "Спрайты/Сад/Растения/seedling_stoneflower.png",
+      "matureSprite": "Спрайты/Сад/Растения/mature_stoneflower.png"
+    }
+  ],
+  "bedPrices": [
+    0,
+    0,
+    0,
+    60,
+    140,
+    280
+  ],
+  "shopItems": [
+    {
+      "id": "wind_feather",
+      "name": "Перо ветра",
+      "unitPrice": 4,
+      "requiredProgress": 6,
+      "description": "Лёгкое перо, которое колышется даже в неподвижном воздухе. Используется в зельях движения.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/wind_feather.png"
+    },
+    {
+      "id": "moon_dew",
+      "name": "Лунная роса",
+      "unitPrice": 3,
+      "requiredProgress": 8,
+      "description": "Серебристые капли собирают в ясную лунную ночь. Они долго сохраняют прохладу.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/moon_dew.png"
+    },
+    {
+      "id": "prismatic_crystal",
+      "name": "Призматический кристалл",
+      "unitPrice": 6,
+      "requiredProgress": 12,
+      "description": "Многогранный кристалл переливается разными цветами, если повернуть его к свету.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/prismatic_crystal.png"
+    },
+    {
+      "id": "memory_sand",
+      "name": "Песок воспоминаний",
+      "unitPrice": 8,
+      "requiredProgress": 16,
+      "description": "Золотистые песчинки мерцают, когда рядом вспоминают что-то важное.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/memory_sand.png"
+    },
+    {
+      "id": "frost_salt",
+      "name": "Морозная соль",
+      "unitPrice": 4,
+      "requiredProgress": 22,
+      "description": "Белые кристаллы находят в горных пещерах. В отваре они помогают удерживать тепло.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/frost_salt.png"
+    },
+    {
+      "id": "deep_pearl",
+      "name": "Жемчужина глубин",
+      "unitPrice": 7,
+      "requiredProgress": 24,
+      "description": "Растёт в раковинах на большой глубине и мерцает даже в полумраке. Несмотря на кажущуюся твердость, она легко растворяется в кипящей воде.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/deep_pearl.png"
+    },
+    {
+      "id": "amber_resin",
+      "name": "Янтарная живица",
+      "unitPrice": 6,
+      "requiredProgress": 30,
+      "description": "Затвердевшая смола древних сосен. Цельный кусок почти не растворяется в отваре. Порошок можно равномерно смешать с зельем.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/amber_resin.png"
+    }
+  ],
+  "grinding": [
+    {
+      "inputId": "prismatic_crystal",
+      "outputId": "rainbow_powder",
+      "outputName": "Радужный порошок",
+      "requiredProgress": 12,
+      "description": "Мелкий переливчатый порошок из измельчённого призматического кристалла.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/rainbow_powder.png"
+    },
+    {
+      "inputId": "stoneflower",
+      "outputId": "stoneflower_powder",
+      "outputName": "Порошок камнецвета",
+      "requiredProgress": 28,
+      "description": "Серый порошок с золотистыми крупинками из раздробленной чашечки камнецвета. В отваре отдают накопленный жар и придают зелью силу огненной защиты.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/stoneflower_powder.png"
+    },
+    {
+      "inputId": "amber_resin",
+      "outputId": "amber_resin_powder",
+      "outputName": "Порошок живицы",
+      "requiredProgress": 30,
+      "description": "Мелкий янтарный порошок с хвойным запахом. В горячем отваре растворяется и образует основу живительного настоя.",
+      "sprite": "Спрайты/Общие/Предметы/Ингредиенты/amber_resin_powder.png"
+    }
+  ],
+  "potions": [
+    {
+      "id": "sun",
+      "name": "Капля солнца",
+      "group": "mind",
+      "description": "Поднимает настроение\nв хмурый день.",
+      "requiredProgress": 2,
+      "baseBrewSeconds": 20,
+      "baseOrderReward": 26,
+      "ingredients": {
+        "sunflower": 2,
+        "mintleaf": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/mind_and_feelings/drop_of_sun.png"
+    },
+    {
+      "id": "dream",
+      "name": "Ловец снов",
+      "group": "mind",
+      "description": "Позволяет управлять сном,\nесли принять перед сном.",
+      "requiredProgress": 2,
+      "baseBrewSeconds": 20,
+      "baseOrderReward": 26,
+      "ingredients": {
+        "moon_lavender": 2,
+        "mist_berry": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/mind_and_feelings/dream_catcher.png"
+    },
+    {
+      "id": "rainbow",
+      "name": "Радужный пузырёк",
+      "group": "mind",
+      "description": "Позволяет ненадолго увидеть мир\nглазами другого человека.",
+      "requiredProgress": 12,
+      "baseBrewSeconds": 30,
+      "baseOrderReward": 44,
+      "ingredients": {
+        "mist_berry": 3,
+        "moon_lavender": 2,
+        "rainbow_powder": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/mind_and_feelings/rainbow_bubble.png"
+    },
+    {
+      "id": "wind",
+      "name": "Ветреный эликсир",
+      "group": "motion",
+      "description": "Ускоряет и делает\nдвижения легче.",
+      "requiredProgress": 6,
+      "baseBrewSeconds": 20,
+      "baseOrderReward": 26,
+      "ingredients": {
+        "mintleaf": 2,
+        "spring_root": 1,
+        "wind_feather": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/movement/wind_elixir.png"
+    },
+    {
+      "id": "forest",
+      "name": "Лесной шёпот",
+      "group": "nature",
+      "description": "Позволяет понимать,\nчто говорят растения.",
+      "requiredProgress": 12,
+      "baseBrewSeconds": 20,
+      "baseOrderReward": 26,
+      "ingredients": {
+        "whispering_fern": 2,
+        "mintleaf": 2
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/nature/forest_whisper.png"
+    },
+    {
+      "id": "echo",
+      "name": "Эхо чувств",
+      "group": "mind",
+      "description": "Помогает понять эмоции\nдругого человека.",
+      "requiredProgress": 10,
+      "baseBrewSeconds": 30,
+      "baseOrderReward": 44,
+      "ingredients": {
+        "mist_berry": 2,
+        "sunflower": 2,
+        "moon_dew": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/mind_and_feelings/echo_of_feelings.png"
+    },
+    {
+      "id": "letter",
+      "name": "Письмо из прошлого",
+      "group": "mind",
+      "description": "Позволяет вновь пережить\nсобственное воспоминание.",
+      "requiredProgress": 16,
+      "baseBrewSeconds": 45,
+      "baseOrderReward": 64,
+      "ingredients": {
+        "moon_lavender": 3,
+        "mist_berry": 2,
+        "sunflower": 1,
+        "memory_sand": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/mind_and_feelings/letter_from_the_past.png"
+    },
+    {
+      "id": "cat",
+      "name": "Кошачий шаг",
+      "group": "motion",
+      "description": "Помогает передвигаться\nпочти бесшумно.",
+      "requiredProgress": 8,
+      "baseBrewSeconds": 20,
+      "baseOrderReward": 26,
+      "ingredients": {
+        "spring_root": 2,
+        "moon_lavender": 2
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/movement/cat_step.png"
+    },
+    {
+      "id": "spring",
+      "name": "Пружинный эликсир",
+      "group": "motion",
+      "description": "Позволяет прыгать выше.",
+      "requiredProgress": 10,
+      "baseBrewSeconds": 30,
+      "baseOrderReward": 44,
+      "ingredients": {
+        "spring_root": 3,
+        "sunflower": 2,
+        "wind_feather": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/movement/spring_elixir.png"
+    },
+    {
+      "id": "mighty",
+      "name": "Могучий эликсир",
+      "group": "motion",
+      "description": "Повышает физическую силу.",
+      "requiredProgress": 14,
+      "baseBrewSeconds": 45,
+      "baseOrderReward": 64,
+      "ingredients": {
+        "spring_root": 3,
+        "sunflower": 2,
+        "whispering_fern": 1,
+        "moon_dew": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/movement/mighty_elixir.png"
+    },
+    {
+      "id": "precise",
+      "name": "Верное движение",
+      "group": "motion",
+      "description": "Делает движения\nочень точными.",
+      "requiredProgress": 18,
+      "baseBrewSeconds": 60,
+      "baseOrderReward": 84,
+      "ingredients": {
+        "spring_root": 3,
+        "mist_berry": 2,
+        "mintleaf": 2,
+        "wind_feather": 1,
+        "rainbow_powder": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/movement/precise_movement.png"
+    },
+    {
+      "id": "animal",
+      "name": "Звериный язык",
+      "group": "nature",
+      "description": "Позволяет понимать\nвсех животных.",
+      "requiredProgress": 14,
+      "baseBrewSeconds": 30,
+      "baseOrderReward": 44,
+      "ingredients": {
+        "whispering_fern": 2,
+        "mist_berry": 2,
+        "moon_dew": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/nature/animal_tongue.png"
+    },
+    {
+      "id": "bloom",
+      "name": "Лунное цветение",
+      "group": "nature",
+      "description": "Заставляет растение\nзацвести ночью.",
+      "requiredProgress": 18,
+      "baseBrewSeconds": 45,
+      "baseOrderReward": 64,
+      "ingredients": {
+        "whispering_fern": 3,
+        "moon_lavender": 2,
+        "sunflower": 1,
+        "moon_dew": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/nature/moon_bloom.png"
+    },
+    {
+      "id": "weather",
+      "name": "Дыхание погоды",
+      "group": "nature",
+      "description": "Позволяет предсказать погоду.",
+      "requiredProgress": 16,
+      "baseBrewSeconds": 30,
+      "baseOrderReward": 44,
+      "ingredients": {
+        "whispering_fern": 2,
+        "moon_lavender": 2,
+        "mintleaf": 1,
+        "wind_feather": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/nature/weather_breath.png"
+    },
+    {
+      "id": "night",
+      "name": "Ночной взгляд",
+      "group": "nature",
+      "description": "Позволяет некоторое время\nвидеть в темноте.",
+      "requiredProgress": 20,
+      "baseBrewSeconds": 45,
+      "baseOrderReward": 64,
+      "ingredients": {
+        "mist_berry": 3,
+        "moon_lavender": 2,
+        "whispering_fern": 1,
+        "rainbow_powder": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/nature/night_sight.png"
+    },
+    {
+      "id": "tea",
+      "name": "Мятный чай",
+      "group": "basic",
+      "description": "Тёплый чай из свежего мятнолиста.",
+      "requiredProgress": 0,
+      "baseBrewSeconds": 15,
+      "baseOrderReward": 15,
+      "ingredients": {
+        "mintleaf": 2
+      },
+      "sprite": "Спрайты/Общие/Предметы/mintleaf_tea.png"
+    },
+    {
+      "id": "winter_warmth",
+      "name": "Зимнее тепло",
+      "group": "protection",
+      "description": "На час сохраняет тепло тела на морозе.",
+      "requiredProgress": 22,
+      "baseBrewSeconds": 30,
+      "baseOrderReward": 44,
+      "ingredients": {
+        "mintleaf": 2,
+        "sunflower": 2,
+        "frost_salt": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/protection/winter_warmth.png"
+    },
+    {
+      "id": "underwater_breath",
+      "name": "Подводный вдох",
+      "group": "protection",
+      "description": "Позволяет пять минут дышать под водой.",
+      "requiredProgress": 24,
+      "baseBrewSeconds": 45,
+      "baseOrderReward": 64,
+      "ingredients": {
+        "moon_lavender": 2,
+        "moon_dew": 2,
+        "deep_pearl": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/protection/underwater_breath.png"
+    },
+    {
+      "id": "stone_skin",
+      "name": "Каменная кожа",
+      "group": "protection",
+      "description": "На минуту защищает кожу от порезов и ударов.",
+      "requiredProgress": 26,
+      "baseBrewSeconds": 45,
+      "baseOrderReward": 64,
+      "ingredients": {
+        "spring_root": 2,
+        "frost_salt": 1,
+        "rainbow_powder": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/protection/stone_skin.png"
+    },
+    {
+      "id": "fire_ward",
+      "name": "Огненный покров",
+      "group": "protection",
+      "description": "На несколько мгновений защищает тело от пламени.",
+      "requiredProgress": 28,
+      "baseBrewSeconds": 45,
+      "baseOrderReward": 64,
+      "ingredients": {
+        "stoneflower_powder": 2,
+        "frost_salt": 1,
+        "moon_dew": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/protection/fire_ward.png"
+    },
+    {
+      "id": "healing_draught",
+      "name": "Живительный настой",
+      "group": "protection",
+      "description": "Останавливает кровотечение и ускоряет заживление свежих ран.",
+      "requiredProgress": 30,
+      "baseBrewSeconds": 60,
+      "baseOrderReward": 96,
+      "ingredients": {
+        "amber_resin_powder": 2,
+        "mist_berry": 2,
+        "sunflower": 1,
+        "deep_pearl": 1
+      },
+      "sprite": "Спрайты/Общие/Предметы/Зелья/protection/healing_draught.png"
+    }
+  ],
+  "keyDeliveries": [
+    {
+      "unblocksProgressAt": 6,
+      "offerFromProgress": 2,
+      "acceptedPotionIds": [
+        "sun",
+        "dream"
+      ],
+      "title": "Утро пекаря",
+      "customer": "Пекарь Тихон",
+      "instruction": "Сдать «Каплю солнца» или «Ловца снов»",
+      "unlockTitle": "Открыть категорию «Движение»",
+      "bonusCoins": 25
+    },
+    {
+      "unblocksProgressAt": 12,
+      "offerFromProgress": 6,
+      "acceptedPotionIds": [
+        "wind",
+        "cat",
+        "spring"
+      ],
+      "title": "Поручение садовницы",
+      "customer": "Садовница Лея",
+      "instruction": "Сдать любое открытое зелье из категории «Движение»",
+      "unlockTitle": "Открыть ступку и категорию «Природа»",
+      "bonusCoins": 35
+    },
+    {
+      "unblocksProgressAt": 20,
+      "offerFromProgress": 12,
+      "acceptedPotionIds": [
+        "rainbow",
+        "precise"
+      ],
+      "title": "Заказ с радужным порошком",
+      "customer": "Торговец Савва",
+      "instruction": "Сдать «Радужный пузырёк» или «Верное движение»",
+      "unlockTitle": "Открыть рецепт «Ночной взгляд»",
+      "bonusCoins": 55
+    }
+  ],
+  "upgrades": [
+    {
+      "groupId": "garden",
+      "name": "Сад",
+      "sprite": "Спрайты/Улучшения/icons/garden/tab_garden.png",
+      "items": [
+        {
+          "id": "soil",
+          "name": "Плодородная почва",
+          "sprite": "Спрайты/Улучшения/icons/garden/fertile_soil.png",
+          "description": "Увеличивает урожай со всех грядок.",
+          "pricesByLevel": [
+            75,
+            220
+          ],
+          "effectsByLevel": [
+            "Урожай: 3 → 4",
+            "Урожай: 4 → 5"
+          ]
+        },
+        {
+          "id": "watering",
+          "name": "Волшебная лейка",
+          "sprite": "Спрайты/Улучшения/icons/garden/magic_watering_can.png",
+          "description": "Ускоряет рост растений на всех грядках.",
+          "pricesByLevel": [
+            70,
+            180
+          ],
+          "effectsByLevel": [
+            "Время роста −15%",
+            "Время роста −30%"
+          ]
+        },
+        {
+          "id": "planter",
+          "name": "Самосажалка",
+          "sprite": "Спрайты/Улучшения/icons/garden/auto_planter.png",
+          "description": "Повторно сажает выбранное растение после сбора.",
+          "pricesByLevel": [
+            180
+          ],
+          "effectsByLevel": [
+            "Автоматическая посадка"
+          ]
+        },
+        {
+          "id": "gardener",
+          "name": "Садовый помощник",
+          "sprite": "Спрайты/Улучшения/icons/garden/garden_helper.png",
+          "description": "Автоматически собирает созревший урожай.",
+          "pricesByLevel": [
+            300
+          ],
+          "effectsByLevel": [
+            "Автоматический сбор"
+          ]
+        }
+      ]
+    },
+    {
+      "groupId": "cauldron",
+      "name": "Котёл",
+      "sprite": "Спрайты/Улучшения/icons/cauldron/tab_cauldron.png",
+      "items": [
+        {
+          "id": "capacity",
+          "name": "Вместительный котёл",
+          "sprite": "Спрайты/Улучшения/icons/cauldron/larger_batch.png",
+          "description": "Увеличивает количество одинаковых зелий в одной партии.",
+          "pricesByLevel": [
+            100,
+            240
+          ],
+          "effectsByLevel": [
+            "До 2 зелий за партию",
+            "До 3 зелий за партию"
+          ]
+        },
+        {
+          "id": "speed",
+          "name": "Ускорение котла",
+          "sprite": "Спрайты/Улучшения/icons/cauldron/faster_brew.png",
+          "description": "Уменьшает время приготовления зелий.",
+          "pricesByLevel": [
+            90,
+            200
+          ],
+          "effectsByLevel": [
+            "Время варки −15%",
+            "Время варки −30%"
+          ]
+        },
+        {
+          "id": "queue",
+          "name": "Очередь котла",
+          "sprite": "Спрайты/Улучшения/icons/cauldron/brewing_queue.png",
+          "description": "Позволяет заранее назначить ожидающие партии.",
+          "pricesByLevel": [
+            150,
+            300
+          ],
+          "effectsByLevel": [
+            "2 ожидающие партии",
+            "4 ожидающие партии"
+          ]
+        },
+        {
+          "id": "brew_collect",
+          "name": "Автосбор котла",
+          "sprite": "Спрайты/Улучшения/icons/cauldron/auto_collect.png",
+          "description": "Готовые зелья сразу поступают в инвентарь.",
+          "pricesByLevel": [
+            220
+          ],
+          "effectsByLevel": [
+            "Автоматический сбор зелий"
+          ]
+        }
+      ]
+    },
+    {
+      "groupId": "mortar",
+      "name": "Ступка",
+      "sprite": "Спрайты/Улучшения/icons/mortar/tab_mortar.png",
+      "requiredProgress": 12,
+      "items": [
+        {
+          "id": "mortar_capacity",
+          "name": "Прочная ступка",
+          "sprite": "Спрайты/Улучшения/icons/mortar/sturdy_mortar.png",
+          "description": "Увеличивает размер партии ингредиентов.",
+          "pricesByLevel": [
+            120
+          ],
+          "effectsByLevel": [
+            "До 6 ингредиентов за партию"
+          ]
+        },
+        {
+          "id": "grinding",
+          "name": "Самоизмельчение",
+          "sprite": "Спрайты/Улучшения/icons/mortar/auto_grind.png",
+          "description": "Автоматически выполняет очередь измельчения.",
+          "pricesByLevel": [
+            260
+          ],
+          "effectsByLevel": [
+            "Автоматическая очередь"
+          ]
+        },
+        {
+          "id": "grind_collect",
+          "name": "Автосбор ступки",
+          "sprite": "Спрайты/Улучшения/icons/mortar/auto_collect.png",
+          "description": "Готовые порошки сразу поступают в инвентарь.",
+          "pricesByLevel": [
+            180
+          ],
+          "effectsByLevel": [
+            "Автоматический сбор порошков"
+          ]
+        }
+      ]
+    },
+    {
+      "groupId": "distillery",
+      "name": "Куб",
+      "sprite": "Спрайты/Лаборатория/distillery_ready_simple.png",
+      "items": [
+        {
+          "id": "distill_collect",
+          "name": "Автосбор куба",
+          "sprite": "Спрайты/Улучшения/icons/distillery/auto_collect.png",
+          "description": "Готовые эссенции сразу поступают в инвентарь.",
+          "pricesByLevel": [
+            160
+          ],
+          "effectsByLevel": [
+            "Автоматический сбор эссенций"
+          ]
+        }
+      ]
+    },
+    {
+      "groupId": "trade",
+      "name": "Торговля",
+      "sprite": "Спрайты/Улучшения/icons/trade/tab_trade.png",
+      "items": [
+        {
+          "id": "deals",
+          "name": "Выгодные сделки",
+          "sprite": "Спрайты/Улучшения/icons/trade/better_deals.png",
+          "description": "Увеличивает награду за заказы.",
+          "pricesByLevel": [
+            100,
+            240
+          ],
+          "effectsByLevel": [
+            "Награда +10%",
+            "Награда +20%"
+          ]
+        },
+        {
+          "id": "slot",
+          "name": "Место заказа",
+          "sprite": "Спрайты/Улучшения/icons/trade/order_slot.png",
+          "description": "Добавляет четвёртое место на доске заказов.",
+          "pricesByLevel": [
+            180
+          ],
+          "effectsByLevel": [
+            "На доске +1 заказ"
+          ]
+        },
+        {
+          "id": "bulk",
+          "name": "Оптовая закупка",
+          "sprite": "Спрайты/Улучшения/icons/trade/bulk_purchase.png",
+          "description": "Даёт скидку при покупке от трёх единиц одного ингредиента.",
+          "pricesByLevel": [
+            100
+          ],
+          "effectsByLevel": [
+            "Скидка 10% от 3 шт."
+          ]
+        },
+        {
+          "id": "supplier",
+          "name": "Постоянный поставщик",
+          "sprite": "Спрайты/Улучшения/icons/trade/regular_supplier.png",
+          "description": "Автоматически закупает выбранные ингредиенты в пределах бюджета.",
+          "pricesByLevel": [
+            350
+          ],
+          "effectsByLevel": [
+            "Автоматическая закупка"
+          ]
+        }
+      ]
+    }
+  ],
+  "essences": {
+    "durationSeconds": 25,
+    "recipes": [
+      {
+        "id": "lunar_essence",
+        "name": "Эссенция лунного света",
+        "description": "Собирает лунный свет в капле, которая светится сквозь густой туман.",
+        "inputPotionIds": [
+          "night",
+          "dream"
+        ],
+        "sprite": "Спрайты/Общие/Предметы/Эссенции/lunar_essence.png"
+      },
+      {
+        "id": "solar_essence",
+        "name": "Эссенция ясного неба",
+        "description": "Сохраняет тепло ясного утра. Его хватает, чтобы отогреть заиндевевшие побеги.",
+        "inputPotionIds": [
+          "weather",
+          "sun"
+        ],
+        "sprite": "Спрайты/Общие/Предметы/Эссенции/solar_essence.png"
+      }
+    ]
+  },
+  "fair": {
+    "routes": {
+      "warm": {
+        "title": "Тёплый прилавок",
+        "request": "На площади подморозило, и жаровни одна за другой гаснут. Если торговцы уйдут греться по домам, ярмарка закроется до рассвета. Савва просит лавку помочь им продержаться.",
+        "deliveries": [
+          [
+            "sun",
+            "winter_warmth"
+          ],
+          [
+            "healing_draught",
+            "winter_warmth"
+          ]
+        ]
+      },
+      "caravan": {
+        "title": "Защита для ночного каравана",
+        "request": "Повозки с ярмарочным товаром застряли у Каменного перевала. После обвала возницам предстоит идти по узкой тропе в лунном свете. Савва хочет отправить им зелья до наступления темноты.",
+        "deliveries": [
+          [
+            "rainbow",
+            "stone_skin"
+          ],
+          [
+            "healing_draught",
+            "stone_skin"
+          ]
+        ]
+      }
+    },
+    "bonusByDelivery": [
+      45,
+      100
+    ]
+  },
+  "afterFair": {
+    "events": {
+      "crossing": {
+        "title": "Огни на переправе",
+        "customer": "Торговец Савва",
+        "story": "Ночью река вышла из берегов и сорвала огни с причала. Савва просит осветить переправу, пока ныряльщики достают крепления со дна.",
+        "ending": "Огни снова видны сквозь туман. Первая лодка уже подошла к причалу.",
+        "items": [
+          "lunar_essence",
+          "underwater_breath"
+        ],
+        "reward": 170
+      },
+      "orchard": {
+        "title": "Сад после заморозка",
+        "customer": "Садовница Лея",
+        "story": "Заморозок побелил сад Леи. Она хочет отогреть уцелевшие побеги и услышать, какие деревья ещё можно спасти.",
+        "ending": "Лея нашла среди обледеневших веток живые почки. К утру лёд сошёл с молодых деревьев.",
+        "items": [
+          "solar_essence",
+          "forest"
+        ],
+        "reward": 150
+      }
+    },
+    "perks": {
+      "crossing": {
+        "title": "Переправа Саввы",
+        "benefit": "Выберите один из двух заказов и получите +90 монет за сдачу."
+      },
+      "orchard": {
+        "title": "Грядки Леи",
+        "benefit": "Удвойте два урожая на выбранной грядке."
+      }
+    },
+    "dockOrderBonus": 90
+  },
+  "orders": {
+    "introOrderCount": 2,
+    "replaceCooldownSeconds": 60,
+    "customersBySlot": [
+      "Травница Мира",
+      "Пекарь Тихон",
+      "Садовница Лея",
+      "Торговец Савва"
+    ]
+  },
+  "saving": {
+    "offlineLimitSeconds": 7200
+  },
+  "cropDraw": {
+    "plantFoot": {
+      "stoneflower": {
+        "seedling": [
+          300,
+          384,
+          379,
+          170.7
+        ],
+        "mature": [
+          597,
+          796,
+          791,
+          216.4
+        ]
+      },
+      "mintleaf": {
+        "seedling": [
+          536,
+          393,
+          392,
+          287.6
+        ],
+        "mature": [
+          1226,
+          1283,
+          1252,
+          611.7
+        ]
+      },
+      "sunflower": {
+        "seedling": [
+          1312,
+          1199,
+          942,
+          639.9
+        ],
+        "mature": [
+          1132,
+          1390,
+          1307,
+          482.9
+        ]
+      },
+      "moon_lavender": {
+        "seedling": [
+          1312,
+          1199,
+          1022,
+          661.4
+        ],
+        "mature": [
+          1079,
+          1458,
+          1345,
+          516.1
+        ]
+      },
+      "mist_berry": {
+        "seedling": [
+          1312,
+          1199,
+          1004,
+          620.4
+        ],
+        "mature": [
+          1325,
+          1187,
+          1024,
+          625.9
+        ]
+      },
+      "spring_root": {
+        "seedling": [
+          1312,
+          1199,
+          780,
+          632
+        ],
+        "mature": [
+          1312,
+          1199,
+          1090,
+          602.4
+        ]
+      },
+      "whispering_fern": {
+        "seedling": [
+          1341,
+          1173,
+          1042,
+          601.1
+        ],
+        "mature": [
+          1444,
+          1089,
+          1052,
+          623.3
+        ]
+      }
+    },
+    "seedlingBounds": {
+      "stoneflower": [
+        300,
+        384,
+        4,
+        4,
+        292,
+        376
+      ],
+      "sunflower": [
+        1312,
+        1199,
+        342,
+        172,
+        627,
+        771
+      ],
+      "moon_lavender": [
+        1312,
+        1199,
+        348,
+        122,
+        605,
+        901
+      ],
+      "mist_berry": [
+        1312,
+        1199,
+        370,
+        220,
+        565,
+        785
+      ],
+      "spring_root": [
+        1312,
+        1199,
+        376,
+        328,
+        475,
+        453
+      ],
+      "whispering_fern": [
+        1341,
+        1173,
+        266,
+        112,
+        781,
+        931
+      ]
+    }
+  },
+  "itemDraw": {
+    "potionBounds": {
+      "animal_tongue.png": [
+        932,
+        1688,
+        58,
+        148,
+        803,
+        1460
+      ],
+      "cat_step.png": [
+        1024,
+        1536,
+        224,
+        102,
+        572,
+        1313
+      ],
+      "dream_catcher.png": [
+        1088,
+        1446,
+        154,
+        146,
+        758,
+        1041
+      ],
+      "drop_of_sun.png": [
+        1088,
+        1446,
+        154,
+        146,
+        758,
+        1041
+      ],
+      "echo_of_feelings.png": [
+        1088,
+        1446,
+        154,
+        146,
+        758,
+        1041
+      ],
+      "fire_ward.png": [
+        285,
+        311,
+        9,
+        5,
+        267,
+        297
+      ],
+      "forest_whisper.png": [
+        932,
+        1688,
+        58,
+        148,
+        803,
+        1460
+      ],
+      "healing_draught.png": [
+        285,
+        311,
+        9,
+        5,
+        267,
+        297
+      ],
+      "letter_from_the_past.png": [
+        1088,
+        1446,
+        154,
+        146,
+        758,
+        1041
+      ],
+      "mighty_elixir.png": [
+        1024,
+        1536,
+        224,
+        102,
+        572,
+        1313
+      ],
+      "mintleaf_tea.png": [
+        1536,
+        1024,
+        204,
+        150,
+        1135,
+        726
+      ],
+      "moon_bloom.png": [
+        932,
+        1688,
+        58,
+        148,
+        803,
+        1460
+      ],
+      "night_sight.png": [
+        932,
+        1688,
+        58,
+        148,
+        803,
+        1460
+      ],
+      "precise_movement.png": [
+        1024,
+        1536,
+        224,
+        102,
+        572,
+        1313
+      ],
+      "rainbow_bubble.png": [
+        1088,
+        1446,
+        154,
+        146,
+        758,
+        1041
+      ],
+      "spring_elixir.png": [
+        1024,
+        1536,
+        224,
+        102,
+        572,
+        1313
+      ],
+      "stone_skin.png": [
+        285,
+        311,
+        9,
+        5,
+        267,
+        297
+      ],
+      "underwater_breath.png": [
+        285,
+        311,
+        9,
+        5,
+        267,
+        297
+      ],
+      "weather_breath.png": [
+        932,
+        1688,
+        58,
+        148,
+        803,
+        1460
+      ],
+      "wind_elixir.png": [
+        1024,
+        1536,
+        224,
+        102,
+        572,
+        1313
+      ],
+      "winter_warmth.png": [
+        285,
+        311,
+        9,
+        5,
+        267,
+        297
+      ]
+    },
+    "ingredientBounds": {
+      "memory_sand": [
+        1402,
+        1122,
+        428,
+        176,
+        537,
+        777
+      ],
+      "mist_berry": [
+        1402,
+        1122,
+        264,
+        132,
+        837,
+        845
+      ],
+      "moon_dew": [
+        1402,
+        1122,
+        460,
+        216,
+        473,
+        677
+      ],
+      "moon_lavender": [
+        1402,
+        1122,
+        308,
+        76,
+        801,
+        961
+      ],
+      "prismatic_crystal": [
+        1402,
+        1122,
+        464,
+        136,
+        457,
+        849
+      ],
+      "rainbow_powder": [
+        1536,
+        1024,
+        352,
+        292,
+        841,
+        449
+      ],
+      "spring_root": [
+        1402,
+        1122,
+        336,
+        40,
+        717,
+        1021
+      ],
+      "sunflower": [
+        1402,
+        1122,
+        312,
+        148,
+        733,
+        813
+      ],
+      "whispering_fern": [
+        1402,
+        1122,
+        272,
+        136,
+        853,
+        849
+      ],
+      "wind_feather": [
+        1402,
+        1122,
+        364,
+        144,
+        733,
+        837
+      ]
+    }
+  }
+}
